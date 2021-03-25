@@ -1,8 +1,8 @@
 /*********************************************************************************
-  *Copyright(C),2018-2020,沈阳航空航天大学T-UP战队 All Rights Reserved
+  *Copyright(C),2018-2021,沈阳航空航天大学T-UP战队 All Rights Reserved
   *FileName:  SAUVISIONBUFF
   *Author:  周俊平;刘上;赵梓合;顾昊
-  *Version: 1.0.0_x64Linux
+  *Version: 1.2.0_x64Linux
   *Date:  2021.03.19
   *Description: 自动识别and打击装甲；打击能量机关
   *Function List:
