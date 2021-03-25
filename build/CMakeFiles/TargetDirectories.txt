@@ -1,0 +1,3 @@
+/home/rangeronmars/Desktop/test_file/SAUVisionBuff/build/CMakeFiles/rebuild_cache.dir
+/home/rangeronmars/Desktop/test_file/SAUVisionBuff/build/CMakeFiles/edit_cache.dir
+/home/rangeronmars/Desktop/test_file/SAUVisionBuff/build/CMakeFiles/SAUVisionBuff.dir
