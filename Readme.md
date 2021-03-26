@@ -2,9 +2,9 @@
   
 ## Author:  周俊平;刘上;赵梓合;顾昊
   
-## Version: 1.2.0
+## Version: 1.2.1
   
-  *Date:  2021.03.19
+  *Date:  2021.03.26
   
   *Description: 自动识别and打击装甲；打击能量机关
   
