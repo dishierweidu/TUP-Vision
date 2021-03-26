@@ -19,6 +19,7 @@ ADD_EXECUTABLE(SAUVisionBuff /home/rangeronmars/Desktop/test_file/SAUVisionBuff/
 					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Energy/Energy.h
 					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Energy/Params.cpp
 					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Energy/Params.h
+					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Energy/debug.h
 					#相机驱动文件
 					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Camera/GxIAPI.h
 					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Camera/DxImageProc.h
@@ -31,6 +32,7 @@ ADD_EXECUTABLE(SAUVisionBuff /home/rangeronmars/Desktop/test_file/SAUVisionBuff/
 					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Armor/ArmorDetector.cpp
 					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Armor/ArmorDetector.hpp
 					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Armor/Settings.hpp
+					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Armor/debug.h
 					#角度解算
 					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/AngelSolver/AngleSolver.cpp
 					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/AngelSolver/AngleSolver.hpp
