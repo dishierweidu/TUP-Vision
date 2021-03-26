@@ -140,7 +140,7 @@ bool DaHengCamera::GetMat(Mat &Src)
 
     //计时
     #ifdef SHOW_SRC_GET_TIME
-    double time0 = static_cast<double>(getTickCount());
+    double time0 = static_cast<double>(getTickCount());//计算采集时间计时开始
     #endif
 
     int64_t nPayLoadSize = 0;
@@ -195,7 +195,7 @@ bool DaHengCamera::GetMat(Mat &Src)
 
                 #ifdef SHOW_SRC_GET_TIME
                 time0 = ((double)getTickCount() - time0) / getTickFrequency();
-                cout << "采集图像 " << time0 * 1000 << endl;
+                cout << "采集图像:" << time0 * 1000 << endl;
                 #endif
 
                 delete[] pRGB24Buf;

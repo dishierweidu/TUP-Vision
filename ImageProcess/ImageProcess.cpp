@@ -18,10 +18,10 @@
 
 #ifdef USE_LOCAL_VIDEO
 // const string source_location = "/home/rangeronmars/Desktop/video/RH.avi";
-// const string source_location = "/home/rangeronmars/Desktop/video/sample.avi";
+const string source_location = "/home/rangeronmars/Desktop/video/sample.avi";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_red.mp4";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red.mp4";
-const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_blue.mp4";
+// const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_blue.mp4";
 
 VideoCapture cap(source_location);
 #endif
@@ -211,7 +211,7 @@ void ImageProcess::ImageConsumer()
 
 
     /*===========================函数中所使用的参数===========================*/
-    int mode = 3;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
+    int mode = 1;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
     _port.get_Mode(mode,_sentrymode,_basemode);//从串口读取模式数据
     /*===========================函数中所使用的参数===========================*/
 
