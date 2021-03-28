@@ -19,6 +19,10 @@
 #ifdef USE_LOCAL_VIDEO
 // const string source_location = "/home/rangeronmars/Desktop/video/RH.avi";
 const string source_location = "/home/rangeronmars/Desktop/video/sample.avi";
+// const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_red.mp4";
+// const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red.mp4";
+// const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_blue.mp4";
+
 VideoCapture cap(source_location);
 #endif
 
@@ -208,7 +212,7 @@ void ImageProcess::ImageConsumer()
 
     /*===========================函数中所使用的参数===========================*/
     int mode = 2;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
-    _port.get_Mode(mode,_sentrymode,_basemode);//从串口读取模式数据
+    // _port.get_Mode(mode,_sentrymode,_basemode);//从串口读取模式数据
     /*===========================函数中所使用的参数===========================*/
 
     
@@ -469,7 +473,7 @@ void ImageProcess::ImageConsumer_Single(Mat &src,Energy &energy_detector)
 
 
     /*===========================函数中所使用的参数===========================*/
-    int mode = 2;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
+    int mode = 3;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
     _port.get_Mode(mode,_sentrymode,_basemode);//从串口读取模式数据
     /*===========================函数中所使用的参数===========================*/
 
@@ -502,7 +506,7 @@ void ImageProcess::ImageConsumer_Single(Mat &src,Energy &energy_detector)
         // 解算出的角度，为false则说明没有识别到目标
         if(angle_slover.getAngle(rect, type, angle_x, angle_y, dist) == true)
         {
-            #ifdef SHOW_DISTANCE
+            #ifdef SHOW_DISTANC15:33E
             String distance = "diatance:";
             distance+=to_string(int(dist));
             putText(src,distance,Point(20,20),CV_FONT_NORMAL, 1, Scalar(0, 255, 0), 2);

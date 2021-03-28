@@ -6,31 +6,31 @@
 
 #IncludeRegexTransform: 
 
-/home/tup/Desktop/SAUVisionBuff/./Camera/./DxImageProc.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Camera/./DxImageProc.h
 stdlib.h
 -
 string.h
 -
 
-/home/tup/Desktop/SAUVisionBuff/./Camera/./GxIAPI.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Camera/./GxIAPI.h
 stdint.h
 -
 stddef.h
 -
 
-/home/tup/Desktop/SAUVisionBuff/./Camera/DaHengCamera.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Camera/DaHengCamera.h
 ./DxImageProc.h
-/home/tup/Desktop/SAUVisionBuff/./Camera/./DxImageProc.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Camera/./DxImageProc.h
 ./GxIAPI.h
-/home/tup/Desktop/SAUVisionBuff/./Camera/./GxIAPI.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Camera/./GxIAPI.h
 iostream
 -
 opencv2/core/core.hpp
 -
 
-/home/tup/Desktop/SAUVisionBuff/./Debug.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Debug.h
 
-/home/tup/Desktop/SAUVisionBuff/./Energy/./Params.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Energy/./Params.h
 iostream
 -
 opencv2/core.hpp
@@ -40,13 +40,13 @@ opencv2/highgui.hpp
 opencv2/imgproc.hpp
 -
 ../Debug.h
-/home/tup/Desktop/SAUVisionBuff/./Energy/Debug.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Energy/Debug.h
 
-/home/tup/Desktop/SAUVisionBuff/./Energy/Energy.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Energy/Energy.h
 ./Params.h
-/home/tup/Desktop/SAUVisionBuff/./Energy/./Params.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Energy/./Params.h
 ../Debug.h
-/home/tup/Desktop/SAUVisionBuff/./Debug.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Debug.h
 opencv2/core.hpp
 -
 opencv2/highgui.hpp
@@ -74,7 +74,7 @@ mutex
 time.h
 -
 
-/home/tup/Desktop/SAUVisionBuff/./ImageProcess/ImageProcess.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./ImageProcess/ImageProcess.h
 iostream
 -
 opencv2/core.hpp
@@ -82,21 +82,21 @@ opencv2/core.hpp
 opencv2/imgcodecs.hpp
 -
 ../Camera/DaHengCamera.h
-/home/tup/Desktop/SAUVisionBuff/./Camera/DaHengCamera.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Camera/DaHengCamera.h
 ../Energy/Energy.h
-/home/tup/Desktop/SAUVisionBuff/./Energy/Energy.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Energy/Energy.h
 ../Debug.h
-/home/tup/Desktop/SAUVisionBuff/./Debug.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Debug.h
 ../Serial/serialport.h
-/home/tup/Desktop/SAUVisionBuff/./Serial/serialport.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Serial/serialport.h
 
-/home/tup/Desktop/SAUVisionBuff/./Serial/CRC_Check.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Serial/CRC_Check.h
 iostream
 -
 stdint.h
 -
 
-/home/tup/Desktop/SAUVisionBuff/./Serial/serialport.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Serial/serialport.h
 sys/types.h
 -
 unistd.h
@@ -118,79 +118,79 @@ sys/ioctl.h
 iostream
 -
 CRC_Check.h
-/home/tup/Desktop/SAUVisionBuff/./Serial/CRC_Check.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./Serial/CRC_Check.h
 
-/home/tup/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.cpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/AngelSolver/AngleSolver.cpp
 AngleSolver.hpp
-/home/tup/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/AngelSolver/AngleSolver.hpp
 opencv2/opencv.hpp
-/home/tup/Desktop/SAUVisionBuff/AngelSolver/opencv2/opencv.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/AngelSolver/opencv2/opencv.hpp
 
-/home/tup/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/AngelSolver/AngleSolver.hpp
 opencv2/core/core.hpp
-/home/tup/Desktop/SAUVisionBuff/AngelSolver/opencv2/core/core.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/AngelSolver/opencv2/core/core.hpp
 
-/home/tup/Desktop/SAUVisionBuff/Armor/ArmorDetector.cpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/ArmorDetector.cpp
 ArmorDetector.hpp
-/home/tup/Desktop/SAUVisionBuff/Armor/ArmorDetector.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/ArmorDetector.hpp
 opencv2/imgproc/imgproc.hpp
-/home/tup/Desktop/SAUVisionBuff/Armor/opencv2/imgproc/imgproc.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/opencv2/imgproc/imgproc.hpp
 iostream
 -
 queue
 -
 opencv2/dnn/dnn.hpp
-/home/tup/Desktop/SAUVisionBuff/Armor/opencv2/dnn/dnn.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/opencv2/dnn/dnn.hpp
 ../Debug.h
-/home/tup/Desktop/SAUVisionBuff/Debug.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Debug.h
 
-/home/tup/Desktop/SAUVisionBuff/Armor/ArmorDetector.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/ArmorDetector.hpp
 opencv2/highgui/highgui.hpp
-/home/tup/Desktop/SAUVisionBuff/Armor/opencv2/highgui/highgui.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/opencv2/highgui/highgui.hpp
 ../AngelSolver/AngleSolver.hpp
-/home/tup/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/AngelSolver/AngleSolver.hpp
 opencv2/dnn/dnn.hpp
-/home/tup/Desktop/SAUVisionBuff/Armor/opencv2/dnn/dnn.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/opencv2/dnn/dnn.hpp
 
-/home/tup/Desktop/SAUVisionBuff/Armor/Settings.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/Settings.hpp
 opencv2/core/core.hpp
-/home/tup/Desktop/SAUVisionBuff/Armor/opencv2/core/core.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/opencv2/core/core.hpp
 string
 -
 ArmorDetector.hpp
-/home/tup/Desktop/SAUVisionBuff/Armor/ArmorDetector.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/ArmorDetector.hpp
 
-/home/tup/Desktop/SAUVisionBuff/Camera/././DxImageProc.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Camera/././DxImageProc.h
 stdlib.h
 -
 string.h
 -
 
-/home/tup/Desktop/SAUVisionBuff/Camera/././GxIAPI.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Camera/././GxIAPI.h
 stdint.h
 -
 stddef.h
 -
 
-/home/tup/Desktop/SAUVisionBuff/Camera/./DaHengCamera.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Camera/./DaHengCamera.h
 ./DxImageProc.h
-/home/tup/Desktop/SAUVisionBuff/Camera/././DxImageProc.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Camera/././DxImageProc.h
 ./GxIAPI.h
-/home/tup/Desktop/SAUVisionBuff/Camera/././GxIAPI.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Camera/././GxIAPI.h
 iostream
 -
 opencv2/core/core.hpp
 -
 
-/home/tup/Desktop/SAUVisionBuff/Camera/DaHengCamera.cpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Camera/DaHengCamera.cpp
 ./DaHengCamera.h
-/home/tup/Desktop/SAUVisionBuff/Camera/./DaHengCamera.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Camera/./DaHengCamera.h
 ../Debug.h
-/home/tup/Desktop/SAUVisionBuff/Debug.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Debug.h
 
-/home/tup/Desktop/SAUVisionBuff/Debug.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Debug.h
 
-/home/tup/Desktop/SAUVisionBuff/Energy/././Params.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/././Params.h
 iostream
 -
 opencv2/core.hpp
@@ -200,13 +200,13 @@ opencv2/highgui.hpp
 opencv2/imgproc.hpp
 -
 ../Debug.h
-/home/tup/Desktop/SAUVisionBuff/Energy/./Debug.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/./Debug.h
 
-/home/tup/Desktop/SAUVisionBuff/Energy/./Energy.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/./Energy.h
 ./Params.h
-/home/tup/Desktop/SAUVisionBuff/Energy/././Params.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/././Params.h
 ../Debug.h
-/home/tup/Desktop/SAUVisionBuff/Energy/Debug.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/Debug.h
 opencv2/core.hpp
 -
 opencv2/highgui.hpp
@@ -234,7 +234,7 @@ mutex
 time.h
 -
 
-/home/tup/Desktop/SAUVisionBuff/Energy/./Params.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/./Params.h
 iostream
 -
 opencv2/core.hpp
@@ -244,17 +244,17 @@ opencv2/highgui.hpp
 opencv2/imgproc.hpp
 -
 ../Debug.h
-/home/tup/Desktop/SAUVisionBuff/Energy/Debug.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/Debug.h
 
-/home/tup/Desktop/SAUVisionBuff/Energy/Energy.cpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/Energy.cpp
 ./Energy.h
-/home/tup/Desktop/SAUVisionBuff/Energy/./Energy.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/./Energy.h
 
-/home/tup/Desktop/SAUVisionBuff/Energy/Params.cpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/Params.cpp
 ./Params.h
-/home/tup/Desktop/SAUVisionBuff/Energy/./Params.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/./Params.h
 
-/home/tup/Desktop/SAUVisionBuff/ImageProcess/./ImageProcess.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/ImageProcess/./ImageProcess.h
 iostream
 -
 opencv2/core.hpp
@@ -262,39 +262,39 @@ opencv2/core.hpp
 opencv2/imgcodecs.hpp
 -
 ../Camera/DaHengCamera.h
-/home/tup/Desktop/SAUVisionBuff/ImageProcess/Camera/DaHengCamera.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/ImageProcess/Camera/DaHengCamera.h
 ../Energy/Energy.h
-/home/tup/Desktop/SAUVisionBuff/ImageProcess/Energy/Energy.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/ImageProcess/Energy/Energy.h
 ../Debug.h
-/home/tup/Desktop/SAUVisionBuff/ImageProcess/Debug.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/ImageProcess/Debug.h
 ../Serial/serialport.h
-/home/tup/Desktop/SAUVisionBuff/ImageProcess/Serial/serialport.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/ImageProcess/Serial/serialport.h
 
-/home/tup/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.cpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/ImageProcess/ImageProcess.cpp
 ./ImageProcess.h
-/home/tup/Desktop/SAUVisionBuff/ImageProcess/./ImageProcess.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/ImageProcess/./ImageProcess.h
 ../AngelSolver/AngleSolver.hpp
-/home/tup/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/AngelSolver/AngleSolver.hpp
 ../Armor/ArmorDetector.hpp
-/home/tup/Desktop/SAUVisionBuff/Armor/ArmorDetector.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/ArmorDetector.hpp
 ../Armor/Settings.hpp
-/home/tup/Desktop/SAUVisionBuff/Armor/Settings.hpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/Settings.hpp
 
-/home/tup/Desktop/SAUVisionBuff/Serial/CRC_Check.cpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Serial/CRC_Check.cpp
 CRC_Check.h
-/home/tup/Desktop/SAUVisionBuff/Serial/CRC_Check.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Serial/CRC_Check.h
 
-/home/tup/Desktop/SAUVisionBuff/Serial/CRC_Check.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Serial/CRC_Check.h
 iostream
 -
 stdint.h
 -
 
-/home/tup/Desktop/SAUVisionBuff/Serial/serialport.cpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Serial/serialport.cpp
 serialport.h
-/home/tup/Desktop/SAUVisionBuff/Serial/serialport.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Serial/serialport.h
 
-/home/tup/Desktop/SAUVisionBuff/Serial/serialport.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Serial/serialport.h
 sys/types.h
 -
 unistd.h
@@ -316,11 +316,11 @@ sys/ioctl.h
 iostream
 -
 CRC_Check.h
-/home/tup/Desktop/SAUVisionBuff/Serial/CRC_Check.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/Serial/CRC_Check.h
 
-/home/tup/Desktop/SAUVisionBuff/main.cpp
+/home/tup/Desktop/Test_Files/SAUVisionBuff/main.cpp
 ./ImageProcess/ImageProcess.h
-/home/tup/Desktop/SAUVisionBuff/./ImageProcess/ImageProcess.h
+/home/tup/Desktop/Test_Files/SAUVisionBuff/./ImageProcess/ImageProcess.h
 X11/Xlib.h
 -
 

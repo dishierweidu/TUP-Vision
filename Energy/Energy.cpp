@@ -37,6 +37,32 @@ static double absolute_run_time = static_cast<double>(getTickCount());
 //----------------------------------------------------------//
 
 
+// @brief 绘制旋转矩形并显示相关信息 by GuHao
+// @param RRect 所需矩形
+// @param src  输出图像
+// @param color 矩形的颜色与相关数据颜色
+// @param thickness 矩形线条的线宽与字体大小
+void ShowRotateRectDetail(RotatedRect &RRect,Mat src,Scalar color=Scalar(0,150,0), int thickness = 2)
+{
+    //储存旋转矩形顶点数组
+    Point2f Apex[4];
+    RRect.points(Apex);
+    const string Width = "Width :" + to_string((int)(RRect.size.width > RRect.size.height ? RRect.size.width :RRect.size.height));
+    const string Height = "Height :" + to_string((int)(RRect.size.width < RRect.size.height ? RRect.size.width :RRect.size.height));
+    const string Area = "Area :" + to_string((int)(RRect.size.width * RRect.size.height ));
+    const string H_W = "H/W :" + to_string((float)((RRect.size.width > RRect.size.height ? RRect.size.width :RRect.size.height)/(RRect.size.width < RRect.size.height ? RRect.size.width :RRect.size.height)));
+    for (int j = 0; j < 4; ++j)
+        line(src, Apex[j], Apex[(j + 1) % 4], color, thickness);
+    putText(src,Width,Apex[0],CV_FONT_HERSHEY_SIMPLEX,0.5,color,thickness);
+    putText(src,Height,Apex[0]+Point2f(0,15),CV_FONT_HERSHEY_SIMPLEX,0.5,color,thickness);
+    putText(src,Area,Apex[0]+Point2f(0,30),CV_FONT_HERSHEY_SIMPLEX,0.5,color,thickness);
+    putText(src,H_W,Apex[0]+Point2f(0,45),CV_FONT_HERSHEY_SIMPLEX,0.5,color,thickness);
+
+
+
+}
+
+
 // @brief 绘制旋转矩形 by up
 // @param frame 直线绘制的图像
 // @param rRect 旋转矩形
@@ -149,11 +175,9 @@ void Energy::run(Mat &oriFrame)
 
     Mat frame = oriFrame.clone();
 
-    #ifdef SHOW_ORIGINAL
-    imshow("SHOW_ORIGINAL", oriFrame);
+    #ifdef SHOW_RECT_INFO 
+    frame.copyTo(src_rect_info);
     #endif
-
-
     clearVectors();
     initFrame(frame);
 
@@ -162,10 +186,15 @@ void Energy::run(Mat &oriFrame)
         return; // 如果没找到
     }
 
+
+
     if(!findArmors(frame))   // 寻找装甲板
     {
         return; // 如果没找到
     }
+    #ifdef SHOW_RECT_INFO 
+    imshow("Rect_info",src_rect_info);
+    #endif
 
 
     getPoints2D();
@@ -424,6 +453,7 @@ bool Energy::predictTargetPoint(Mat &frame)
     {
         // 大符旋转绝对时间
         float absolute_time = ((double)getTickCount() - absolute_run_time) / getTickFrequency();
+        // cout<<absolute_time<<endl;
  
         energyParams.big_mode_predict_angle = theta_func(absolute_time + energyParams.bullet_fly_time) - theta_func(absolute_time);
 
@@ -472,6 +502,7 @@ bool Energy::findArmors(Mat &src)
         cout << "empty!" << endl;
         return false;
     }
+
 
     Mat src_bin = src.clone();
     if(src.type() == CV_8UC3)
@@ -584,16 +615,31 @@ bool Energy::findTargetArmor(Mat &src_bin)
 // @return 装甲板有效返回true,否则返回false
 bool Energy::isValidArmor(vector<Point>&armor_contour)
 {
-    // 依据面积进行筛选
+    // 依据面积进行筛选(若显示矩形信息则在长宽后进行判断)
+    #ifndef SHOW_RECT_INFO
     double cur_contour_area = contourArea(armor_contour);
     // cout << cur_contour_area << endl;
     if(cur_contour_area > energyParams.ARMOR_CONTOUR_AREA_MAX || cur_contour_area < energyParams.ARMOR_CONTOUR_AREA_MIN)
     {
         return false;
     }
+    #endif
 
     // 依据长和宽进行筛选
     RotatedRect cur_rrect = minAreaRect(armor_contour);
+    #ifdef SHOW_RECT_INFO 
+    ShowRotateRectDetail(cur_rrect,src_rect_info);
+    #endif
+
+    #ifdef SHOW_RECT_INFO
+    double cur_contour_area = contourArea(armor_contour);
+    // cout << cur_contour_area << endl;
+    if(cur_contour_area > energyParams.ARMOR_CONTOUR_AREA_MAX || cur_contour_area < energyParams.ARMOR_CONTOUR_AREA_MIN)
+    {
+        return false;
+    }
+    #endif
+
     Size2f cur_size = cur_rrect.size;
     float length = cur_size.height > cur_size.width ? cur_size.height : cur_size.width;
     float width = cur_size.height < cur_size.width ? cur_size.height : cur_size.width;
@@ -602,9 +648,9 @@ bool Energy::isValidArmor(vector<Point>&armor_contour)
     {
         return false;
     }
-
     // 依据长宽比进行筛选
     float ratio = length / width;
+    // cout<<ratio<<endl;
     if(ratio > energyParams.ARMOR_CONTOUR_HW_RATIO_MAX || ratio < energyParams.ARMOR_CONTOUR_HW_RATIO_MIN)
     {
         return false;
@@ -620,7 +666,7 @@ bool Energy::isValidArmor(vector<Point>&armor_contour)
 bool Energy::predictRCenter(Mat &frame)
 {
     #ifdef DEBUG_PREDICT_INFORMATION_BUFF
-    cout<<"sample counts:" <<armor_center_points.size()<<endl;
+    cout<<"sample counts:" <<armor_center_points.size()<<endl;//输出样本现有数量
     #endif
     // 只拟合一次
     if(armor_center_points.size() < 50)
@@ -628,7 +674,7 @@ bool Energy::predictRCenter(Mat &frame)
         // 将装甲板中心点坐标存入
         armor_center_points.emplace_back(target_armor.center);
         #ifdef DEBUG_PREDICT_INFORMATION_BUFF  
-        cout<<"Insufficient sample!"<<endl;
+        cout<<"Insufficient sample!"<<endl;//提示样本数量不足
         #endif
         return false;
     }
@@ -740,15 +786,33 @@ bool Energy::findFlowStripFan(Mat &src)
 // @return 含流动条的扇叶合格返回true,否则返回false
 bool Energy::isValidFlowStripFan(Mat &src_bin, vector<Point> &flow_strip_fan_contour)
 {
-    // 依据面积进行筛选
+    #ifndef SHOW_RECT_INFO 
+
+    // 依据面积进行筛选(若显示矩形信息则在长宽后进行判断)
     double cur_contour_area = contourArea(flow_strip_fan_contour);
     if(cur_contour_area > energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_MAX || cur_contour_area < energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_MIN)
     {
         return false;
     }
 
+    #endif
+
     // 依据长宽进行筛选
     RotatedRect cur_rect = minAreaRect(flow_strip_fan_contour);
+    #ifdef SHOW_RECT_INFO 
+    ShowRotateRectDetail(cur_rect,src_rect_info);
+    #endif
+
+    #ifdef SHOW_RECT_INFO 
+    double cur_contour_area = contourArea(flow_strip_fan_contour);
+    cout<<cur_contour_area<<endl;
+    if(cur_contour_area > energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_MAX || cur_contour_area < energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_MIN)
+    {
+        return false;
+    }
+    #endif
+    
+
     Size2f cur_size = cur_rect.size;
     float height = cur_size.height > cur_size.width ? cur_size.height : cur_size.width;
     float width = cur_size.height < cur_size.width ? cur_size.height : cur_size.width;
@@ -768,6 +832,7 @@ bool Energy::isValidFlowStripFan(Mat &src_bin, vector<Point> &flow_strip_fan_con
 
     // 根据面积比进行筛选
     float area_ratio = cur_contour_area / cur_size.area();
+    // cout<<area_ratio<<"\n\n"<<endl;
     if(area_ratio > energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MAX || area_ratio < energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MIN)
     {
         return false;

@@ -104,7 +104,7 @@ void ArmorDetector::setImage(const cv::Mat & src){
     const uchar * ptr_src = _src.data;
     const uchar * ptr_src_end = _src.data + total_pixel * 3;
     int thres_max_color_red = 40;
-    int thres_max_color_blue = 46;
+    int thres_max_color_blue = 36;
 
     _max_color = cv::Mat(_src.size(), CV_8UC1, cv::Scalar(0));
 

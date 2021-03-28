@@ -85,13 +85,15 @@ void AngleSolver::adjustPTZ2Barrel(const cv::Mat & pos_in_ptz, double & angle_x,
     const double *_xyz = (const double *)pos_in_ptz.data;
     double xyz[3] = {_xyz[0], _xyz[1] - 8, _xyz[2] + 10};
     /////////////////////////////////
-    double theta = 0.0, offset_x = 3.0 * 3.1415926 / 180, offset_y = 13.5 * 3.1415926 / 180;
+    double theta = 0.0, offset_x = 3.0 * 3.1415926 / 180, offset_y = 13.7 * 3.1415926 / 180;
+    double offest_x_a = 1.1;    // smaller is left, bigger is right
+    double offest_y_a = -4.8;   // smaller is up, bigger is down
     /////////////////////////////////
     theta = atan(xyz[1]/xyz[2]);
     angle_y = (theta + offset_y);   // camera coordinate
     angle_x = atan2(xyz[0], xyz[2])+ offset_x ;
-    angle_x = angle_x * 180 / 3.1415926;
-    angle_y = angle_y * 180 / 3.1415926;
+    angle_x = angle_x * 180 / 3.1415926 + offest_x_a;
+    angle_y = angle_y * 180 / 3.1415926 + offest_y_a;
 }
 
 void AngleSolver::getTarget2dPoinstion(const cv::RotatedRect & rect, vector<Point2f> & target2d, const cv::Point2f & offset){

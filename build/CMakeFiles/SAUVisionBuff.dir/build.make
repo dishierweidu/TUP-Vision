@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tup/Desktop/SAUVisionBuff
+CMAKE_SOURCE_DIR = /home/tup/Desktop/Test_Files/SAUVisionBuff
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tup/Desktop/SAUVisionBuff/build
+CMAKE_BINARY_DIR = /home/tup/Desktop/Test_Files/SAUVisionBuff/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/SAUVisionBuff.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/SAUVisionBuff.dir/flags.make
 
 CMakeFiles/SAUVisionBuff.dir/main.cpp.o: CMakeFiles/SAUVisionBuff.dir/flags.make
 CMakeFiles/SAUVisionBuff.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/SAUVisionBuff.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/main.cpp.o -c /home/tup/Desktop/SAUVisionBuff/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/SAUVisionBuff.dir/main.cpp.o"
+	/usr/bin/x86_64-linux-gnu-g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/main.cpp.o -c /home/tup/Desktop/Test_Files/SAUVisionBuff/main.cpp
 
 CMakeFiles/SAUVisionBuff.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SAUVisionBuff.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/SAUVisionBuff/main.cpp > CMakeFiles/SAUVisionBuff.dir/main.cpp.i
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/Test_Files/SAUVisionBuff/main.cpp > CMakeFiles/SAUVisionBuff.dir/main.cpp.i
 
 CMakeFiles/SAUVisionBuff.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SAUVisionBuff.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/SAUVisionBuff/main.cpp -o CMakeFiles/SAUVisionBuff.dir/main.cpp.s
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/Test_Files/SAUVisionBuff/main.cpp -o CMakeFiles/SAUVisionBuff.dir/main.cpp.s
 
 CMakeFiles/SAUVisionBuff.dir/main.cpp.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/SAUVisionBuff.dir/main.cpp.o.provides.build: CMakeFiles/SAUVisionBuff
 
 CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.o: CMakeFiles/SAUVisionBuff.dir/flags.make
 CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.o: ../Energy/Energy.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.o -c /home/tup/Desktop/SAUVisionBuff/Energy/Energy.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.o"
+	/usr/bin/x86_64-linux-gnu-g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.o -c /home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/Energy.cpp
 
 CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/SAUVisionBuff/Energy/Energy.cpp > CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.i
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/Energy.cpp > CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.i
 
 CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/SAUVisionBuff/Energy/Energy.cpp -o CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.s
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/Energy.cpp -o CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.s
 
 CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.o.provides.build: CMakeFiles/SAUV
 
 CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.o: CMakeFiles/SAUVisionBuff.dir/flags.make
 CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.o: ../Energy/Params.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.o -c /home/tup/Desktop/SAUVisionBuff/Energy/Params.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.o"
+	/usr/bin/x86_64-linux-gnu-g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.o -c /home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/Params.cpp
 
 CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/SAUVisionBuff/Energy/Params.cpp > CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.i
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/Params.cpp > CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.i
 
 CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/SAUVisionBuff/Energy/Params.cpp -o CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.s
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/Test_Files/SAUVisionBuff/Energy/Params.cpp -o CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.s
 
 CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.o.requires:
 
@@ -131,16 +131,16 @@ CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.o.provides.build: CMakeFiles/SAUV
 
 CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.o: CMakeFiles/SAUVisionBuff.dir/flags.make
 CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.o: ../Camera/DaHengCamera.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.o -c /home/tup/Desktop/SAUVisionBuff/Camera/DaHengCamera.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.o"
+	/usr/bin/x86_64-linux-gnu-g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.o -c /home/tup/Desktop/Test_Files/SAUVisionBuff/Camera/DaHengCamera.cpp
 
 CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/SAUVisionBuff/Camera/DaHengCamera.cpp > CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.i
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/Test_Files/SAUVisionBuff/Camera/DaHengCamera.cpp > CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.i
 
 CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/SAUVisionBuff/Camera/DaHengCamera.cpp -o CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.s
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/Test_Files/SAUVisionBuff/Camera/DaHengCamera.cpp -o CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.s
 
 CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.o.requires:
 
@@ -155,16 +155,16 @@ CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.o.provides.build: CMakeFile
 
 CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.o: CMakeFiles/SAUVisionBuff.dir/flags.make
 CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.o: ../ImageProcess/ImageProcess.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.o -c /home/tup/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.o"
+	/usr/bin/x86_64-linux-gnu-g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.o -c /home/tup/Desktop/Test_Files/SAUVisionBuff/ImageProcess/ImageProcess.cpp
 
 CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.cpp > CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.i
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/Test_Files/SAUVisionBuff/ImageProcess/ImageProcess.cpp > CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.i
 
 CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.cpp -o CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.s
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/Test_Files/SAUVisionBuff/ImageProcess/ImageProcess.cpp -o CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.s
 
 CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.o.requires:
 
@@ -179,16 +179,16 @@ CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.o.provides.build: CMa
 
 CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o: CMakeFiles/SAUVisionBuff.dir/flags.make
 CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o: ../Armor/ArmorDetector.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o -c /home/tup/Desktop/SAUVisionBuff/Armor/ArmorDetector.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o"
+	/usr/bin/x86_64-linux-gnu-g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o -c /home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/ArmorDetector.cpp
 
 CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/SAUVisionBuff/Armor/ArmorDetector.cpp > CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.i
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/ArmorDetector.cpp > CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.i
 
 CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/SAUVisionBuff/Armor/ArmorDetector.cpp -o CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.s
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/Test_Files/SAUVisionBuff/Armor/ArmorDetector.cpp -o CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.s
 
 CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o.requires:
 
@@ -203,16 +203,16 @@ CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o.provides.build: CMakeFile
 
 CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.o: CMakeFiles/SAUVisionBuff.dir/flags.make
 CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.o: ../AngelSolver/AngleSolver.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.o -c /home/tup/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.o"
+	/usr/bin/x86_64-linux-gnu-g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.o -c /home/tup/Desktop/Test_Files/SAUVisionBuff/AngelSolver/AngleSolver.cpp
 
 CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.cpp > CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.i
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/Test_Files/SAUVisionBuff/AngelSolver/AngleSolver.cpp > CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.i
 
 CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.cpp -o CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.s
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/Test_Files/SAUVisionBuff/AngelSolver/AngleSolver.cpp -o CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.s
 
 CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.o.requires:
 
@@ -227,16 +227,16 @@ CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.o.provides.build: CMake
 
 CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.o: CMakeFiles/SAUVisionBuff.dir/flags.make
 CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.o: ../Serial/CRC_Check.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.o -c /home/tup/Desktop/SAUVisionBuff/Serial/CRC_Check.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.o"
+	/usr/bin/x86_64-linux-gnu-g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.o -c /home/tup/Desktop/Test_Files/SAUVisionBuff/Serial/CRC_Check.cpp
 
 CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/SAUVisionBuff/Serial/CRC_Check.cpp > CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.i
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/Test_Files/SAUVisionBuff/Serial/CRC_Check.cpp > CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.i
 
 CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/SAUVisionBuff/Serial/CRC_Check.cpp -o CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.s
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/Test_Files/SAUVisionBuff/Serial/CRC_Check.cpp -o CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.s
 
 CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.o.requires:
 
@@ -251,16 +251,16 @@ CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.o.provides.build: CMakeFiles/S
 
 CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o: CMakeFiles/SAUVisionBuff.dir/flags.make
 CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o: ../Serial/serialport.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o -c /home/tup/Desktop/SAUVisionBuff/Serial/serialport.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o"
+	/usr/bin/x86_64-linux-gnu-g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o -c /home/tup/Desktop/Test_Files/SAUVisionBuff/Serial/serialport.cpp
 
 CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/SAUVisionBuff/Serial/serialport.cpp > CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.i
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tup/Desktop/Test_Files/SAUVisionBuff/Serial/serialport.cpp > CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.i
 
 CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/SAUVisionBuff/Serial/serialport.cpp -o CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.s
+	/usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tup/Desktop/Test_Files/SAUVisionBuff/Serial/serialport.cpp -o CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.s
 
 CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o.requires:
 
@@ -348,7 +348,7 @@ SAUVisionBuff: /usr/local/lib/libopencv_photo.so.3.4.5
 SAUVisionBuff: /usr/local/lib/libopencv_imgproc.so.3.4.5
 SAUVisionBuff: /usr/local/lib/libopencv_core.so.3.4.5
 SAUVisionBuff: CMakeFiles/SAUVisionBuff.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable SAUVisionBuff"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable SAUVisionBuff"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SAUVisionBuff.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -373,6 +373,6 @@ CMakeFiles/SAUVisionBuff.dir/clean:
 .PHONY : CMakeFiles/SAUVisionBuff.dir/clean
 
 CMakeFiles/SAUVisionBuff.dir/depend:
-	cd /home/tup/Desktop/SAUVisionBuff/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tup/Desktop/SAUVisionBuff /home/tup/Desktop/SAUVisionBuff /home/tup/Desktop/SAUVisionBuff/build /home/tup/Desktop/SAUVisionBuff/build /home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/SAUVisionBuff.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/tup/Desktop/Test_Files/SAUVisionBuff/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tup/Desktop/Test_Files/SAUVisionBuff /home/tup/Desktop/Test_Files/SAUVisionBuff /home/tup/Desktop/Test_Files/SAUVisionBuff/build /home/tup/Desktop/Test_Files/SAUVisionBuff/build /home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles/SAUVisionBuff.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/SAUVisionBuff.dir/depend
 
