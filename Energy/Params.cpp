@@ -59,10 +59,8 @@ void Params::initParams()
     buff_height = 12.7;                                         // 能量机关实际的装甲板高度
 
     // 二值化阈值
-    // OUR_RED_GRAY_BINARY = 140;                                  // 我方为红色时的阈值
-    // OUR_BLUE_GRAY_BINARY = 140;                                 // 我方为蓝色时的阈值
-    OUR_RED_GRAY_BINARY = 100;                                  // 我方为红色时的阈值
-    OUR_BLUE_GRAY_BINARY = 180;      
+    OUR_RED_GRAY_BINARY = 140;                                  // 我方为红色时的阈值
+    OUR_BLUE_GRAY_BINARY = 140;                                 // 我方为蓝色时的阈值
 
     gray_element = getStructuringElement(MORPH_RECT, Size(7, 7));// 膨胀腐蚀参数
     element = getStructuringElement(MORPH_RECT, Size(5, 5));    // 膨胀腐蚀参数
@@ -73,50 +71,29 @@ void Params::initParams()
     big_mode_predict_angle = 0;                       // 大能量机关模式打击偏移
 
     
-    // // ARMOR
-    // ARMOR_CONTOUR_AREA_MAX = 1700;        // 装甲板轮廓面积最大值
-    // ARMOR_CONTOUR_AREA_MIN = 1100;        // 装甲板轮廓面积最小值
-    // ARMOR_CONTOUR_LENGTH_MAX = 70;        // 装甲板轮廓长边最大值
-    // ARMOR_CONTOUR_LENGTH_MIN = 30;        // 装甲板轮廓长边最小值
-    // ARMOR_CONTOUR_WIDTH_MAX = 40;         // 装甲板轮廓短边最大值
-    // ARMOR_CONTOUR_WIDTH_MIN = 20;         // 装甲板轮廓短边最小值
-    // ARMOR_CONTOUR_HW_RATIO_MAX = 2.4;     // 装甲板轮廓长宽比最大值
-    // ARMOR_CONTOUR_HW_RATIO_MIN = 1.5;     // 装甲板轮廓长宽比最小值
+    // ARMOR
+    ARMOR_CONTOUR_AREA_MAX = 1700;        // 装甲板轮廓面积最大值
+    ARMOR_CONTOUR_AREA_MIN = 1100;        // 装甲板轮廓面积最小值
+    ARMOR_CONTOUR_LENGTH_MAX = 70;        // 装甲板轮廓长边最大值
+    ARMOR_CONTOUR_LENGTH_MIN = 30;        // 装甲板轮廓长边最小值
+    ARMOR_CONTOUR_WIDTH_MAX = 40;         // 装甲板轮廓短边最大值
+    ARMOR_CONTOUR_WIDTH_MIN = 20;         // 装甲板轮廓短边最小值
+    ARMOR_CONTOUR_HW_RATIO_MAX = 2.4;     // 装甲板轮廓长宽比最大值
+    ARMOR_CONTOUR_HW_RATIO_MIN = 1.5;     // 装甲板轮廓长宽比最小值
     
-    //ARMOR(北理珠视频Debug)
-    ARMOR_CONTOUR_AREA_MAX = 8000;        // 装甲板轮廓面积最大值
-    ARMOR_CONTOUR_AREA_MIN = 4000;        // 装甲板轮廓面积最小值
-    ARMOR_CONTOUR_LENGTH_MAX = 120;        // 装甲板轮廓长边最大值
-    ARMOR_CONTOUR_LENGTH_MIN = 50;        // 装甲板轮廓长边最小值
-    ARMOR_CONTOUR_WIDTH_MAX = 100;         // 装甲板轮廓短边最大值
-    ARMOR_CONTOUR_WIDTH_MIN = 40;         // 装甲板轮廓短边最小值
-    ARMOR_CONTOUR_HW_RATIO_MAX = 2;     // 装甲板轮廓长宽比最大值
-    ARMOR_CONTOUR_HW_RATIO_MIN = 1;     // 装甲板轮廓长宽比最小值
 
 
     // FLOW_STRIP_FAN
-    // FLOW_STRIP_FAN_CONTOUR_AREA_MAX = 4600;        // 含流动条的扇叶轮廓面积最大值
-    // FLOW_STRIP_FAN_CONTOUR_AREA_MIN = 3500;        // 含流动条的扇叶轮廓面积最小值
-    // FLOW_STRIP_FAN_CONTOUR_LENGTH_MAX = 160;       // 含流动条的扇叶轮廓长边最大值
-    // FLOW_STRIP_FAN_CONTOUR_LENGTH_MIN = 110;       // 含流动条的扇叶轮廓长边最小值
-    // FLOW_STRIP_FAN_CONTOUR_WIDTH_MAX = 75;         // 含流动条的扇叶轮廓短边最大值
-    // FLOW_STRIP_FAN_CONTOUR_WIDTH_MIN = 40;         // 含流动条的扇叶轮廓短边最小值
-    // FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MAX = 2.5;     // 含流动条的扇叶长宽比最大值
-    // FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MIN = 2;       // 含流动条的扇叶长宽比最小值
-    // FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MAX = 0.5;   // 含流动条的扇叶轮廓的面积之比最大值
-    // FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MIN = 0.34;  // 含流动条的扇叶轮廓的面积之比最小值
-
-    // FLOW_STRIP_FAN(北理珠视频Debug)
-    FLOW_STRIP_FAN_CONTOUR_AREA_MAX = 20000;        // 含流动条的扇叶轮廓面积最大值
-    FLOW_STRIP_FAN_CONTOUR_AREA_MIN = 8000;        // 含流动条的扇叶轮廓面积最小值
-    FLOW_STRIP_FAN_CONTOUR_LENGTH_MAX = 300;       // 含流动条的扇叶轮廓长边最大值
-    FLOW_STRIP_FAN_CONTOUR_LENGTH_MIN = 200;       // 含流动条的扇叶轮廓长边最小值
-    FLOW_STRIP_FAN_CONTOUR_WIDTH_MAX = 150;         // 含流动条的扇叶轮廓短边最大值
-    FLOW_STRIP_FAN_CONTOUR_WIDTH_MIN = 100;         // 含流动条的扇叶轮廓短边最小值
+    FLOW_STRIP_FAN_CONTOUR_AREA_MAX = 4600;        // 含流动条的扇叶轮廓面积最大值
+    FLOW_STRIP_FAN_CONTOUR_AREA_MIN = 3500;        // 含流动条的扇叶轮廓面积最小值
+    FLOW_STRIP_FAN_CONTOUR_LENGTH_MAX = 160;       // 含流动条的扇叶轮廓长边最大值
+    FLOW_STRIP_FAN_CONTOUR_LENGTH_MIN = 110;       // 含流动条的扇叶轮廓长边最小值
+    FLOW_STRIP_FAN_CONTOUR_WIDTH_MAX = 75;         // 含流动条的扇叶轮廓短边最大值
+    FLOW_STRIP_FAN_CONTOUR_WIDTH_MIN = 40;         // 含流动条的扇叶轮廓短边最小值
     FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MAX = 2.5;     // 含流动条的扇叶长宽比最大值
-    FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MIN = 1.8;       // 含流动条的扇叶长宽比最小值
-    FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MAX = 0.8;   // 含流动条的扇叶轮廓的面积之比最大值
-    FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MIN = 0;  // 含流动条的扇叶轮廓的面积之比最小值
+    FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MIN = 2;       // 含流动条的扇叶长宽比最小值
+    FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MAX = 0.5;   // 含流动条的扇叶轮廓的面积之比最大值
+    FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MIN = 0.34;  // 含流动条的扇叶轮廓的面积之比最小值
 
 
     // cout << "Init params done" << endl;

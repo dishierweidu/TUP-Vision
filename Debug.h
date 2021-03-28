@@ -37,16 +37,16 @@
 //                                                          //
 //----------------------------------------------------------//
 
-// #define USE_DAHENG_CAMERA   // 是否使用大恒139相机
+#define USE_DAHENG_CAMERA   // 是否使用大恒139相机
 // #define USE_USB_CAMERA      // 是否使用USB相机
-#define USE_LOCAL_VIDEO     // 是否使用本地测试视频
+// #define USE_LOCAL_VIDEO     // 是否使用本地测试视频
 
 // #define REOPEN            //是否在丢帧后重启摄像头
 
-// #define COMPILE_WITH_GPU    // 是否使用GPU
+//#define COMPILE_WITH_GPU    // 是否使用GPU
 
-// #define SHOW_DEBUG_IMG
-// #define SHOW_ORIGINAL      // 是否显示原始图像
+#define SHOW_DEBUG_IMG
+#define SHOW_ORIGINAL      // 是否显示原始图像
 #define SHOW_SRC
 
 //----------------------------------------------------------//
@@ -60,11 +60,10 @@
 #ifndef USE_SPLIT_INIT           // 如果使用USE_SPLIT_INIT就不能使用USE_HSV_INIT
 #define USE_HSV_INIT             // 使用转换色彩空间来进行图像初始化
 #endif
-// #define SHOW_COLOR              //是否显示通道相减后图像
-// #define SHOW_DISTANCE           //是否在图上显示pnp解算的距离
+#define SHOW_COLOR              //是否显示通道相减后图像
+#define SHOW_DISTANCE           //是否在图上显示pnp解算的距离
 // #define SHOW_BINARY                   // 是否显示二值化图像
 
-// #define SHOW_RECT_INFO              //是否显示所有矩形及相关信息
 // #define SHOW_ALL_ARMORS               // 是否显示初步筛选出的装甲板
 // #define SHOW_TARGET_ARMOR             // 是否能显示最终得到的装甲板
 #define SHOW_TARGET_ARMOR_CENTER      // 是否显示最终得到的装甲板中心点
@@ -75,3 +74,12 @@
 //  #define SHOW_R_CENTER                // 是否显示字母R中心点
 
 //  #define SHOW_PREDICT_POINT           // 是否显示打击预测点
+
+ //----------------------------------------------------------//
+//                                                          //
+//                    无串口/裁判系统调试参数                   //
+//                                                          //
+//----------------------------------------------------------//
+// #define DEBUG_WITHOUT_COM//无串口数据调试
+
+

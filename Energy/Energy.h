@@ -61,9 +61,6 @@ class Energy
 public:
     Energy() {};    
     ~Energy() {};
-    #ifdef SHOW_RECT_INFO 
-    Mat src_rect_info;
-    #endif
     
     void run(Mat &oriFrame);                                // 识别总函数
 

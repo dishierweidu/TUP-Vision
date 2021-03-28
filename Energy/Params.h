@@ -59,8 +59,8 @@ struct STM32Data
 
     void initParams()
     {
-        enemy_color = ENEMY_RED;
-        energy_mode = ENERGY_BIG;
+        enemy_color = ENEMY_BLUE;
+        energy_mode = ENERGY_SMALL;
     }
 };
 
