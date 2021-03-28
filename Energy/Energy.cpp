@@ -175,10 +175,6 @@ void Energy::run(Mat &oriFrame)
 
     Mat frame = oriFrame.clone();
 
-    #ifdef SHOW_ORIGINAL
-    imshow("SHOW_ORIGINAL", oriFrame);
-    #endif
-
     #ifdef SHOW_RECT_INFO 
     frame.copyTo(src_rect_info);
     #endif
@@ -670,7 +666,7 @@ bool Energy::isValidArmor(vector<Point>&armor_contour)
 bool Energy::predictRCenter(Mat &frame)
 {
     #ifdef DEBUG_PREDICT_INFORMATION_BUFF
-    cout<<"sample counts:" <<armor_center_points.size()<<endl;
+    cout<<"sample counts:" <<armor_center_points.size()<<endl;//输出样本现有数量
     #endif
     // 只拟合一次
     if(armor_center_points.size() < 50)
@@ -678,7 +674,7 @@ bool Energy::predictRCenter(Mat &frame)
         // 将装甲板中心点坐标存入
         armor_center_points.emplace_back(target_armor.center);
         #ifdef DEBUG_PREDICT_INFORMATION_BUFF  
-        cout<<"Insufficient sample!"<<endl;
+        cout<<"Insufficient sample!"<<endl;//提示样本数量不足
         #endif
         return false;
     }
