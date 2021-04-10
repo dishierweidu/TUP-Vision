@@ -6,13 +6,19 @@
 
 ### 更新内容：
 
-更新了ArmorDetector中的阈值参数；扩大了对装甲板判定的条件范围；将能量机关识别任务独立给长焦镜头  *Date:  2021.04.10
+更新了ArmorDetector中的阈值参数；扩大了对装甲板判定的条件范围；将能量机关识别任务独立给长焦镜头  #### *Date:  2021.04.10
 
 更改了Debug.h的内容；便于调式  *Date:  2021.03.27
   
-  *Description: 自动识别and打击装甲；打击能量机关
+### Description: 
+
+  沈阳航空航天大学TUP战队Robomaster 2021赛季步兵视觉程序
   
-### *Function List:
+### Features：
+
+自动识别and打击装甲；打击能量机关
+  
+### Files List:
      
      1.AngelSolver 解算角度
      
