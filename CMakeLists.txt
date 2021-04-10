@@ -6,42 +6,74 @@
 # 2020.9.18 by UP
 
 cmake_minimum_required(VERSION 2.8)
-SET(CMAKE_BUILD_TYPE "Release") # "Debug"
+SET(CMAKE_BUILD_TYPE "Release") # "Debug" "Release"
 PROJECT(SAUVisionBuff)
 find_package(OpenCV 3.4.5)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c++11 -march=native")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native")
 include_directories(${OpenCV_INCLUDE_DIRS})
-ADD_EXECUTABLE(SAUVisionBuff ~/Desktop/SAUVisionBuff/main.cpp
+# ADD_EXECUTABLE(SAUVisionBuff ~/Desktop/SAUVisionBuff/main.cpp
+# 					# Debug文件
+# 					~/Desktop/SAUVisionBuff/Debug.h
+# 					# 能量机关文件
+# 					~/Desktop/SAUVisionBuff/Energy/Energy.cpp
+# 					~/Desktop/SAUVisionBuff/Energy/Energy.h
+# 					~/Desktop/SAUVisionBuff/Energy/Params.cpp
+# 					~/Desktop/SAUVisionBuff/Energy/Params.h
+# 					#相机驱动文件
+# 					~/Desktop/SAUVisionBuff/Camera/GxIAPI.h
+# 					~/Desktop/SAUVisionBuff/Camera/DxImageProc.h
+# 					~/Desktop/SAUVisionBuff/Camera/DaHengCamera.h
+# 					~/Desktop/SAUVisionBuff/Camera/DaHengCamera.cpp
+# 					# fcc
+# 					~/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.h
+# 					~/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.cpp
+# 					#装甲板识别文件
+# 					~/Desktop/SAUVisionBuff/Armor/ArmorDetector.cpp
+# 					~/Desktop/SAUVisionBuff/Armor/ArmorDetector.hpp
+# 					~/Desktop/SAUVisionBuff/Armor/Settings.hpp
+# 					#角度解算
+# 					~/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.cpp
+# 					~/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.hpp
+# 					#串口通信
+# 					~/Desktop/SAUVisionBuff/Serial/CRC_Check.cpp
+# 					~/Desktop/SAUVisionBuff/Serial/CRC_Check.h
+# 					~/Desktop/SAUVisionBuff/Serial/serialport.cpp
+# 					~/Desktop/SAUVisionBuff/Serial/serialport.h
+
+# )
+
+ADD_EXECUTABLE(SAUVisionBuff ./main.cpp
 					# Debug文件
-					~/Desktop/SAUVisionBuff/Debug.h
+					./Debug.h
 					# 能量机关文件
-					~/Desktop/SAUVisionBuff/Energy/Energy.cpp
-					~/Desktop/SAUVisionBuff/Energy/Energy.h
-					~/Desktop/SAUVisionBuff/Energy/Params.cpp
-					~/Desktop/SAUVisionBuff/Energy/Params.h
+					./Energy/Energy.cpp
+					./Energy/Energy.h
+					./Energy/Params.cpp
+					./Energy/Params.h
 					#相机驱动文件
-					~/Desktop/SAUVisionBuff/Camera/GxIAPI.h
-					~/Desktop/SAUVisionBuff/Camera/DxImageProc.h
-					~/Desktop/SAUVisionBuff/Camera/DaHengCamera.h
-					~/Desktop/SAUVisionBuff/Camera/DaHengCamera.cpp
+					./Camera/GxIAPI.h
+					./Camera/DxImageProc.h
+					./Camera/DaHengCamera.h
+					./Camera/DaHengCamera.cpp
 					# fcc
-					~/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.h
-					~/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.cpp
+					./ImageProcess/ImageProcess.h
+					./ImageProcess/ImageProcess.cpp
 					#装甲板识别文件
-					~/Desktop/SAUVisionBuff/Armor/ArmorDetector.cpp
-					~/Desktop/SAUVisionBuff/Armor/ArmorDetector.hpp
-					~/Desktop/SAUVisionBuff/Armor/Settings.hpp
+					./Armor/ArmorDetector.cpp
+					./Armor/ArmorDetector.hpp
+					./Armor/Settings.hpp
 					#角度解算
-					~/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.cpp
-					~/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.hpp
+					./AngelSolver/AngleSolver.cpp
+					./AngelSolver/AngleSolver.hpp
 					#串口通信
-					~/Desktop/SAUVisionBuff/Serial/CRC_Check.cpp
-					~/Desktop/SAUVisionBuff/Serial/CRC_Check.h
-					~/Desktop/SAUVisionBuff/Serial/serialport.cpp
-					~/Desktop/SAUVisionBuff/Serial/serialport.h
+					./Serial/CRC_Check.cpp
+					./Serial/CRC_Check.h
+					./Serial/serialport.cpp
+					./Serial/serialport.h
 
 )
+
 target_link_libraries(SAUVisionBuff ${OpenCV_LIBS})
 find_package(Threads)
 target_link_libraries(SAUVisionBuff ${CMAKE_THREAD_LIBS_INIT})
