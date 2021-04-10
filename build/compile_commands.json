@@ -1,47 +1,47 @@
 [
 {
-  "directory": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/SAUVisionBuff.dir/main.cpp.o -c /home/rangeronmars/Desktop/test_file/SAUVisionBuff/main.cpp",
-  "file": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/main.cpp"
+  "directory": "/home/tup/Desktop/SAUVisionBuff/build",
+  "command": "/usr/bin/c++   -isystem /usr/local/include -isystem /usr/local/include/opencv   -std=c++11 -march=native -O3 -DNDEBUG   -o CMakeFiles/SAUVisionBuff.dir/main.cpp.o -c /home/tup/Desktop/SAUVisionBuff/main.cpp",
+  "file": "/home/tup/Desktop/SAUVisionBuff/main.cpp"
 },
 {
-  "directory": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.o -c /home/rangeronmars/Desktop/test_file/SAUVisionBuff/Energy/Energy.cpp",
-  "file": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Energy/Energy.cpp"
+  "directory": "/home/tup/Desktop/SAUVisionBuff/build",
+  "command": "/usr/bin/c++   -isystem /usr/local/include -isystem /usr/local/include/opencv   -std=c++11 -march=native -O3 -DNDEBUG   -o CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.o -c /home/tup/Desktop/SAUVisionBuff/Energy/Energy.cpp",
+  "file": "/home/tup/Desktop/SAUVisionBuff/Energy/Energy.cpp"
 },
 {
-  "directory": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.o -c /home/rangeronmars/Desktop/test_file/SAUVisionBuff/Energy/Params.cpp",
-  "file": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Energy/Params.cpp"
+  "directory": "/home/tup/Desktop/SAUVisionBuff/build",
+  "command": "/usr/bin/c++   -isystem /usr/local/include -isystem /usr/local/include/opencv   -std=c++11 -march=native -O3 -DNDEBUG   -o CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.o -c /home/tup/Desktop/SAUVisionBuff/Energy/Params.cpp",
+  "file": "/home/tup/Desktop/SAUVisionBuff/Energy/Params.cpp"
 },
 {
-  "directory": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.o -c /home/rangeronmars/Desktop/test_file/SAUVisionBuff/Camera/DaHengCamera.cpp",
-  "file": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Camera/DaHengCamera.cpp"
+  "directory": "/home/tup/Desktop/SAUVisionBuff/build",
+  "command": "/usr/bin/c++   -isystem /usr/local/include -isystem /usr/local/include/opencv   -std=c++11 -march=native -O3 -DNDEBUG   -o CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.o -c /home/tup/Desktop/SAUVisionBuff/Camera/DaHengCamera.cpp",
+  "file": "/home/tup/Desktop/SAUVisionBuff/Camera/DaHengCamera.cpp"
 },
 {
-  "directory": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.o -c /home/rangeronmars/Desktop/test_file/SAUVisionBuff/ImageProcess/ImageProcess.cpp",
-  "file": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/ImageProcess/ImageProcess.cpp"
+  "directory": "/home/tup/Desktop/SAUVisionBuff/build",
+  "command": "/usr/bin/c++   -isystem /usr/local/include -isystem /usr/local/include/opencv   -std=c++11 -march=native -O3 -DNDEBUG   -o CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.o -c /home/tup/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.cpp",
+  "file": "/home/tup/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.cpp"
 },
 {
-  "directory": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o -c /home/rangeronmars/Desktop/test_file/SAUVisionBuff/Armor/ArmorDetector.cpp",
-  "file": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Armor/ArmorDetector.cpp"
+  "directory": "/home/tup/Desktop/SAUVisionBuff/build",
+  "command": "/usr/bin/c++   -isystem /usr/local/include -isystem /usr/local/include/opencv   -std=c++11 -march=native -O3 -DNDEBUG   -o CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o -c /home/tup/Desktop/SAUVisionBuff/Armor/ArmorDetector.cpp",
+  "file": "/home/tup/Desktop/SAUVisionBuff/Armor/ArmorDetector.cpp"
 },
 {
-  "directory": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.o -c /home/rangeronmars/Desktop/test_file/SAUVisionBuff/AngelSolver/AngleSolver.cpp",
-  "file": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/AngelSolver/AngleSolver.cpp"
+  "directory": "/home/tup/Desktop/SAUVisionBuff/build",
+  "command": "/usr/bin/c++   -isystem /usr/local/include -isystem /usr/local/include/opencv   -std=c++11 -march=native -O3 -DNDEBUG   -o CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.o -c /home/tup/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.cpp",
+  "file": "/home/tup/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.cpp"
 },
 {
-  "directory": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.o -c /home/rangeronmars/Desktop/test_file/SAUVisionBuff/Serial/CRC_Check.cpp",
-  "file": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Serial/CRC_Check.cpp"
+  "directory": "/home/tup/Desktop/SAUVisionBuff/build",
+  "command": "/usr/bin/c++   -isystem /usr/local/include -isystem /usr/local/include/opencv   -std=c++11 -march=native -O3 -DNDEBUG   -o CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.o -c /home/tup/Desktop/SAUVisionBuff/Serial/CRC_Check.cpp",
+  "file": "/home/tup/Desktop/SAUVisionBuff/Serial/CRC_Check.cpp"
 },
 {
-  "directory": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o -c /home/rangeronmars/Desktop/test_file/SAUVisionBuff/Serial/serialport.cpp",
-  "file": "/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Serial/serialport.cpp"
+  "directory": "/home/tup/Desktop/SAUVisionBuff/build",
+  "command": "/usr/bin/c++   -isystem /usr/local/include -isystem /usr/local/include/opencv   -std=c++11 -march=native -O3 -DNDEBUG   -o CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o -c /home/tup/Desktop/SAUVisionBuff/Serial/serialport.cpp",
+  "file": "/home/tup/Desktop/SAUVisionBuff/Serial/serialport.cpp"
 }
 ]

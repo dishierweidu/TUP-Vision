@@ -62,7 +62,7 @@ void Params::initParams()
     // OUR_RED_GRAY_BINARY = 140;                                  // 我方为红色时的阈值
     // OUR_BLUE_GRAY_BINARY = 140;                                 // 我方为蓝色时的阈值
     OUR_RED_GRAY_BINARY = 100;                                  // 我方为红色时的阈值
-    OUR_BLUE_GRAY_BINARY = 180;      
+    OUR_BLUE_GRAY_BINARY = 120;      
 
     gray_element = getStructuringElement(MORPH_RECT, Size(7, 7));// 膨胀腐蚀参数
     element = getStructuringElement(MORPH_RECT, Size(5, 5));    // 膨胀腐蚀参数

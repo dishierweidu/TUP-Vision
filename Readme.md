@@ -2,13 +2,29 @@
   
 ## Author:  周俊平;刘上;赵梓合;顾昊
   
-## Version: 1.2.0
+## Version: 2.6.1
+
+### 更新内容：
+
+更新了ArmorDetector中的阈值参数；扩大了对装甲板判定的条件范围；将能量机关识别任务独立给长焦镜头  *Date:  2021.04.10
+
+更改了Debug.h的内容；便于调式  *Date:  2021.03.27
   
-  *Date:  2021.03.19
+### Description: 
+
+  沈阳航空航天大学TUP战队Robomaster 2021赛季步兵视觉程序
   
-  *Description: 自动识别and打击装甲；打击能量机关
+### Features：
+
+  1.自动识别敌方车辆装甲板
   
-  *Function List:
+  2.自动打击能量机关
+ 
+  3.自动识别基地装甲板（doing）
+  
+  4.预测敌方车辆移动方向并预留提前量打击（waiting）
+  
+### Files List:
      
      1.AngelSolver 解算角度
      
@@ -31,3 +47,7 @@
      11.Debug 调试头文件
      
      12.Readme 说明文件
+     
+     13.config Ubuntu 16.04/18.04 LTS 快速配置命令合集
+     
+     14.watchDoge 防崩溃shell
