@@ -4,15 +4,15 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/tup/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.cpp" "/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.o"
-  "/home/tup/Desktop/SAUVisionBuff/Armor/ArmorDetector.cpp" "/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o"
-  "/home/tup/Desktop/SAUVisionBuff/Camera/DaHengCamera.cpp" "/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.o"
-  "/home/tup/Desktop/SAUVisionBuff/Energy/Energy.cpp" "/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.o"
-  "/home/tup/Desktop/SAUVisionBuff/Energy/Params.cpp" "/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.o"
-  "/home/tup/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.cpp" "/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.o"
-  "/home/tup/Desktop/SAUVisionBuff/Serial/CRC_Check.cpp" "/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.o"
-  "/home/tup/Desktop/SAUVisionBuff/Serial/serialport.cpp" "/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o"
-  "/home/tup/Desktop/SAUVisionBuff/main.cpp" "/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/SAUVisionBuff.dir/main.cpp.o"
+  "/home/liuup/Desktop/tup-vision/AngelSolver/AngleSolver.cpp" "/home/liuup/Desktop/tup-vision/build/CMakeFiles/SAUVisionBuff.dir/AngelSolver/AngleSolver.cpp.o"
+  "/home/liuup/Desktop/tup-vision/Armor/ArmorDetector.cpp" "/home/liuup/Desktop/tup-vision/build/CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o"
+  "/home/liuup/Desktop/tup-vision/Camera/DaHengCamera.cpp" "/home/liuup/Desktop/tup-vision/build/CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.o"
+  "/home/liuup/Desktop/tup-vision/Energy/Energy.cpp" "/home/liuup/Desktop/tup-vision/build/CMakeFiles/SAUVisionBuff.dir/Energy/Energy.cpp.o"
+  "/home/liuup/Desktop/tup-vision/Energy/Params.cpp" "/home/liuup/Desktop/tup-vision/build/CMakeFiles/SAUVisionBuff.dir/Energy/Params.cpp.o"
+  "/home/liuup/Desktop/tup-vision/ImageProcess/ImageProcess.cpp" "/home/liuup/Desktop/tup-vision/build/CMakeFiles/SAUVisionBuff.dir/ImageProcess/ImageProcess.cpp.o"
+  "/home/liuup/Desktop/tup-vision/Serial/CRC_Check.cpp" "/home/liuup/Desktop/tup-vision/build/CMakeFiles/SAUVisionBuff.dir/Serial/CRC_Check.cpp.o"
+  "/home/liuup/Desktop/tup-vision/Serial/serialport.cpp" "/home/liuup/Desktop/tup-vision/build/CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o"
+  "/home/liuup/Desktop/tup-vision/main.cpp" "/home/liuup/Desktop/tup-vision/build/CMakeFiles/SAUVisionBuff.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

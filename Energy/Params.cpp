@@ -33,7 +33,7 @@ void Params::initParams()
                             0,             0,             1);
     // USB相机1的畸变矩阵
     distCoeffs = (cv::Mat_<double>(1, 5 ) << 0.25412988,  -1.8356142, 0, 0, 0);
-    #endif
+    #endif // USE_USB_CAMERA
 
 
     #ifdef USE_DAHENG_CAMERA    // FIXME: MATLAB测量矩阵
@@ -53,16 +53,14 @@ void Params::initParams()
     distCoeffs = (cv::Mat_<double>(1, 5 ) << 1,1, 1, 1, 1);
     // // static cv::Mat cameraMatrix;
     // // static cv::Mat distCoeffs;
-    #endif
+    #endif // USE_DAHENG_CAMERA
 
     buff_width = 23;                                            // 能量机关实际的装甲板宽度
     buff_height = 12.7;                                         // 能量机关实际的装甲板高度
 
     // 二值化阈值
-    // OUR_RED_GRAY_BINARY = 140;                                  // 我方为红色时的阈值
-    // OUR_BLUE_GRAY_BINARY = 140;                                 // 我方为蓝色时的阈值
-    OUR_RED_GRAY_BINARY = 100;                                  // 我方为红色时的阈值
-    OUR_BLUE_GRAY_BINARY = 120;      
+    DETECT_RED_GRAY_BINARY = 100;                                   // 识别红色时的阈值
+    DETECT_BLUE_GRAY_BINARY = 120;                                  // 识别蓝色时的阈值
 
     gray_element = getStructuringElement(MORPH_RECT, Size(7, 7));// 膨胀腐蚀参数
     element = getStructuringElement(MORPH_RECT, Size(5, 5));    // 膨胀腐蚀参数

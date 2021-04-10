@@ -42,7 +42,7 @@ int main()
     {   
         #ifdef USE_USB_CAMERA
         cap >> oriFrame;
-        #endif
+        #endif // USE_USB_CAMERA
 
         ImageProcessThread.ImageProductor_Single(oriFrame);
         if(oriFrame.empty() || oriFrame.channels() != 3)
@@ -52,7 +52,7 @@ int main()
         }
         #ifdef SHOW_RUN_TIME
         double run_time = static_cast<double>(getTickCount());
-        #endif
+        #endif // SHOW_RUN_TIME
 
         ImageProcessThread.ImageConsumer_Single(oriFrame,energy);
 
@@ -60,7 +60,7 @@ int main()
         #ifdef SHOW_RUN_TIME
         run_time = ((double)getTickCount() - run_time) / getTickFrequency();
         cout << "SHOW_RUN_TIME:" << run_time << endl;
-        #endif
+        #endif // SHOW_RUN_TIME
         
         waitKey(1);
     }
