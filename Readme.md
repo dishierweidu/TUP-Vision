@@ -12,7 +12,7 @@
   
   *Description: 自动识别and打击装甲；打击能量机关
   
-  *Function List:
+### *Function List:
      
      1.AngelSolver 解算角度
      
@@ -35,3 +35,7 @@
      11.Debug 调试头文件
      
      12.Readme 说明文件
+     
+     13.config Ubuntu 16.04/18.04 LTS 快速配置命令合集
+     
+     14.watchDoge 防崩溃shell
