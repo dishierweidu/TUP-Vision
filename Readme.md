@@ -44,10 +44,10 @@
      
      9.CmakeLists  得到Mat图像
      
-     11.Debug 调试头文件
+     10.Debug 调试头文件
      
-     12.Readme 说明文件
+     11.Readme 说明文件
      
-     13.config Ubuntu 16.04/18.04 LTS 快速配置命令合集
+     12.config Ubuntu 16.04/18.04 LTS 快速配置命令合集
      
-     14.watchDoge 防崩溃shell
+     13.watchDoge 防崩溃shell
