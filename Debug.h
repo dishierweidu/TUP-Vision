@@ -21,7 +21,7 @@
 //                                                          //
 //----------------------------------------------------------//
 // #define A_RED    // Detect Red Armor
-// #define A_BLUE   // Detect Red Armor
+#define A_BLUE   // Detect Red Armor
 // #define E_RED    // Detect Red Energe
 #define E_BLUE   // Detect Bule Energe
 //----------------------------------------------------------//
@@ -43,8 +43,9 @@
 //                                                          //
 //----------------------------------------------------------//
 
-// #define USE_DAHENG_CAMERA   // 是否使用大恒139相机
-#define USE_USB_CAMERA      // 是否使用USB相机
+#define USE_DAHENG_CAMERA   // 是否使用大恒139相机
+// #define USE_USB_CAMERA      // 是否使用USB相机
+// #define USE_USB_ATTACT_E     //whether using USB camera to attack energy
 // #define USE_LOCAL_VIDEO     // 是否使用本地测试视频
 
 // #define REOPEN            //是否在丢帧后重启摄像头

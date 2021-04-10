@@ -217,10 +217,10 @@ void ImageProcess::ImageConsumer()
     int mode = 2;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
     #endif
     #ifdef E_RED
-    int mode = 3;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
+    int e_mode = 3;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
     #endif
     #ifdef E_BLUE
-    int mode = 4;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
+    int e_mode = 4;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
     #endif
     // _port.get_Mode(mode,_sentrymode,_basemode);//从串口读取模式数据
     /*===========================函数中所使用的参数===========================*/
@@ -335,7 +335,8 @@ void ImageProcess::ImageConsumer()
             // cout << "yaw_angle :     " << angle_x << endl;
             // cout << "pitch_angle :   " << angle_y << endl;
         }
-        else if (mode == 3 || mode == 4)
+        #ifdef USE_USB_ATTACT_E 
+        if (mode == 3 || mode == 4)
         {
 
             //等待produce
@@ -352,6 +353,7 @@ void ImageProcess::ImageConsumer()
 
             energy_detector.run(src);
         }
+        #endif
     }
 }
 
@@ -435,6 +437,7 @@ void ImageProcess::ImageProductor_Single(Mat &oriFrame)
     waitKey(1);
 }
 
+#ifndef SINGLE_THREAD               // 是否使用多线程 
 //@brief 图像消费线程单线程版
 void ImageProcess::ImageConsumer_Single(Mat &src, Energy &energy_detector)
 {
@@ -483,10 +486,10 @@ void ImageProcess::ImageConsumer_Single(Mat &src, Energy &energy_detector)
     int mode = 2;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
     #endif
     #ifdef E_RED
-    int mode = 3;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
+    int e_mode = 3;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
     #endif
     #ifdef E_BLUE
-    int mode = 4;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
+    int e_mode = 4;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
     #endif
     // _port.get_Mode(mode,_sentrymode,_basemode);//从串口读取模式数据
     /*===========================函数中所使用的参数===========================*/
@@ -587,7 +590,8 @@ void ImageProcess::ImageConsumer_Single(Mat &src, Energy &energy_detector)
         cout << "yaw_angle :     " << angle_x << endl;
         cout << "pitch_angle :   " << angle_y << endl;
     }
-    else if (mode == 3 || mode == 4)
+    #ifdef USE_USB_ATTACT_E 
+    if (mode == 3 || mode == 4)
     {
 
         //图片数据正常
@@ -597,8 +601,9 @@ void ImageProcess::ImageConsumer_Single(Mat &src, Energy &energy_detector)
             return;
         energy_detector.run(src);
     }
+    #endif
 }
-
+#endif
 // @brief ImageProcess构造函数
 ImageProcess::ImageProcess()
 {

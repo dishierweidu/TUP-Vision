@@ -1,25 +1,25 @@
 Determining if the pthread_create exist failed with the following output:
-Change Dir: /home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles/CMakeTmp
+Change Dir: /home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_f1fc6/fast"
-/usr/bin/make -f CMakeFiles/cmTC_f1fc6.dir/build.make CMakeFiles/cmTC_f1fc6.dir/build
-make[1]: Entering directory '/home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_f1fc6.dir/CheckSymbolExists.c.o
-/usr/bin/x86_64-linux-gnu-gcc-7   -std=c++11 -march=native    -o CMakeFiles/cmTC_f1fc6.dir/CheckSymbolExists.c.o   -c /home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Run Build Command:"/usr/bin/make" "cmTC_6a270/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6a270.dir/build.make CMakeFiles/cmTC_6a270.dir/build
+make[1]: Entering directory '/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6a270.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -std=c++11 -march=native    -o CMakeFiles/cmTC_6a270.dir/CheckSymbolExists.c.o   -c /home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
 cc1: warning: command line option ‘-std=c++11’ is valid for C++/ObjC++ but not for C
-Linking C executable cmTC_f1fc6
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f1fc6.dir/link.txt --verbose=1
-/usr/bin/x86_64-linux-gnu-gcc-7  -std=c++11 -march=native     -rdynamic CMakeFiles/cmTC_f1fc6.dir/CheckSymbolExists.c.o  -o cmTC_f1fc6 
-CMakeFiles/cmTC_f1fc6.dir/CheckSymbolExists.c.o: In function `main':
+Linking C executable cmTC_6a270
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6a270.dir/link.txt --verbose=1
+/usr/bin/cc  -std=c++11 -march=native     -rdynamic CMakeFiles/cmTC_6a270.dir/CheckSymbolExists.c.o  -o cmTC_6a270 
+CMakeFiles/cmTC_6a270.dir/CheckSymbolExists.c.o: In function `main':
 CheckSymbolExists.c:(.text+0x1b): undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_f1fc6.dir/build.make:97: recipe for target 'cmTC_f1fc6' failed
-make[1]: *** [cmTC_f1fc6] Error 1
-make[1]: Leaving directory '/home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_f1fc6/fast' failed
-make: *** [cmTC_f1fc6/fast] Error 2
+CMakeFiles/cmTC_6a270.dir/build.make:97: recipe for target 'cmTC_6a270' failed
+make[1]: *** [cmTC_6a270] Error 1
+make[1]: Leaving directory '/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_6a270/fast' failed
+make: *** [cmTC_6a270/fast] Error 2
 
-File /home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+File /home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
 #include <pthread.h>
 
@@ -35,23 +35,23 @@ int main(int argc, char** argv)
 }
 
 Determining if the function pthread_create exists in the pthreads failed with the following output:
-Change Dir: /home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles/CMakeTmp
+Change Dir: /home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_303be/fast"
-/usr/bin/make -f CMakeFiles/cmTC_303be.dir/build.make CMakeFiles/cmTC_303be.dir/build
-make[1]: Entering directory '/home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_303be.dir/CheckFunctionExists.c.o
-/usr/bin/x86_64-linux-gnu-gcc-7   -std=c++11 -march=native -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_303be.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Run Build Command:"/usr/bin/make" "cmTC_059e7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_059e7.dir/build.make CMakeFiles/cmTC_059e7.dir/build
+make[1]: Entering directory '/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_059e7.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -std=c++11 -march=native -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_059e7.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
 cc1: warning: command line option ‘-std=c++11’ is valid for C++/ObjC++ but not for C
-Linking C executable cmTC_303be
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_303be.dir/link.txt --verbose=1
-/usr/bin/x86_64-linux-gnu-gcc-7  -std=c++11 -march=native -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_303be.dir/CheckFunctionExists.c.o  -o cmTC_303be -lpthreads 
+Linking C executable cmTC_059e7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_059e7.dir/link.txt --verbose=1
+/usr/bin/cc  -std=c++11 -march=native -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_059e7.dir/CheckFunctionExists.c.o  -o cmTC_059e7 -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_303be.dir/build.make:97: recipe for target 'cmTC_303be' failed
-make[1]: *** [cmTC_303be] Error 1
-make[1]: Leaving directory '/home/tup/Desktop/Test_Files/SAUVisionBuff/build/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_303be/fast' failed
-make: *** [cmTC_303be/fast] Error 2
+CMakeFiles/cmTC_059e7.dir/build.make:97: recipe for target 'cmTC_059e7' failed
+make[1]: *** [cmTC_059e7] Error 1
+make[1]: Leaving directory '/home/tup/Desktop/SAUVisionBuff/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_059e7/fast' failed
+make: *** [cmTC_059e7/fast] Error 2
 
 

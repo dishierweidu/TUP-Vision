@@ -12,34 +12,34 @@ find_package(OpenCV 3.4.5)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c++11 -march=native")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native")
 include_directories(${OpenCV_INCLUDE_DIRS})
-ADD_EXECUTABLE(SAUVisionBuff ~/Desktop/Test_Files/SAUVisionBuff/main.cpp
+ADD_EXECUTABLE(SAUVisionBuff ~/Desktop/SAUVisionBuff/main.cpp
 					# Debug文件
-					~/Desktop/Test_Files/SAUVisionBuff/Debug.h
+					~/Desktop/SAUVisionBuff/Debug.h
 					# 能量机关文件
-					~/Desktop/Test_Files/SAUVisionBuff/Energy/Energy.cpp
-					~/Desktop/Test_Files/SAUVisionBuff/Energy/Energy.h
-					~/Desktop/Test_Files/SAUVisionBuff/Energy/Params.cpp
-					~/Desktop/Test_Files/SAUVisionBuff/Energy/Params.h
+					~/Desktop/SAUVisionBuff/Energy/Energy.cpp
+					~/Desktop/SAUVisionBuff/Energy/Energy.h
+					~/Desktop/SAUVisionBuff/Energy/Params.cpp
+					~/Desktop/SAUVisionBuff/Energy/Params.h
 					#相机驱动文件
-					~/Desktop/Test_Files/SAUVisionBuff/Camera/GxIAPI.h
-					~/Desktop/Test_Files/SAUVisionBuff/Camera/DxImageProc.h
-					~/Desktop/Test_Files/SAUVisionBuff/Camera/DaHengCamera.h
-					~/Desktop/Test_Files/SAUVisionBuff/Camera/DaHengCamera.cpp
+					~/Desktop/SAUVisionBuff/Camera/GxIAPI.h
+					~/Desktop/SAUVisionBuff/Camera/DxImageProc.h
+					~/Desktop/SAUVisionBuff/Camera/DaHengCamera.h
+					~/Desktop/SAUVisionBuff/Camera/DaHengCamera.cpp
 					# fcc
-					~/Desktop/Test_Files/SAUVisionBuff/ImageProcess/ImageProcess.h
-					~/Desktop/Test_Files/SAUVisionBuff/ImageProcess/ImageProcess.cpp
+					~/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.h
+					~/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.cpp
 					#装甲板识别文件
-					~/Desktop/Test_Files/SAUVisionBuff/Armor/ArmorDetector.cpp
-					~/Desktop/Test_Files/SAUVisionBuff/Armor/ArmorDetector.hpp
-					~/Desktop/Test_Files/SAUVisionBuff/Armor/Settings.hpp
+					~/Desktop/SAUVisionBuff/Armor/ArmorDetector.cpp
+					~/Desktop/SAUVisionBuff/Armor/ArmorDetector.hpp
+					~/Desktop/SAUVisionBuff/Armor/Settings.hpp
 					#角度解算
-					~/Desktop/Test_Files/SAUVisionBuff/AngelSolver/AngleSolver.cpp
-					~/Desktop/Test_Files/SAUVisionBuff/AngelSolver/AngleSolver.hpp
+					~/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.cpp
+					~/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.hpp
 					#串口通信
-					~/Desktop/Test_Files/SAUVisionBuff/Serial/CRC_Check.cpp
-					~/Desktop/Test_Files/SAUVisionBuff/Serial/CRC_Check.h
-					~/Desktop/Test_Files/SAUVisionBuff/Serial/serialport.cpp
-					~/Desktop/Test_Files/SAUVisionBuff/Serial/serialport.h
+					~/Desktop/SAUVisionBuff/Serial/CRC_Check.cpp
+					~/Desktop/SAUVisionBuff/Serial/CRC_Check.h
+					~/Desktop/SAUVisionBuff/Serial/serialport.cpp
+					~/Desktop/SAUVisionBuff/Serial/serialport.h
 
 )
 target_link_libraries(SAUVisionBuff ${OpenCV_LIBS})
