@@ -23,6 +23,7 @@
 
 
 #include "./Params.h"
+#include "./EnergyDebug.h"
 #include "../Debug.h"
 
 #include <opencv2/core.hpp>
@@ -30,10 +31,6 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/calib3d.hpp>
 #include <opencv2/objdetect.hpp>
-
-#ifdef COMPILE_WITH_GPU
-#include <opencv2/cudaimgproc.hpp>
-#endif  // COMPILE_WITH_GPU
 
 #include <iostream>
 #include <string>   // 字符串
@@ -46,9 +43,6 @@
 
 using namespace std;
 using namespace cv;
-#ifdef COMPILE_WITH_GPU
-using namespace cv::cuda;
-#endif  // COMPILE_WITH_GPU
 
 //----------------------------------------------------------//
 //                                                          //

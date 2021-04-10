@@ -266,12 +266,12 @@ void ImageProcess::ImageConsumer()
             // 解算出的角度，为false则说明没有识别到目标
             if (angle_slover.getAngle(rect, type, angle_x, angle_y, dist) == true)
             {
-#ifdef SHOW_DISTANCE
+                #ifdef SHOW_DISTANCE
                 String distance = "diatance:";
                 distance += to_string(int(dist));
                 putText(src, distance, Point(20, 20), CV_FONT_NORMAL, 1, Scalar(0, 255, 0), 2);
                 imshow("SHOW_DISTANCE", src);
-#endif
+                #endif
                 miss_detection_cnt = 0;
             }
             else

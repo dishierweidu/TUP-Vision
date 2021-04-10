@@ -150,10 +150,10 @@ bool circleLeastFit(vector<Point2f> &points, Point2f &RCenter)
 // @param oriFrame 原始图像
 void Energy::run(Mat &oriFrame)
 {
-#ifdef DEBUG_PREDICT_INFORMATION_BUFF
-    debug_cnt = clock();
-    cout << "Time:" << (int)debug_cnt << endl;
-#endif
+    // #ifdef DEBUG_PREDICT_INFORMATION_BUFF
+    // debug_cnt = clock();
+    // cout << "Time:" << (int)debug_cnt << endl;
+    // #endif
 
     if (oriFrame.empty())
     {
@@ -163,9 +163,16 @@ void Energy::run(Mat &oriFrame)
 
     Mat frame = oriFrame.clone();
 
-#ifdef SHOW_RECT_INFO
-    frame.copyTo(src_rect_info);
-#endif
+
+    #ifdef SHOW_ORIGINAL
+    imshow("SHOW_ORIGINAL", frame);
+    #endif
+
+
+    // #ifdef SHOW_RECT_INFO
+    // frame.copyTo(src_rect_info);
+    // #endif // SHOW_RECT_INFO
+
     clearVectors();
     initFrame(frame);
 
@@ -178,16 +185,17 @@ void Energy::run(Mat &oriFrame)
     {
         return; // 如果没找到
     }
-#ifdef SHOW_RECT_INFO
-    imshow("Rect_info", src_rect_info);
-#endif
+
+    // #ifdef SHOW_RECT_INFO
+    // imshow("Rect_info", src_rect_info);
+    // #endif // SHOW_RECT_INFO
 
     getPoints2D();
     getPoints3D();
     solveXYZ();
     predictTargetPoint(frame);
 
-#ifdef SHOW_PREDICT_POINT
+    #ifdef SHOW_PREDICT_POINT
     Mat PREDICT_POINT = frame.clone();
     cv::cvtColor(PREDICT_POINT, PREDICT_POINT, CV_GRAY2BGR);
     if (armor_center_points.size() == 50)
@@ -197,11 +205,11 @@ void Energy::run(Mat &oriFrame)
         circle(PREDICT_POINT, RCenter, pointsDistance(RCenter, target_armor.center), Scalar(0, 255, 0), 1);
     }
     imshow("SHOW_PREDICT_POINT", PREDICT_POINT);
-#ifdef DEBUG_PREDICT_INFORMATION_BUFF
-    cout << "\n\n"
-         << endl;
-#endif
-#endif
+    // #ifdef DEBUG_PREDICT_INFORMATION_BUFF
+    // cout << "\n\n"
+    //      << endl;
+    // #endif // DEBUG_PREDICT_INFORMATION_BUFF
+    #endif // SHOW_PREDICT_POINT
 }
 
 // @brief 获得pnp平面二维坐标
@@ -277,76 +285,43 @@ void Energy::clearVectors()
 
 // @brief 图像预处理,
 //      1. 通道分离 + 二值化 + 膨胀腐蚀
-//      2. 转换到HSV空间与mask相减 + 二值化 + 膨胀腐蚀
 // @param frame 传入的图像
 void Energy::initFrame(Mat &frame)
 {
-#ifdef USE_SPLIT_INIT
-
     // 通道分离 + 二值化 + 膨胀腐蚀
     vector<Mat> channels;
     split(frame, channels);
-#ifndef DEBUG_WITHOUT_COM
-    if (energyParams.stm32Data.enemy_color == OUR_BLUE)
-    {
-        frame = channels.at(0) - channels.at(2);
-        threshold(frame, frame, energyParams.OUR_BLUE_GRAY_BINARY, 255, CV_THRESH_BINARY);
-    }
-    if (energyParams.stm32Data.enemy_color == OUR_RED)
-    {
-        frame = channels.at(2) - channels.at(0);
-        threshold(frame, frame, energyParams.OUR_BLUE_GRAY_BINARY, 255, CV_THRESH_BINARY);
-    }
 
-#endif
+    // if (energyParams.stm32Data.enemy_color == OUR_BLUE)
+    // {
+    //     frame = channels.at(0) - channels.at(2);
+    //     threshold(frame, frame, energyParams.OUR_BLUE_GRAY_BINARY, 255, CV_THRESH_BINARY);
+    // }
+    // if (energyParams.stm32Data.enemy_color == OUR_RED)
+    // {
+    //     frame = channels.at(2) - channels.at(0);
+    //     threshold(frame, frame, energyParams.OUR_BLUE_GRAY_BINARY, 255, CV_THRESH_BINARY);
+    // }
 
-#ifdef DEBUG_WITHOUT_COM
-#ifdef BLUFOR
+    #ifdef E_BLUE // 识别蓝色装甲板
     frame = channels.at(2) - channels.at(0);
-    threshold(frame, frame, energyParams.OUR_BLUE_GRAY_BINARY, 255, CV_THRESH_BINARY);
-#endif
+    threshold(frame, frame, energyParams.DETECT_RED_GRAY_BINARY, 255, CV_THRESH_BINARY);
+    #endif // E_BLUE
 
-#ifdef REDFOR
+
+    #ifdef E_RED // 识别红色装甲板
     frame = channels.at(0) - channels.at(2);
-    threshold(frame, frame, energyParams.OUR_RED_GRAY_BINARY, 255, CV_THRESH_BINARY);
-#endif
-#endif
-    // GaussianBlur(frame, frame, Size(3, 3), 0);
+    threshold(frame, frame, energyParams.DETECT_BLUE_GRAY_BINARY, 255, CV_THRESH_BINARY);
+    #endif // E_RED
 
-    dilate(frame, frame, energyParams.element, Point(-1, -1), 1);
-// erode(frame, frame, element, Point(-1, -1), 0);
-#ifdef SHOW_BINARY
+    // GaussianBlur(frame, frame, Size(3, 3), 0);   // 高斯模糊
+
+    dilate(frame, frame, energyParams.element, Point(-1, -1), 1);   // 膨胀
+    // erode(frame, frame, element, Point(-1, -1), 0);  // 腐蚀
+
+    #ifdef SHOW_BINARY
     imshow("SHOW_BINARY", frame);
-#endif
-
-#endif // USE_SPLIT_INIT
-
-    //================================================================================================
-
-#ifdef USE_HSV_INIT
-
-    // 转换到hsv色彩空间
-    Mat dst, hsv, mask;
-
-    cv::cvtColor(frame, dst, CV_BGR2GRAY);
-    threshold(dst, dst, 70, 255, CV_THRESH_BINARY);
-
-    cv::cvtColor(frame, hsv, CV_RGB2HSV);
-
-    inRange(hsv, Scalar(0, 10, 46), Scalar(180, 60, 255), mask);
-    dilate(mask, mask, energyParams.gray_element);
-
-    dst = dst - mask;
-    dilate(dst, dst, energyParams.gray_element);
-    erode(dst, dst, energyParams.element);
-
-    frame = dst;
-
-#ifdef SHOW_BINARY
-    imshow("SHOW_BINARY", dst);
-#endif
-
-#endif // USE_HSV_INIT
+    #endif //SHOW_BINARY
 }
 
 // @brief 获取当前装甲板的旋转角度
@@ -392,7 +367,6 @@ bool Energy::predictTargetPoint(Mat &frame)
     // 如果是小能量机关模式,需要判断旋转方向
     if (energyParams.stm32Data.energy_mode == ENERGY_SMALL)
     {
-
         if (!predictRCenter(frame))
         {
             cout << "Predict R failed!" << endl;
@@ -404,7 +378,7 @@ bool Energy::predictTargetPoint(Mat &frame)
             cout << "Predict Rotation failed" << endl;
             return false;
         }
-        cout << " " << endl;
+
         if (rotation == CLOCKWISE)
         {
             double preAngleTemp = -energyParams.small_mode_predict_angle;
@@ -528,7 +502,7 @@ bool Energy::findArmors(Mat &src)
         return false;
     }
 
-#ifdef SHOW_ALL_ARMORS
+    #ifdef SHOW_ALL_ARMORS
     Mat ALL_ARMORS = src_bin.clone();
     cv::cvtColor(ALL_ARMORS, ALL_ARMORS, CV_GRAY2BGR);
     for (auto armor : armors_rrect)
@@ -536,7 +510,7 @@ bool Energy::findArmors(Mat &src)
         drawRotatedRect(ALL_ARMORS, armor, Scalar(0, 255, 20), 2);
     }
     imshow("SHOW_ALL_ARMORS", ALL_ARMORS);
-#endif
+    #endif // SHOW_ALL_ARMORS
 
     if (!findTargetArmor(src_bin))
     {
@@ -569,19 +543,19 @@ bool Energy::findTargetArmor(Mat &src_bin)
         }
     }
 
-#ifdef SHOW_TARGET_ARMOR
+    #ifdef SHOW_TARGET_ARMOR
     Mat TARGET_ARMOR = src_bin.clone();
     cv::cvtColor(TARGET_ARMOR, TARGET_ARMOR, CV_GRAY2BGR);
     drawRotatedRect(TARGET_ARMOR, target_armor, Scalar(0, 0, 255), 2);
     imshow("SHOW_TARGET_ARMOR", TARGET_ARMOR);
-#endif
+    #endif // SHOW_TARGET_ARMOR
 
-#ifdef SHOW_TARGET_ARMOR_CENTER
+    #ifdef SHOW_TARGET_ARMOR_CENTER
     Mat TARGET_ARMOR_CENTER = src_bin.clone();
     cv::cvtColor(TARGET_ARMOR_CENTER, TARGET_ARMOR_CENTER, CV_GRAY2BGR);
     circle(TARGET_ARMOR_CENTER, target_armor.center, 3, Scalar(0, 0, 255), 2); // 装甲板中心点
     imshow("SHOW_TARGET_ARMOR_CENTER", TARGET_ARMOR_CENTER);
-#endif
+    #endif // SHOW_TARGET_ARMOR_CENTER
 
     return true;
 }
@@ -591,30 +565,29 @@ bool Energy::findTargetArmor(Mat &src_bin)
 // @return 装甲板有效返回true,否则返回false
 bool Energy::isValidArmor(vector<Point> &armor_contour)
 {
-// 依据面积进行筛选(若显示矩形信息则在长宽后进行判断)
-#ifndef SHOW_RECT_INFO
+    // 依据面积进行筛选(若显示矩形信息则在长宽后进行判断)
     double cur_contour_area = contourArea(armor_contour);
     // cout << cur_contour_area << endl;
     if (cur_contour_area > energyParams.ARMOR_CONTOUR_AREA_MAX || cur_contour_area < energyParams.ARMOR_CONTOUR_AREA_MIN)
     {
         return false;
     }
-#endif
+
 
     // 依据长和宽进行筛选
     RotatedRect cur_rrect = minAreaRect(armor_contour);
-#ifdef SHOW_RECT_INFO
-    ShowRotateRectDetail(cur_rrect, src_rect_info);
-#endif
+    // #ifdef SHOW_RECT_INFO
+    // ShowRotateRectDetail(cur_rrect, src_rect_info);
+    // #endif // SHOW_RECT_INFO
 
-#ifdef SHOW_RECT_INFO
-    double cur_contour_area = contourArea(armor_contour);
-    // cout << cur_contour_area << endl;
-    if (cur_contour_area > energyParams.ARMOR_CONTOUR_AREA_MAX || cur_contour_area < energyParams.ARMOR_CONTOUR_AREA_MIN)
-    {
-        return false;
-    }
-#endif
+    // #ifdef SHOW_RECT_INFO
+    // double cur_contour_area = contourArea(armor_contour);
+    // // cout << cur_contour_area << endl;
+    // if (cur_contour_area > energyParams.ARMOR_CONTOUR_AREA_MAX || cur_contour_area < energyParams.ARMOR_CONTOUR_AREA_MIN)
+    // {
+    //     return false;
+    // }
+    // #endif // SHOW_RECT_INFO
 
     Size2f cur_size = cur_rrect.size;
     float length = cur_size.height > cur_size.width ? cur_size.height : cur_size.width;
@@ -639,24 +612,24 @@ bool Energy::isValidArmor(vector<Point> &armor_contour)
 // @return 预测成功返回true,否则返回false
 bool Energy::predictRCenter(Mat &frame)
 {
-#ifdef DEBUG_PREDICT_INFORMATION_BUFF
-    cout << "sample counts:" << armor_center_points.size() << endl; //输出样本现有数量
-#endif
+    // #ifdef DEBUG_PREDICT_INFORMATION_BUFF
+    //     cout << "sample counts:" << armor_center_points.size() << endl; //输出样本现有数量
+    // #endif
     // 只拟合一次
     if (armor_center_points.size() < 50)
     {
         // 将装甲板中心点坐标存入
         armor_center_points.emplace_back(target_armor.center);
-#ifdef DEBUG_PREDICT_INFORMATION_BUFF
-        cout << "Insufficient sample!" << endl; //提示样本数量不足
-#endif
+        // #ifdef DEBUG_PREDICT_INFORMATION_BUFF
+        //         cout << "Insufficient sample!" << endl; //提示样本数量不足
+        // #endif
         return false;
     }
     else if (armor_center_points.size() == 50)
     {
         circleLeastFit(armor_center_points, RCenter);
 
-#ifdef SHOW_R_CENTER
+        #ifdef SHOW_R_CENTER
         Mat R_CENTER = frame.clone();
         cv::cvtColor(R_CENTER, R_CENTER, CV_GRAY2BGR);
         circle(R_CENTER, RCenter, 5, Scalar(0, 255, 0), 2);
@@ -667,7 +640,7 @@ bool Energy::predictRCenter(Mat &frame)
             circle(R_CENTER, armor_center, 1, Scalar(0, 255, 0), 1);
         }
         imshow("SHOW_R_CENTER", R_CENTER);
-#endif
+        #endif // SHOW_R_CENTER
 
         return true;
     }
@@ -735,7 +708,7 @@ bool Energy::findFlowStripFan(Mat &src)
         target_flow_strip_fan = flow_strip_fan_rrect.at(0);
     }
 
-#ifdef SHOW_FLOW_STRIP_FAN
+    #ifdef SHOW_FLOW_STRIP_FAN
     Mat FLOW_STRIP_FAN = src_bin.clone();
     cv::cvtColor(FLOW_STRIP_FAN, FLOW_STRIP_FAN, CV_GRAY2BGR);
     // 按理说旋转矩形只有一个
@@ -745,7 +718,7 @@ bool Energy::findFlowStripFan(Mat &src)
         drawRotatedRect(FLOW_STRIP_FAN, flow_strip_fan_rrect.at(i), Scalar(0, 255, 0), 2);
     }
     imshow("SHOW_FLOW_STRIP_FAN", FLOW_STRIP_FAN);
-#endif // SHOW_FLOW_STRIP_FAN
+    #endif // SHOW_FLOW_STRIP_FAN
 
     return true;
 }
@@ -756,7 +729,7 @@ bool Energy::findFlowStripFan(Mat &src)
 // @return 含流动条的扇叶合格返回true,否则返回false
 bool Energy::isValidFlowStripFan(Mat &src_bin, vector<Point> &flow_strip_fan_contour)
 {
-#ifndef SHOW_RECT_INFO
+    // #ifndef SHOW_RECT_INFO
 
     // 依据面积进行筛选(若显示矩形信息则在长宽后进行判断)
     double cur_contour_area = contourArea(flow_strip_fan_contour);
@@ -765,22 +738,22 @@ bool Energy::isValidFlowStripFan(Mat &src_bin, vector<Point> &flow_strip_fan_con
         return false;
     }
 
-#endif
+    // #endif // SHOW_RECT_INFO
 
     // 依据长宽进行筛选
     RotatedRect cur_rect = minAreaRect(flow_strip_fan_contour);
-#ifdef SHOW_RECT_INFO
-    ShowRotateRectDetail(cur_rect, src_rect_info);
-#endif
+    // #ifdef SHOW_RECT_INFO
+    // ShowRotateRectDetail(cur_rect, src_rect_info);
+    // #endif // SHOW_RECT_INFO
 
-#ifdef SHOW_RECT_INFO
-    double cur_contour_area = contourArea(flow_strip_fan_contour);
-    cout << cur_contour_area << endl;
-    if (cur_contour_area > energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_MAX || cur_contour_area < energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_MIN)
-    {
-        return false;
-    }
-#endif
+    // #ifdef SHOW_RECT_INFO
+    // double cur_contour_area = contourArea(flow_strip_fan_contour);
+    // cout << cur_contour_area << endl;
+    // if (cur_contour_area > energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_MAX || cur_contour_area < energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_MIN)
+    // {
+    //     return false;
+    // }
+    // #endif // SHOW_RECT_INFO
 
     Size2f cur_size = cur_rect.size;
     float height = cur_size.height > cur_size.width ? cur_size.height : cur_size.width;
@@ -834,13 +807,13 @@ bool Energy::isValidFlowStripFan(Mat &src_bin, vector<Point> &flow_strip_fan_con
     roi_right_intensity = getRectIntensity(src_bin, roi_right_rect);
     roi_left_intensity = getRectIntensity(src_bin, roi_left_rect);
 
-// 是否显示两侧roi矩形区域
-#ifdef SHOW_FLOW_STRIP_FAN_TWO_ROI
+    // 是否显示两侧roi矩形区域
+    #ifdef SHOW_FLOW_STRIP_FAN_TWO_ROI
     Mat FLOW_STRIP_FAN_TWO_ROI = src_bin.clone();
     rectangle(FLOW_STRIP_FAN_TWO_ROI, roi_right_rect, Scalar(255), 1);
     rectangle(FLOW_STRIP_FAN_TWO_ROI, roi_left_rect, Scalar(255), 1);
     imshow("SHOW_FLOW_STRIP_FAN_TWO_ROI", FLOW_STRIP_FAN_TWO_ROI);
-#endif // SHOW_FLOW_STRIP_FAN_TWO_ROI
+    #endif // SHOW_FLOW_STRIP_FAN_TWO_ROI
 
     if (roi_right_intensity > 10 && roi_left_intensity > 10)
     {
