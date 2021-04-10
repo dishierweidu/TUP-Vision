@@ -7,11 +7,23 @@
 // Description: 各种Debug参数,用于调试
 // 
 //----------------------------------------------------------
+
+
+
 //==============================================================================================================//
 //                                                                                                              //
 //                                              通用参数                                                         //
 //                                                                                                              //
 //==============================================================================================================//
+//----------------------------------------------------------//
+//                                                          //
+//                        赛前调试参数                       //
+//                                                          //
+//----------------------------------------------------------//
+// #define A_RED    // Detect Red Armor
+// #define A_BLUE   // Detect Red Armor
+// #define E_RED    // Detect Red Energe
+#define E_BLUE   // Detect Bule Energe
 //----------------------------------------------------------//
 //                                                          //
 //                         线程调试参数                       //
@@ -32,14 +44,14 @@
 //----------------------------------------------------------//
 
 // #define USE_DAHENG_CAMERA   // 是否使用大恒139相机
-// #define USE_USB_CAMERA      // 是否使用USB相机
-#define USE_LOCAL_VIDEO     // 是否使用本地测试视频
+#define USE_USB_CAMERA      // 是否使用USB相机
+// #define USE_LOCAL_VIDEO     // 是否使用本地测试视频
 
 // #define REOPEN            //是否在丢帧后重启摄像头
 
 // #define COMPILE_WITH_GPU    // 是否使用GPU
 
-#define SHOW_SRC      // 是否显示原始图像
+// #define SHOW_SRC      // 是否显示原始图像
 
 
 
@@ -52,7 +64,7 @@
 //                                                          //
 //----------------------------------------------------------//
 
-#define SHOW_SRC_GET_TIME               // 是否在终端打印每帧的采集时间(仅限于大恒)
+// #define SHOW_SRC_GET_TIME               // 是否在终端打印每帧的采集时间(仅限于大恒)
 
 
 
@@ -78,6 +90,7 @@
 //                      Terminal调试参数                     //
 //                                                          //
 // ---------------------------------------------------------//
+
 // #define DEBUG_PREDICT_INFORMATION_BUFF       //是否在终端打印大符预测相关DEBUG信息(时间戳与预测所用装甲板位置样本数量)
 
 
@@ -98,17 +111,18 @@
 
 #define SHOW_BINARY                   // 是否显示二值化图像
 
-
 #define SHOW_RECT_INFO              //是否显示所有矩形及相关信息
 
-#define SHOW_TARGET_ARMOR_CENTER      // 是否显示最终得到的装甲板中心点
+#define SHOW_ALL_ARMORS               // 是否显示初步筛选出的装甲板
+// #define SHOW_TARGET_ARMOR             // 是否能显示最终得到的装甲板
+// #define SHOW_TARGET_ARMOR_CENTER      // 是否显示最终得到的装甲板中心点
 
-//  #define SHOW_FLOW_STRIP_FAN          // 是否显示含流动条的扇叶
+ #define SHOW_FLOW_STRIP_FAN          // 是否显示含流动条的扇叶
 //  #define SHOW_FLOW_STRIP_FAN_TWO_ROI  // 是否显示含流动条的扇叶两侧roi矩形区域
 
 //  #define SHOW_R_CENTER                // 是否显示字母R中心点
 
- #define SHOW_PREDICT_POINT           // 是否显示打击预测点
+// #define SHOW_PREDICT_POINT           // 是否显示打击预测点
 
 
 
@@ -136,15 +150,14 @@
 //                                                          //
 //----------------------------------------------------------//
 
+// #define SHOW_THRESH_WHOLE // 是否显示thresh后图像
 // #define SHOW_COLOR              //是否显示通道相减后图像
 
 
-#define SHOW_DEBUG_IMG    //显示DEBUG图像(主要)
+// #define SHOW_DEBUG_IMG    //显示DEBUG图像(主要)
 
-#define SHOW_DISTANCE           //是否在图上显示pnp解算的距离
+// #define SHOW_DISTANCE           //是否在图上显示pnp解算的距离
 
-#define SHOW_ALL_ARMORS               // 是否显示初步筛选出的装甲板
-#define SHOW_TARGET_ARMOR             // 是否能显示最终得到的装甲板
-
+// #define SHOW_TARGET_SHOT_ARMOR  // target armor
 
 //--------------------------------------------------------------------------------------------------------------//

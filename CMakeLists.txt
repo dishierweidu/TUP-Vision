@@ -6,39 +6,40 @@
 # 2020.9.18 by UP
 
 cmake_minimum_required(VERSION 2.8)
+SET(CMAKE_BUILD_TYPE "Release") # "Debug"
 PROJECT(SAUVisionBuff)
 find_package(OpenCV 3.4.5)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c++11 -march=native")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native")
 include_directories(${OpenCV_INCLUDE_DIRS})
-ADD_EXECUTABLE(SAUVisionBuff /home/rangeronmars/Desktop/test_file/SAUVisionBuff/main.cpp
+ADD_EXECUTABLE(SAUVisionBuff ~/Desktop/Test_Files/SAUVisionBuff/main.cpp
 					# Debug文件
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Debug.h
+					~/Desktop/Test_Files/SAUVisionBuff/Debug.h
 					# 能量机关文件
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Energy/Energy.cpp
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Energy/Energy.h
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Energy/Params.cpp
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Energy/Params.h
+					~/Desktop/Test_Files/SAUVisionBuff/Energy/Energy.cpp
+					~/Desktop/Test_Files/SAUVisionBuff/Energy/Energy.h
+					~/Desktop/Test_Files/SAUVisionBuff/Energy/Params.cpp
+					~/Desktop/Test_Files/SAUVisionBuff/Energy/Params.h
 					#相机驱动文件
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Camera/GxIAPI.h
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Camera/DxImageProc.h
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Camera/DaHengCamera.h
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Camera/DaHengCamera.cpp
+					~/Desktop/Test_Files/SAUVisionBuff/Camera/GxIAPI.h
+					~/Desktop/Test_Files/SAUVisionBuff/Camera/DxImageProc.h
+					~/Desktop/Test_Files/SAUVisionBuff/Camera/DaHengCamera.h
+					~/Desktop/Test_Files/SAUVisionBuff/Camera/DaHengCamera.cpp
 					# fcc
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/ImageProcess/ImageProcess.h
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/ImageProcess/ImageProcess.cpp
+					~/Desktop/Test_Files/SAUVisionBuff/ImageProcess/ImageProcess.h
+					~/Desktop/Test_Files/SAUVisionBuff/ImageProcess/ImageProcess.cpp
 					#装甲板识别文件
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Armor/ArmorDetector.cpp
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Armor/ArmorDetector.hpp
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Armor/Settings.hpp
+					~/Desktop/Test_Files/SAUVisionBuff/Armor/ArmorDetector.cpp
+					~/Desktop/Test_Files/SAUVisionBuff/Armor/ArmorDetector.hpp
+					~/Desktop/Test_Files/SAUVisionBuff/Armor/Settings.hpp
 					#角度解算
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/AngelSolver/AngleSolver.cpp
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/AngelSolver/AngleSolver.hpp
+					~/Desktop/Test_Files/SAUVisionBuff/AngelSolver/AngleSolver.cpp
+					~/Desktop/Test_Files/SAUVisionBuff/AngelSolver/AngleSolver.hpp
 					#串口通信
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Serial/CRC_Check.cpp
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Serial/CRC_Check.h
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Serial/serialport.cpp
-					/home/rangeronmars/Desktop/test_file/SAUVisionBuff/Serial/serialport.h
+					~/Desktop/Test_Files/SAUVisionBuff/Serial/CRC_Check.cpp
+					~/Desktop/Test_Files/SAUVisionBuff/Serial/CRC_Check.h
+					~/Desktop/Test_Files/SAUVisionBuff/Serial/serialport.cpp
+					~/Desktop/Test_Files/SAUVisionBuff/Serial/serialport.h
 
 )
 target_link_libraries(SAUVisionBuff ${OpenCV_LIBS})

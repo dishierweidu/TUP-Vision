@@ -25,17 +25,18 @@ using namespace cv;
 
 #define ARMOR_MODE 0
 
-
-class Settings {
+class Settings
+{
 public:
-
-    Settings(const std::string & filename){
+    Settings(const std::string &filename)
+    {
         FileStorage setting_fs(filename, FileStorage::READ);
         read(setting_fs);
         setting_fs.release();
     }
 
-    void read(const FileStorage& fs)  {
+    void read(const FileStorage &fs)
+    {
         // for debug image
         fs["show_image"] >> show_image;
         fs["save_result"] >> save_result;
@@ -60,7 +61,8 @@ public:
         fs["target_max_angle"] >> armor.target_max_angle;
     }
 
-    void write(FileStorage& fs) const{
+    void write(FileStorage &fs) const
+    {
         // for debug image
         cvWriteComment(*fs, "\nFor Debug Image", 0);
         fs << "show_image" << show_image;
@@ -68,22 +70,20 @@ public:
 
         // for armor system
         cvWriteComment(*fs, "\nParameter for Armor Detection System", 0);
-        fs  <<  "min_light_height" << armor.min_light_height
-            << "light_slope_offset" << armor.light_slope_offset
-            << "max_light_delta_h" << armor.max_light_delta_h
-            << "min_light_delta_h" << armor.min_light_delta_h
-            << "max_light_delta_v" << armor.max_light_delta_v
-            << "max_light_delta_angle" << armor.max_light_delta_angle
-            << "near_face_v" << armor.near_face_v
-            << "saturation_blue" << saturation_blue
-            << "saturation_red" << saturation_red;
+        fs << "min_light_height" << armor.min_light_height
+           << "light_slope_offset" << armor.light_slope_offset
+           << "max_light_delta_h" << armor.max_light_delta_h
+           << "min_light_delta_h" << armor.min_light_delta_h
+           << "max_light_delta_v" << armor.max_light_delta_v
+           << "max_light_delta_angle" << armor.max_light_delta_angle
+           << "near_face_v" << armor.near_face_v
+           << "saturation_blue" << saturation_blue
+           << "saturation_red" << saturation_red;
 
         // for camerar
         cvWriteComment(*fs, "\nParameter for Camera", 0);
         fs << "intrinsic_file_720" << intrinsic_file_720;
         fs << "exposure_time" << exposure_time;
-
-
     }
 
 public:
@@ -94,5 +94,4 @@ public:
     int exposure_time;
     int saturation_blue;
     int saturation_red;
-
 };

@@ -20,6 +20,7 @@ int main()
     char ttyUSB_path[] = "/dev/ttyUSB0";//设置串口名称
     SerialPort port(ttyUSB_path);//创建串口类对象
     port.initSerialPort();//串口初始化
+
     #ifdef MULTI_THREAD
     ImageProcess process(port);
     std::thread t1(&ImageProcess::ImageProductor, process);
@@ -32,11 +33,11 @@ int main()
 
     #ifdef SINGLE_THREAD // FIXME: 单线程还需要修改
 
-        Mat oriFrame;
-        ImageProcess ImageProcessThread;
-        Energy energy;
-        #ifdef USE_DAHENG_CAMERA
-        #endif 
+    Mat oriFrame;
+    ImageProcess ImageProcessThread;
+    Energy energy;
+    #ifdef USE_DAHENG_CAMERA
+    #endif 
     while(true)
     {   
         #ifdef USE_USB_CAMERA
@@ -58,7 +59,7 @@ int main()
 
         #ifdef SHOW_RUN_TIME
         run_time = ((double)getTickCount() - run_time) / getTickFrequency();
-		cout << "SHOW_RUN_TIME:" << run_time << endl;
+        cout << "SHOW_RUN_TIME:" << run_time << endl;
         #endif
         
         waitKey(1);

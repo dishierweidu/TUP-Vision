@@ -17,7 +17,7 @@ max_light_delta_v: 100 #36 #20
 max_light_delta_angle: 30
 near_face_v: 100
 max_lr_rate: 1.99
-max_wh_ratio: 5.12  ````
+max_wh_ratio: 5.12 
 min_wh_ratio: 1.03
 target_max_angle: 20
 small_armor_wh_threshold: 3.33

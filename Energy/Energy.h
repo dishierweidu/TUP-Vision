@@ -33,7 +33,7 @@
 
 #ifdef COMPILE_WITH_GPU
 #include <opencv2/cudaimgproc.hpp>
-#endif
+#endif  // COMPILE_WITH_GPU
 
 #include <iostream>
 #include <string>   // 字符串
@@ -48,7 +48,7 @@ using namespace std;
 using namespace cv;
 #ifdef COMPILE_WITH_GPU
 using namespace cv::cuda;
-#endif
+#endif  // COMPILE_WITH_GPU
 
 //----------------------------------------------------------//
 //                                                          //
