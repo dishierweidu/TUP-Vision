@@ -36,7 +36,7 @@
 #include <string>   // 字符串
 #include <vector>   // 向量容器
 #include <queue>    // 队列
-#include <thread>   // 线程库
+// #include <thread>   // 线程库
 #include <mutex>    // 互斥量
 #include <time.h>
 
@@ -70,7 +70,7 @@ private:
     vector<Point2f> armor_center_points;                    // 装甲板中心点的集合,用于做拟合
     vector<RotatedRect> flow_strip_fan_rrect;               // 筛选出来的有流动条的扇叶
 
-    clock_t debug_cnt;                                   //DEBUG时间戳
+    clock_t debug_cnt;                                      //DEBUG时间戳
 
     Point2f RCenter;                                        // 中心点坐标
     Point2f predict_point;                                  // 打击预测点
