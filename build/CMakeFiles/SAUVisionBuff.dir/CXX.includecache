@@ -69,8 +69,6 @@ vector
 -
 queue
 -
-thread
--
 mutex
 -
 time.h
@@ -231,8 +229,6 @@ vector
 -
 queue
 -
-thread
--
 mutex
 -
 time.h
@@ -326,6 +322,8 @@ CRC_Check.h
 ./ImageProcess/ImageProcess.h
 /home/liuup/Desktop/tup-vision/./ImageProcess/ImageProcess.h
 X11/Xlib.h
+-
+thread
 -
 
 /usr/local/include/opencv/cxcore.h

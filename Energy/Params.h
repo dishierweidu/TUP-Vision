@@ -98,8 +98,8 @@ public:
     double buff_height;      // 能量机关装甲板高度
 
     // 二值化阈值
-    int OUR_RED_GRAY_BINARY;    // 我方为红色时的阈值
-    int OUR_BLUE_GRAY_BINARY;   // 我方为蓝色时的阈值
+    int DETECT_RED_GRAY_BINARY;    // 我方为红色时的阈值
+    int DETECT_BLUE_GRAY_BINARY;   // 我方为蓝色时的阈值
 
     Mat gray_element;   // 膨胀腐蚀参数
     Mat element;        // 膨胀腐蚀参数

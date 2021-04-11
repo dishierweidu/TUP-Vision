@@ -12,37 +12,6 @@ find_package(OpenCV 3.4.5)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c++11 -march=native")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native")
 include_directories(${OpenCV_INCLUDE_DIRS})
-# ADD_EXECUTABLE(SAUVisionBuff ~/Desktop/SAUVisionBuff/main.cpp
-# 					# Debug文件
-# 					~/Desktop/SAUVisionBuff/Debug.h
-# 					# 能量机关文件
-# 					~/Desktop/SAUVisionBuff/Energy/Energy.cpp
-# 					~/Desktop/SAUVisionBuff/Energy/Energy.h
-# 					~/Desktop/SAUVisionBuff/Energy/Params.cpp
-# 					~/Desktop/SAUVisionBuff/Energy/Params.h
-# 					#相机驱动文件
-# 					~/Desktop/SAUVisionBuff/Camera/GxIAPI.h
-# 					~/Desktop/SAUVisionBuff/Camera/DxImageProc.h
-# 					~/Desktop/SAUVisionBuff/Camera/DaHengCamera.h
-# 					~/Desktop/SAUVisionBuff/Camera/DaHengCamera.cpp
-# 					# fcc
-# 					~/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.h
-# 					~/Desktop/SAUVisionBuff/ImageProcess/ImageProcess.cpp
-# 					#装甲板识别文件
-# 					~/Desktop/SAUVisionBuff/Armor/ArmorDetector.cpp
-# 					~/Desktop/SAUVisionBuff/Armor/ArmorDetector.hpp
-# 					~/Desktop/SAUVisionBuff/Armor/Settings.hpp
-# 					#角度解算
-# 					~/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.cpp
-# 					~/Desktop/SAUVisionBuff/AngelSolver/AngleSolver.hpp
-# 					#串口通信
-# 					~/Desktop/SAUVisionBuff/Serial/CRC_Check.cpp
-# 					~/Desktop/SAUVisionBuff/Serial/CRC_Check.h
-# 					~/Desktop/SAUVisionBuff/Serial/serialport.cpp
-# 					~/Desktop/SAUVisionBuff/Serial/serialport.h
-
-# )
-
 ADD_EXECUTABLE(SAUVisionBuff ./main.cpp
 					# Debug文件
 					./Debug.h
