@@ -19,17 +19,26 @@
 // #define SHOW_FLOW_STRIP_FAN_TWO_ROI  // 是否显示含流动条的扇叶两侧roi矩形区域
 #define SHOW_FLOW_STRIP_FAN          // 是否显示含流动条的扇叶
 
-#define SHOW_ALL_ARMORS               // 是否显示初步筛选出的装甲板
+// #define SHOW_ALL_ARMORS               // 是否显示初步筛选出的装甲板
 // #define SHOW_TARGET_ARMOR             // 是否能显示最终得到的装甲板
 // #define SHOW_TARGET_ARMOR_CENTER      // 是否显示最终得到的装甲板中心点
 
-//  #define SHOW_R_CENTER                // 是否显示字母R中心点
+ #define SHOW_R_CENTER                // 是否显示字母R中心点
 
-// #define SHOW_PREDICT_POINT           // 是否显示打击预测点
+#define SHOW_PREDICT_POINT           // 是否显示打击预测点
 
+//-------------For Debug Rect Only--------------------//
+// #define SHOW_RECT_INFO              //是否显示所有矩形及相关5信息(因程序逻辑问题,矩形绘制在面积比较之后,使用前需先调整面积参数)
 
-// #define SHOW_RECT_INFO              //是否显示所有矩形及相关信息
+#ifdef  SHOW_RECT_INFO
+#define SHOW_RECT_INFO_FLOW_STRIP   //显示待判断流动条矩形信息
+#define SHOW_RECT_INFO_ARMOR        //显示待处理目标装甲版矩形信息
+#endif
+
+//-------------For Debug Rect Only--------------------//
+
 
 
 
 #endif // ENERGYDEBUG_H
+

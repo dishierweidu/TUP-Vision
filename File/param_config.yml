@@ -26,7 +26,7 @@ binary_classfication_threshold: 166
 #
 # 
 # Parameter for Camera
-intrinsic_file_720: "/home/tup/Desktop/Test_Files/SAUVisionBuff/File/calib_no_4_1280.yml"
+intrinsic_file_720: "./File/calib_no_4_1280.yml";
 exposure_time: 30 # 48
 saturation_blue: 60
 saturation_red: 100

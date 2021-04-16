@@ -274,6 +274,7 @@ void SerialPort::TransformDataFirst(int Xpos, int Ypos, int dis)
 
 	Append_CRC8_Check_Sum(Tdata, 3); //CRC8 校验
 
+
 	for (int i = 0; i < 4; i++)
 	{
 		Tdata[3 + i] = Xpos % 10;

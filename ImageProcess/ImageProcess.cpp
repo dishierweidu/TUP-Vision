@@ -17,9 +17,9 @@
 
 #ifdef USE_LOCAL_VIDEO
 // const string source_location = "/home/rangeronmars/Desktop/video/RH.avi";
-const string source_location = "/home/rangeronmars/Desktop/video/sample.avi";
+// const string source_location = "/home/rangeronmars/Desktop/video/sample.avi";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_red.mp4";
-// const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red.mp4";
+const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red.mp4";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_blue.mp4";
 
 VideoCapture cap(source_location);
@@ -34,7 +34,7 @@ bool is_first_loop = true;
 VideoCapture cap(0);
 #endif // USE_USB_CAMERA
 
-string file_path = "/home/tup/Desktop/Test_Files/SAUVisionBuff/File/calib_no_4_1280.yml";
+string file_path = "./File/calib_no_4_1280.yml";
 
 // 存储图像的结构体
 typedef struct
@@ -373,6 +373,12 @@ void ImageProcess::EnergyThread()
         #ifdef USE_USB_CAMERA
         cap >> oriFrame;
         #endif // USE_USB_CAMERA
+
+
+        #ifdef USE_LOCAL_VIDEO
+        cap >> oriFrame;
+        #endif // USE_LOCAL_VIDEO
+
 
 
         if(oriFrame.empty() || oriFrame.channels() != 3)

@@ -20,8 +20,8 @@ int main()
 {
     XInitThreads();
     char ttyUSB_path[] = "/dev/ttyUSB0";//设置串口名称
-    SerialPort port(ttyUSB_path);//创建串口类对象
-    port.initSerialPort();//串口初始化
+    SerialPort port(ttyUSB_path);//'创建串口类对象
+    port.initSerialPort();//串口初P[+始化
 
 
     #ifdef MULTI_THREAD
@@ -39,7 +39,6 @@ int main()
     // TODO: 能量机关独立线程
     // DEBUG: 角度计算
     // DEBUG: 串口通讯
-    
     ImageProcess process(port);
     std::thread t1(&ImageProcess::EnergyThread, process);
 

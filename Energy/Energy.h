@@ -56,8 +56,8 @@ public:
     Energy() {};    
     ~Energy() {};
     #ifdef SHOW_RECT_INFO 
-    Mat src_rect_info;
-    #endif
+    Mat src_rect_info;      //显示矩形信息
+    #endif//SHOW_RECT_INFO
     
     void run(Mat &oriFrame);                                // 识别总函数
 

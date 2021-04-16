@@ -35,7 +35,7 @@ static double absolute_run_time = static_cast<double>(getTickCount());
 //                                                          //
 //----------------------------------------------------------//
 
-// @brief 绘制旋转矩形并显示相关信息 by GuHao
+// @brief 绘制旋转矩形并显示相关信息 by ROM
 // @param RRect 所需矩形
 // @param src  输出图像
 // @param color 矩形的颜色与相关数据颜色
@@ -166,29 +166,43 @@ void Energy::run(Mat &oriFrame)
 
     #ifdef SHOW_ORIGINAL
     imshow("SHOW_ORIGINAL", frame);
-    #endif
+    #endif//SHOW_ORIGINAL
 
 
-    // #ifdef SHOW_RECT_INFO
-    // frame.copyTo(src_rect_info);
-    // #endif // SHOW_RECT_INFO
+    #ifdef SHOW_RECT_INFO
+    frame.copyTo(src_rect_info);//负责源图以供绘制相关信息
+    #endif // SHOW_RECT_INFO
 
     clearVectors();
     initFrame(frame);
 
     if (!findFlowStripFan(frame)) // 寻找含流动条的装甲板
     {
+        // #ifdef SHOW_RECT_INFO
+        // imshow("SHOW_CANDIDATE",src_rect_info);//未检测到流动条,return前显示图像
+        // #endif // SHOW_RECT_INFO       
+        
+
         return; // 如果没找到
     }
 
+
+
+
     if (!findArmors(frame)) // 寻找装甲板
     {
+        #ifdef SHOW_RECT_INFO
+        imshow("SHOW_CANDIDATE",src_rect_info);////未检测到装甲板,return前显示图像
+        #endif // SHOW_RECT_INFO       
+
         return; // 如果没找到
     }
 
     // #ifdef SHOW_RECT_INFO
-    // imshow("Rect_info", src_rect_info);
+    // imshow("SHOW_CANDIDATE",src_rect_info);//显示图像
     // #endif // SHOW_RECT_INFO
+
+    
 
     getPoints2D();
     getPoints3D();
@@ -303,13 +317,13 @@ void Energy::initFrame(Mat &frame)
     //     threshold(frame, frame, energyParams.OUR_BLUE_GRAY_BINARY, 255, CV_THRESH_BINARY);
     // }
 
-    #ifdef E_BLUE // 识别蓝色装甲板
+    #ifdef E_RED // Detect Red Armor Plate
     frame = channels.at(2) - channels.at(0);
     threshold(frame, frame, energyParams.DETECT_RED_GRAY_BINARY, 255, CV_THRESH_BINARY);
     #endif // E_BLUE
 
 
-    #ifdef E_RED // 识别红色装甲板
+    #ifdef E_BLUE // Detect Blue Armor Plate
     frame = channels.at(0) - channels.at(2);
     threshold(frame, frame, energyParams.DETECT_BLUE_GRAY_BINARY, 255, CV_THRESH_BINARY);
     #endif // E_RED
@@ -565,30 +579,25 @@ bool Energy::findTargetArmor(Mat &src_bin)
 // @return 装甲板有效返回true,否则返回false
 bool Energy::isValidArmor(vector<Point> &armor_contour)
 {
-    // 依据面积进行筛选(若显示矩形信息则在长宽后进行判断)
+    // 依据面积进行筛选
     double cur_contour_area = contourArea(armor_contour);
-    // cout << cur_contour_area << endl;
+    // cout <<"cur_contour_area : " << cur_contour_area << endl;
     if (cur_contour_area > energyParams.ARMOR_CONTOUR_AREA_MAX || cur_contour_area < energyParams.ARMOR_CONTOUR_AREA_MIN)
     {
         return false;
     }
 
 
-    // 依据长和宽进行筛选
+
     RotatedRect cur_rrect = minAreaRect(armor_contour);
-    // #ifdef SHOW_RECT_INFO
-    // ShowRotateRectDetail(cur_rrect, src_rect_info);
-    // #endif // SHOW_RECT_INFO
 
-    // #ifdef SHOW_RECT_INFO
-    // double cur_contour_area = contourArea(armor_contour);
-    // // cout << cur_contour_area << endl;
-    // if (cur_contour_area > energyParams.ARMOR_CONTOUR_AREA_MAX || cur_contour_area < energyParams.ARMOR_CONTOUR_AREA_MIN)
-    // {
-    //     return false;
-    // }
-    // #endif // SHOW_RECT_INFO
+    #ifdef SHOW_RECT_INFO_ARMOR
+    ShowRotateRectDetail(cur_rrect, src_rect_info);////绘制该矩形信息
+    #endif // SHOW_RECT_INFO_ARMOR
 
+
+
+    // 依据长和宽进行筛选
     Size2f cur_size = cur_rrect.size;
     float length = cur_size.height > cur_size.width ? cur_size.height : cur_size.width;
     float width = cur_size.height < cur_size.width ? cur_size.height : cur_size.width;
@@ -596,6 +605,7 @@ bool Energy::isValidArmor(vector<Point> &armor_contour)
     {
         return false;
     }
+
     // 依据长宽比进行筛选
     float ratio = length / width;
     // cout<<ratio<<endl;
@@ -603,6 +613,7 @@ bool Energy::isValidArmor(vector<Point> &armor_contour)
     {
         return false;
     }
+
 
     return true;
 }
@@ -612,22 +623,30 @@ bool Energy::isValidArmor(vector<Point> &armor_contour)
 // @return 预测成功返回true,否则返回false
 bool Energy::predictRCenter(Mat &frame)
 {
-    // #ifdef DEBUG_PREDICT_INFORMATION_BUFF
-    //     cout << "sample counts:" << armor_center_points.size() << endl; //输出样本现有数量
-    // #endif
+    #ifdef DEBUG_PREDICT_INFORMATION_BUFF
+        cout << "sample counts:" << armor_center_points.size() << endl; //输出样本现有数量
+    #endif//DEBUG_PREDICT_INFORMATION_BUFF
     // 只拟合一次
     if (armor_center_points.size() < 50)
     {
         // 将装甲板中心点坐标存入
         armor_center_points.emplace_back(target_armor.center);
-        // #ifdef DEBUG_PREDICT_INFORMATION_BUFF
-        //         cout << "Insufficient sample!" << endl; //提示样本数量不足
-        // #endif
+        #ifdef DEBUG_PREDICT_INFORMATION_BUFF
+                cout << "Insufficient sample!" << endl; //提示样本数量不足
+        #endif//DEBUG_PREDICT_INFORMATION_BUFF
         return false;
     }
     else if (armor_center_points.size() == 50)
     {
         circleLeastFit(armor_center_points, RCenter);
+
+        //FIX ME!
+        //DEBUG 2021.04.16 A Temporary solution to R Center Finding Problem
+
+        armor_center_points.erase(armor_center_points.begin());//remove the first element
+        armor_center_points.emplace_back(target_armor.center);//emplace
+
+        //DEBUG 2021.04.16 A Temporary solution to R Center Finding Problem
 
         #ifdef SHOW_R_CENTER
         Mat R_CENTER = frame.clone();
@@ -729,31 +748,24 @@ bool Energy::findFlowStripFan(Mat &src)
 // @return 含流动条的扇叶合格返回true,否则返回false
 bool Energy::isValidFlowStripFan(Mat &src_bin, vector<Point> &flow_strip_fan_contour)
 {
-    // #ifndef SHOW_RECT_INFO
 
-    // 依据面积进行筛选(若显示矩形信息则在长宽后进行判断)
+    // 依据面积进行筛选
     double cur_contour_area = contourArea(flow_strip_fan_contour);
     if (cur_contour_area > energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_MAX || cur_contour_area < energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_MIN)
     {
+    // cout<<"flow strip contour area failed :"<< cur_contour_area <<endl;
         return false;
     }
+    // cout<<"flow strip contour area success :"<< cur_contour_area <<endl;
 
-    // #endif // SHOW_RECT_INFO
 
     // 依据长宽进行筛选
     RotatedRect cur_rect = minAreaRect(flow_strip_fan_contour);
-    // #ifdef SHOW_RECT_INFO
-    // ShowRotateRectDetail(cur_rect, src_rect_info);
-    // #endif // SHOW_RECT_INFO
 
-    // #ifdef SHOW_RECT_INFO
-    // double cur_contour_area = contourArea(flow_strip_fan_contour);
-    // cout << cur_contour_area << endl;
-    // if (cur_contour_area > energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_MAX || cur_contour_area < energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_MIN)
-    // {
-    //     return false;
-    // }
-    // #endif // SHOW_RECT_INFO
+    #ifdef SHOW_RECT_INFO_FLOW_STRIP
+    ShowRotateRectDetail(cur_rect, src_rect_info,Scalar(100,150,0));//绘制该矩形信息
+    #endif // SHOW_RECT_INFO_FLOW_STRIP
+
 
     Size2f cur_size = cur_rect.size;
     float height = cur_size.height > cur_size.width ? cur_size.height : cur_size.width;
@@ -773,11 +785,12 @@ bool Energy::isValidFlowStripFan(Mat &src_bin, vector<Point> &flow_strip_fan_con
 
     // 根据面积比进行筛选
     float area_ratio = cur_contour_area / cur_size.area();
-    // cout<<area_ratio<<"\n\n"<<endl;
     if (area_ratio > energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MAX || area_ratio < energyParams.FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MIN)
     {
+        // cout<<"area_ratio failed !: "<<area_ratio<<"\n\n"<<endl;
         return false;
     }
+    // cout<<"flow strip area_ratio success !: "<<area_ratio<<"\n\n"<<endl;
 
     // 根据两侧灯柱进行筛选
     Point2f rrect_points[4]; // 存储四个顶点

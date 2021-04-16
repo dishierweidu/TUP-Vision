@@ -26,11 +26,11 @@
 #define A_BLUE   // Detect Blue Armor
 
 #ifdef A_RED
-#define E_RED    // Detect Red Energe
+#define E_BLUE       // Detect Blue Energy
 #endif // A_RED
 
 #ifdef A_BLUE
-#define E_BLUE   // Detect Blue Energe
+#define E_RED   // Detect Red Energy
 #endif // A_BLUE
 
 
@@ -51,10 +51,10 @@
 //                                                          //
 //----------------------------------------------------------//
 
-#define USE_DAHENG_CAMERA   // 是否使用大恒139相机
+// #define USE_DAHENG_CAMERA   // 是否使用大恒139相机
 // #define USE_USB_CAMERA      // 是否使用USB相机
 // #define USE_USB_ATTACT_E     //whether using USB camera to attack energy
-// #define USE_LOCAL_VIDEO     // 是否使用本地测试视频
+#define USE_LOCAL_VIDEO     // 是否使用本地测试视频
 
 // #define REOPEN            //是否在丢帧后重启摄像头
 
@@ -74,7 +74,7 @@
 
 // #define SHOW_SRC_GET_TIME               // 是否在终端打印每帧的采集时间(仅限于大恒)
 
-#define SHOW_ENERGY_RUN_TIME            // 是否在终端打印能量机关每帧的处理时间
+// #define SHOW_ENERGY_RUN_TIME            // 是否在终端打印能量机关每帧的处理时间
 
 
 
