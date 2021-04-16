@@ -60,7 +60,7 @@ struct STM32Data
     void initParams()
     {
         enemy_color = ENEMY_RED;
-        energy_mode = ENERGY_SMALL;
+        energy_mode = ENERGY_BIG;
     }
 };
 
@@ -121,8 +121,8 @@ public:
     
 
     // FLOW_STRIP_FAN
-    int FLOW_STRIP_FAN_CONTOUR_AREA_MAX;         // 含流动条的扇叶轮廓面积最大值
-    int FLOW_STRIP_FAN_CONTOUR_AREA_MIN;         // 含流动条的扇叶轮廓面积最小值
+    int FLOW_STRIP_FAN_CONTOUR_AREA_MAX;            // 含流动条的扇叶轮廓面积最大值
+    int FLOW_STRIP_FAN_CONTOUR_AREA_MIN;            // 含流动条的扇叶轮廓面积最小值
     float FLOW_STRIP_FAN_CONTOUR_LENGTH_MAX;       // 含流动条的扇叶轮廓长边最大值
     float FLOW_STRIP_FAN_CONTOUR_LENGTH_MIN;       // 含流动条的扇叶轮廓长边最小值
     float FLOW_STRIP_FAN_CONTOUR_WIDTH_MAX;        // 含流动条的扇叶轮廓短边最大值
@@ -131,4 +131,18 @@ public:
     float FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MIN;     // 含流动条的扇叶长宽比最小值
     float FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MAX;   // 含流动条的扇叶轮廓的面积之比最大值
     float FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MIN;   // 含流动条的扇叶轮廓的面积之比最小值
+    float CENTER_R_CONTOUR_AREA_RATIO_MIN;          //装甲板轮廓占旋转矩形面积比最小值
+    float CENTER_R_CONTOUR_INTERSETION_AREA_MIN;    //中心R占ROI区的面积最小值
+
+    //CENTER_R
+    long CENTER_R_CONTOUR_AREA_MAX;//风车中心R面积最大值
+    long CENTER_R_CONTOUR_AREA_MIN;//风车中心R面积最小值
+    long CENTER_R_CONTOUR_LENGTH_MIN;//风车中心R长边长度最小值
+    long CENTER_R_CONTOUR_WIDTH_MIN;//风车中心R长边长度最大值
+    long CENTER_R_CONTOUR_LENGTH_MAX;//风车中心R宽边长度最小值
+    long CENTER_R_CONTOUR_WIDTH_MAX;//风车中心R宽边长度最大值
+    float CENTER_R_CONTOUR_HW_RATIO_MAX;//风车中心R长宽比最大值
+    float CENTER_R_CONTOUR_HW_RATIO_MIN;//风车中心R长宽比最小值
+
+
 };

@@ -45,8 +45,8 @@ void ShowRotateRectDetail(RotatedRect &RRect, Mat src, Scalar color = Scalar(0, 
     //储存旋转矩形顶点数组
     Point2f Apex[4];
     RRect.points(Apex);
-    const string Width = "Width :" + to_string((int)(RRect.size.width > RRect.size.height ? RRect.size.width : RRect.size.height));
-    const string Height = "Height :" + to_string((int)(RRect.size.width < RRect.size.height ? RRect.size.width : RRect.size.height));
+    const string Width = "Length :" + to_string((int)(RRect.size.width > RRect.size.height ? RRect.size.width : RRect.size.height));
+    const string Height = "Width :" + to_string((int)(RRect.size.width < RRect.size.height ? RRect.size.width : RRect.size.height));
     const string Area = "Area :" + to_string((int)(RRect.size.width * RRect.size.height));
     const string H_W = "H/W :" + to_string((float)((RRect.size.width > RRect.size.height ? RRect.size.width : RRect.size.height) / (RRect.size.width < RRect.size.height ? RRect.size.width : RRect.size.height)));
     for (int j = 0; j < 4; ++j)
@@ -178,9 +178,9 @@ void Energy::run(Mat &oriFrame)
 
     if (!findFlowStripFan(frame)) // 寻找含流动条的装甲板
     {
-        // #ifdef SHOW_RECT_INFO
-        // imshow("SHOW_CANDIDATE",src_rect_info);//未检测到流动条,return前显示图像
-        // #endif // SHOW_RECT_INFO       
+        #ifdef SHOW_RECT_INFO
+        imshow("SHOW_CANDIDATE",src_rect_info);//未检测到流动条,return前显示图像
+        #endif // SHOW_RECT_INFO       
         
 
         return; // 如果没找到
@@ -198,9 +198,9 @@ void Energy::run(Mat &oriFrame)
         return; // 如果没找到
     }
 
-    // #ifdef SHOW_RECT_INFO
-    // imshow("SHOW_CANDIDATE",src_rect_info);//显示图像
-    // #endif // SHOW_RECT_INFO
+    #ifdef SHOW_RECT_INFO
+    imshow("SHOW_CANDIDATE",src_rect_info);//显示图像
+    #endif // SHOW_RECT_INFO
 
     
 
@@ -212,12 +212,22 @@ void Energy::run(Mat &oriFrame)
     #ifdef SHOW_PREDICT_POINT
     Mat PREDICT_POINT = frame.clone();
     cv::cvtColor(PREDICT_POINT, PREDICT_POINT, CV_GRAY2BGR);
+
+    #ifdef CIRCLE_FIT
     if (armor_center_points.size() == 50)
     {
         circle(PREDICT_POINT, predict_point, 5, Scalar(0, 255, 0), 2);
         line(PREDICT_POINT, predict_point, target_armor.center, Scalar(0, 0, 255), 2);
         circle(PREDICT_POINT, RCenter, pointsDistance(RCenter, target_armor.center), Scalar(0, 255, 0), 1);
     }
+    #endif//CIRCLE_FIT
+
+    #ifdef FIND_R_STRUCT_IN_ROI
+    circle(PREDICT_POINT, predict_point, 5, Scalar(0, 255, 0), 2);
+    line(PREDICT_POINT, predict_point, target_armor.center, Scalar(0, 0, 255), 2);
+    circle(PREDICT_POINT, RCenter, pointsDistance(RCenter, target_armor.center), Scalar(0, 255, 0), 1);
+    #endif
+
     imshow("SHOW_PREDICT_POINT", PREDICT_POINT);
     // #ifdef DEBUG_PREDICT_INFORMATION_BUFF
     // cout << "\n\n"
@@ -383,9 +393,10 @@ bool Energy::predictTargetPoint(Mat &frame)
     {
         if (!predictRCenter(frame))
         {
-            cout << "Predict R failed!" << endl;
+            // cout << "Predict R failed!" << endl;
             return false;
         }
+        // cout << "Predict R Succeed!" << endl;
 
         if (!getDirectionOfRotation())
         {
@@ -618,11 +629,106 @@ bool Energy::isValidArmor(vector<Point> &armor_contour)
     return true;
 }
 
+//@brief 寻找中心ROI
+bool Energy::findCenterROI() 
+{
+    float length = target_armor.size.height > target_armor.size.width ?
+                   target_armor.size.height : target_armor.size.width;
+
+    Point2f p2p(target_flow_strip_fan.center.x - target_armor.center.x,
+                target_flow_strip_fan.center.y - target_armor.center.y);
+    p2p = p2p / pointsDistance(target_flow_strip_fan.center, target_armor.center);//单位化
+    center_ROI = cv::RotatedRect(cv::Point2f(target_flow_strip_fan.center + p2p * length * 2.3),
+                                 Size2f(length * 1.85, length * 1.85), -90);
+    return true;
+}
+//@brief 寻找中心R图案
+// @param frame 二值化后的图像
+// @return 寻找成功返回true,否则返回false
+bool Energy::findCenterR(Mat &src_bin) {
+    if (src_bin.empty()) {
+        return false;
+    }
+    std::vector<vector<Point> > center_R_contours;
+    findContours(src_bin, center_R_contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+    for (auto &center_R_contour : center_R_contours) {
+        if (!isValidCenterRContour(center_R_contour)) 
+        {
+            continue;
+        }
+        centerR = cv::minAreaRect(center_R_contour);
+        // cout<<"Center R found!"<<endl;
+        return true;
+    }
+    // cout<<"Center R missing!"<<endl;
+    return false;
+
+}
+
+bool Energy::isValidCenterRContour(const vector<cv::Point> &center_R_contour) {
+    //计算面积
+    double cur_contour_area = contourArea(center_R_contour);
+    if (cur_contour_area > energyParams.CENTER_R_CONTOUR_AREA_MAX ||
+        cur_contour_area < energyParams.CENTER_R_CONTOUR_AREA_MIN) 
+    {
+        // cout<<"area fail :"<<cur_contour_area<<endl;
+        return false;
+        //选区面积大小不合适
+    }
+    // cout<<"area success :"<<cur_contour_area<<endl;
+
+    RotatedRect cur_rect = minAreaRect(center_R_contour);
+    Size2f cur_size = cur_rect.size;
+    std::vector<cv::Point2f> intersection;
+
+    float length = cur_size.height > cur_size.width ? cur_size.height : cur_size.width;//将矩形的长边设置为长
+    float width = cur_size.height < cur_size.width ? cur_size.height : cur_size.width;//将矩形的短边设置为宽
+    if (length < energyParams.CENTER_R_CONTOUR_LENGTH_MIN || width < energyParams.CENTER_R_CONTOUR_WIDTH_MIN
+        || length > energyParams.CENTER_R_CONTOUR_LENGTH_MAX ||width > energyParams.CENTER_R_CONTOUR_WIDTH_MAX) 
+    {
+    // cout<<"length or width fail."<<endl;
+    // cout << "length: " << length << '\t' << "width: " << width << '\t' << cur_rect.center << endl;
+    return false;
+    //矩形边长不合适
+    }
+
+    //计算矩形长宽比
+    float length_width_ratio = length / width;
+    if (length_width_ratio > energyParams.CENTER_R_CONTOUR_HW_RATIO_MAX ||
+        length_width_ratio < energyParams.CENTER_R_CONTOUR_HW_RATIO_MIN)
+    {
+    // cout<<"length width ratio fail."<<endl;
+    // cout << "HW: " << length_width_ratio << '\t' << cur_rect.center << endl;
+    return false;
+    //长宽比不合适
+    }
+
+    if (cur_contour_area / cur_size.area() < energyParams.CENTER_R_CONTOUR_AREA_RATIO_MIN) 
+    {
+
+    // cout << "area ratio fail: " << cur_contour_area / cur_size.area()  << endl;
+    return false;//轮廓对矩形的面积占有率不合适
+    }
+
+    if (rotatedRectangleIntersection(cur_rect, center_ROI, intersection) == 0) 
+    {
+        return false;
+    } 
+    else if (contourArea(intersection) < energyParams.CENTER_R_CONTOUR_INTERSETION_AREA_MIN) 
+    {
+        // cout << "R intersection: " << contourArea(intersection) << '\t' << cur_rect.center << endl;
+        return false;
+    }
+    // cout<<"Center R right!"<<endl;
+    return true;
+}
+
 // @brief 预测字母R坐标
 // @param frame 二值化后的图像
 // @return 预测成功返回true,否则返回false
 bool Energy::predictRCenter(Mat &frame)
 {
+    #ifdef CIRCLE_FIT
     #ifdef DEBUG_PREDICT_INFORMATION_BUFF
         cout << "sample counts:" << armor_center_points.size() << endl; //输出样本现有数量
     #endif//DEBUG_PREDICT_INFORMATION_BUFF
@@ -661,10 +767,35 @@ bool Energy::predictRCenter(Mat &frame)
         imshow("SHOW_R_CENTER", R_CENTER);
         #endif // SHOW_R_CENTER
 
-        return true;
+    }
+    #endif//CIRCLE_FIT
+
+    #ifdef FIND_R_STRUCT_IN_ROI
+    findCenterROI();               //寻找中心ROI区域
+    if(!findCenterR(frame))              //如果未找到中心R区域
+    {
+        return false;
     }
 
-    return false;
+    float target_length =
+            target_armor.size.height > target_armor.size.width ? target_armor.size.height : target_armor.size.width;
+    RCenter = centerR.center;
+    RCenter.y += target_length / 7.5;//实际最小二乘得到的中心在R的下方
+    
+    #ifdef SHOW_R_CENTER
+    Mat R_CENTER = frame.clone();
+    cv::cvtColor(R_CENTER, R_CENTER, CV_GRAY2BGR);
+    drawRotatedRect(R_CENTER,centerR,Scalar(100,100,250),2);//绘制ROI
+    drawRotatedRect(R_CENTER,center_ROI,Scalar(100,100,200),2);//绘制ROI
+    circle(R_CENTER, RCenter, 5, Scalar(0, 255, 0), 1);
+
+    imshow("SHOW_R_CENTER", R_CENTER);
+
+    #endif //SHOW_R_CENTER
+
+    #endif //FIND_R_STRUCT_IN_ROI
+
+    return true;
 }
 
 // @brief 能量机关大符运行函数

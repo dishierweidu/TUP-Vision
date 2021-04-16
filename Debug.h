@@ -52,9 +52,9 @@
 //----------------------------------------------------------//
 
 // #define USE_DAHENG_CAMERA   // 是否使用大恒139相机
-// #define USE_USB_CAMERA      // 是否使用USB相机
+#define USE_USB_CAMERA      // 是否使用USB相机
 // #define USE_USB_ATTACT_E     //whether using USB camera to attack energy
-#define USE_LOCAL_VIDEO     // 是否使用本地测试视频
+// #define USE_LOCAL_VIDEO     // 是否使用本地测试视频
 
 // #define REOPEN            //是否在丢帧后重启摄像头
 

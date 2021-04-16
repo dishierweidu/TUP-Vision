@@ -17,7 +17,7 @@
 #define SHOW_BINARY                   // 是否显示二值化图像
 
 // #define SHOW_FLOW_STRIP_FAN_TWO_ROI  // 是否显示含流动条的扇叶两侧roi矩形区域
-#define SHOW_FLOW_STRIP_FAN          // 是否显示含流动条的扇叶
+// #define SHOW_FLOW_STRIP_FAN          // 是否显示含流动条的扇叶
 
 // #define SHOW_ALL_ARMORS               // 是否显示初步筛选出的装甲板
 // #define SHOW_TARGET_ARMOR             // 是否能显示最终得到的装甲板
@@ -26,6 +26,18 @@
  #define SHOW_R_CENTER                // 是否显示字母R中心点
 
 #define SHOW_PREDICT_POINT           // 是否显示打击预测点
+
+
+
+//----------------------中心R识别模式选择--------------------------//
+// #define CIRCLE_FIT                  //使用装甲板中心拟合圆心
+
+#ifndef CIRCLE_FIT
+#define FIND_R_STRUCT_IN_ROI          //寻找ROI中R结构
+#endif
+//----------------------中心R识别模式选择--------------------------//
+
+
 
 //-------------For Debug Rect Only--------------------//
 // #define SHOW_RECT_INFO              //是否显示所有矩形及相关5信息(因程序逻辑问题,矩形绘制在面积比较之后,使用前需先调整面积参数)

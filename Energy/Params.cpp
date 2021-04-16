@@ -60,11 +60,11 @@ void Params::initParams()
 
     // 二值化阈值
     
-    DETECT_RED_GRAY_BINARY = 100;                                  //北理珠视频DEBUG红色阈值                   
-    // DETECT_RED_GRAY_BINARY = 20;                                   // 识别红色时的阈值
+    // DETECT_RED_GRAY_BINARY = 100;                                  //北理珠视频DEBUG红色阈值                   
+    DETECT_RED_GRAY_BINARY = 15;                                   // 识别红色时的阈值
     DETECT_BLUE_GRAY_BINARY = 100;                                  // 识别蓝色时的阈值
 
-    gray_element = getStructuringElement(MORPH_RECT, Size(7, 7));// 膨胀腐蚀参数
+    gray_element = getStructuringElement(MORPH_RECT, Size(5, 5));// 膨胀腐蚀参数
     element = getStructuringElement(MORPH_RECT, Size(5, 5));    // 膨胀腐蚀参数
 
     // FIXME: 大小能量机关参数有变
@@ -74,50 +74,69 @@ void Params::initParams()
 
     
     // // // ARMOR
-    // ARMOR_CONTOUR_AREA_MAX = 600;        // 装甲板轮廓面积最大值
-    // ARMOR_CONTOUR_AREA_MIN = 200;        // 装甲板轮廓面积最小值
-    // ARMOR_CONTOUR_LENGTH_MAX = 40;        // 装甲板轮廓长边最大值
-    // ARMOR_CONTOUR_LENGTH_MIN = 20;        // 装甲板轮廓长边最小值
-    // ARMOR_CONTOUR_WIDTH_MAX = 20;         // 装甲板轮廓短边最大值
-    // ARMOR_CONTOUR_WIDTH_MIN = 10;         // 装甲板轮廓短边最小值
-    // ARMOR_CONTOUR_HW_RATIO_MAX = 2.4;     // 装甲板轮廓长宽比最大值
-    // ARMOR_CONTOUR_HW_RATIO_MIN = 1.5;     // 装甲板轮廓长宽比最小值
+    ARMOR_CONTOUR_AREA_MAX = 600;        // 装甲板轮廓面积最大值
+    ARMOR_CONTOUR_AREA_MIN = 200;        // 装甲板轮廓面积最小值
+    ARMOR_CONTOUR_LENGTH_MAX = 40;        // 装甲板轮廓长边最大值
+    ARMOR_CONTOUR_LENGTH_MIN = 20;        // 装甲板轮廓长边最小值
+    ARMOR_CONTOUR_WIDTH_MAX = 20;         // 装甲板轮廓短边最大值
+    ARMOR_CONTOUR_WIDTH_MIN = 10;         // 装甲板轮廓短边最小值
+    ARMOR_CONTOUR_HW_RATIO_MAX = 2.4;     // 装甲板轮廓长宽比最大值
+    ARMOR_CONTOUR_HW_RATIO_MIN = 1.5;     // 装甲板轮廓长宽比最小值
     
     // // //ARMOR(北理珠视频Debug)
-    ARMOR_CONTOUR_AREA_MAX = 8000;        // 装甲板轮廓面积最大值
-    ARMOR_CONTOUR_AREA_MIN = 4000;        // 装甲板轮廓面积最小值
-    ARMOR_CONTOUR_LENGTH_MAX = 120;        // 装甲板轮廓长边最大值
-    ARMOR_CONTOUR_LENGTH_MIN = 50;        // 装甲板轮廓长边最小值
-    ARMOR_CONTOUR_WIDTH_MAX = 100;         // 装甲板轮廓短边最大值
-    ARMOR_CONTOUR_WIDTH_MIN = 40;         // 装甲板轮廓短边最小值
-    ARMOR_CONTOUR_HW_RATIO_MAX = 2;     // 装甲板轮廓长宽比最大值
-    ARMOR_CONTOUR_HW_RATIO_MIN = 1;     // 装甲板轮廓长宽比最小值
+    // ARMOR_CONTOUR_AREA_MAX = 8000;        // 装甲板轮廓面积最大值
+    // ARMOR_CONTOUR_AREA_MIN = 4000;        // 装甲板轮廓面积最小值
+    // ARMOR_CONTOUR_LENGTH_MAX = 120;        // 装甲板轮廓长边最大值
+    // ARMOR_CONTOUR_LENGTH_MIN = 50;        // 装甲板轮廓长边最小值
+    // ARMOR_CONTOUR_WIDTH_MAX = 100;         // 装甲板轮廓短边最大值
+    // ARMOR_CONTOUR_WIDTH_MIN = 40;         // 装甲板轮廓短边最小值
+    // ARMOR_CONTOUR_HW_RATIO_MAX = 2;     // 装甲板轮廓长宽比最大值
+    // ARMOR_CONTOUR_HW_RATIO_MIN = 1;     // 装甲板轮廓长宽比最小值
 
 
     // FLOW_STRIP_FAN
-    // FLOW_STRIP_FAN_CONTOUR_AREA_MAX = 3000;        // 含流动条的扇叶轮廓面积最大值
-    // FLOW_STRIP_FAN_CONTOUR_AREA_MIN = 1000;        // 含流动条的扇叶轮廓面积最小值
-    // FLOW_STRIP_FAN_CONTOUR_LENGTH_MAX = 130;       // 含流动条的扇叶轮廓长边最大值
-    // FLOW_STRIP_FAN_CONTOUR_LENGTH_MIN = 80;       // 含流动条的扇叶轮廓长边最小值
-    // FLOW_STRIP_FAN_CONTOUR_WIDTH_MAX = 75;         // 含流动条的扇叶轮廓短边最大值
-    // FLOW_STRIP_FAN_CONTOUR_WIDTH_MIN = 40;         // 含流动条的扇叶轮廓短边最小值
-    // FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MAX = 2.5;     // 含流动条的扇叶长宽比最大值
-    // FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MIN = 1.8;       // 含流动条的扇叶长宽比最小值
-    // FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MAX = 0.58;   // 含流动条的扇叶轮廓的面积之比最大值
-    // FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MIN = 0.2;  // 含流动条的扇叶轮廓的面积之比最小值
-
-    // // // FLOW_STRIP_FAN(北理珠视频Debug)
-    FLOW_STRIP_FAN_CONTOUR_AREA_MAX = 20000;        // 含流动条的扇叶轮廓面积最大值
-    FLOW_STRIP_FAN_CONTOUR_AREA_MIN = 8000;        // 含流动条的扇叶轮廓面积最小值
-    FLOW_STRIP_FAN_CONTOUR_LENGTH_MAX = 300;       // 含流动条的扇叶轮廓长边最大值
-    FLOW_STRIP_FAN_CONTOUR_LENGTH_MIN = 200;       // 含流动条的扇叶轮廓长边最小值
-    FLOW_STRIP_FAN_CONTOUR_WIDTH_MAX = 150;         // 含流动条的扇叶轮廓短边最大值
-    FLOW_STRIP_FAN_CONTOUR_WIDTH_MIN = 100;         // 含流动条的扇叶轮廓短边最小值
+    FLOW_STRIP_FAN_CONTOUR_AREA_MAX = 3000;        // 含流动条的扇叶轮廓面积最大值
+    FLOW_STRIP_FAN_CONTOUR_AREA_MIN = 1000;        // 含流动条的扇叶轮廓面积最小值
+    FLOW_STRIP_FAN_CONTOUR_LENGTH_MAX = 130;       // 含流动条的扇叶轮廓长边最大值
+    FLOW_STRIP_FAN_CONTOUR_LENGTH_MIN = 80;       // 含流动条的扇叶轮廓长边最小值
+    FLOW_STRIP_FAN_CONTOUR_WIDTH_MAX = 75;         // 含流动条的扇叶轮廓短边最大值
+    FLOW_STRIP_FAN_CONTOUR_WIDTH_MIN = 40;         // 含流动条的扇叶轮廓短边最小值
     FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MAX = 2.5;     // 含流动条的扇叶长宽比最大值
     FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MIN = 1.8;       // 含流动条的扇叶长宽比最小值
-    FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MAX = 0.8;   // 含流动条的扇叶轮廓的面积之比最大值
-    FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MIN = 0;  // 含流动条的扇叶轮廓的面积之比最小值
+    FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MAX = 0.58;   // 含流动条的扇叶轮廓的面积之比最大值
+    FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MIN = 0.2;  // 含流动条的扇叶轮廓的面积之比最小值
 
+    // // // FLOW_STRIP_FAN(北理珠视频Debug)
+    // FLOW_STRIP_FAN_CONTOUR_AREA_MAX = 20000;        // 含流动条的扇叶轮廓面积最大值
+    // FLOW_STRIP_FAN_CONTOUR_AREA_MIN = 8000;        // 含流动条的扇叶轮廓面积最小值
+    // FLOW_STRIP_FAN_CONTOUR_LENGTH_MAX = 300;       // 含流动条的扇叶轮廓长边最大值
+    // FLOW_STRIP_FAN_CONTOUR_LENGTH_MIN = 200;       // 含流动条的扇叶轮廓长边最小值
+    // FLOW_STRIP_FAN_CONTOUR_WIDTH_MAX = 150;         // 含流动条的扇叶轮廓短边最大值
+    // FLOW_STRIP_FAN_CONTOUR_WIDTH_MIN = 100;         // 含流动条的扇叶轮廓短边最小值
+    // FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MAX = 2.5;     // 含流动条的扇叶长宽比最大值
+    // FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MIN = 1.8;       // 含流动条的扇叶长宽比最小值
+    // FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MAX = 0.8;   // 含流动条的扇叶轮廓的面积之比最大值
+    // FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MIN = 0;  // 含流动条的扇叶轮廓的面积之比最小值
+
+    // //CENTER_R
+    CENTER_R_CONTOUR_AREA_MAX = 200;          //风车中心R面积最大值
+    CENTER_R_CONTOUR_AREA_MIN = 50;           //风车中心R面积最小值
+    CENTER_R_CONTOUR_LENGTH_MAX = 25;        //风车中心R宽边长度最小值
+    CENTER_R_CONTOUR_LENGTH_MIN = 10;        //风车中心R长边长度最小值
+    CENTER_R_CONTOUR_WIDTH_MAX = 15;         //风车中心R宽边长度最大值
+    CENTER_R_CONTOUR_WIDTH_MIN = 5;         //风车中心R长边长度最大值
+    CENTER_R_CONTOUR_HW_RATIO_MAX = 2;       //风车中心R长宽比最大值
+    CENTER_R_CONTOUR_HW_RATIO_MIN = 0.5;      //风车中心R长宽比最小值
+
+    //CENTER_R(北理珠视频DEBUG)
+    // CENTER_R_CONTOUR_AREA_MAX = 2000;          //风车中心R面积最大值
+    // CENTER_R_CONTOUR_AREA_MIN = 50;           //风车中心R面积最小值
+    // CENTER_R_CONTOUR_LENGTH_MAX = 50;        //风车中心R宽边长度最小值
+    // CENTER_R_CONTOUR_LENGTH_MIN = 10;        //风车中心R长边长度最小值
+    // CENTER_R_CONTOUR_WIDTH_MAX = 50;         //风车中心R宽边长度最大值
+    // CENTER_R_CONTOUR_WIDTH_MIN = 5;         //风车中心R长边长度最大值
+    // CENTER_R_CONTOUR_HW_RATIO_MAX = 3.5;       //风车中心R长宽比最大值
+    // CENTER_R_CONTOUR_HW_RATIO_MIN = 0.8;      //风车中心R长宽比最小值
 
     // cout << "Init params done" << endl;
 }

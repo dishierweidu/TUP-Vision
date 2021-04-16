@@ -113,3 +113,60 @@ make: *** [Makefile:121: cmTC_488f9/fast] Error 2
 
 
 
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/tup/Desktop/TUP-Vision/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a05eb/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a05eb.dir/build.make CMakeFiles/cmTC_a05eb.dir/build
+make[1]: Entering directory '/home/tup/Desktop/TUP-Vision/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a05eb.dir/CheckSymbolExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -std=c++11 -march=native    -o CMakeFiles/cmTC_a05eb.dir/CheckSymbolExists.c.o   -c /home/tup/Desktop/TUP-Vision/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+cc1: warning: command line option ‘-std=c++11’ is valid for C++/ObjC++ but not for C
+Linking C executable cmTC_a05eb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a05eb.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -std=c++11 -march=native     -rdynamic CMakeFiles/cmTC_a05eb.dir/CheckSymbolExists.c.o  -o cmTC_a05eb 
+CMakeFiles/cmTC_a05eb.dir/CheckSymbolExists.c.o: In function `main':
+CheckSymbolExists.c:(.text+0x1b): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_a05eb.dir/build.make:97: recipe for target 'cmTC_a05eb' failed
+make[1]: *** [cmTC_a05eb] Error 1
+make[1]: Leaving directory '/home/tup/Desktop/TUP-Vision/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_a05eb/fast' failed
+make: *** [cmTC_a05eb/fast] Error 2
+
+File /home/tup/Desktop/TUP-Vision/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/tup/Desktop/TUP-Vision/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_daaf0/fast"
+/usr/bin/make -f CMakeFiles/cmTC_daaf0.dir/build.make CMakeFiles/cmTC_daaf0.dir/build
+make[1]: Entering directory '/home/tup/Desktop/TUP-Vision/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_daaf0.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-7   -std=c++11 -march=native -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_daaf0.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+cc1: warning: command line option ‘-std=c++11’ is valid for C++/ObjC++ but not for C
+Linking C executable cmTC_daaf0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_daaf0.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-7  -std=c++11 -march=native -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_daaf0.dir/CheckFunctionExists.c.o  -o cmTC_daaf0 -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_daaf0.dir/build.make:97: recipe for target 'cmTC_daaf0' failed
+make[1]: *** [cmTC_daaf0] Error 1
+make[1]: Leaving directory '/home/tup/Desktop/TUP-Vision/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_daaf0/fast' failed
+make: *** [cmTC_daaf0/fast] Error 2
+
+
