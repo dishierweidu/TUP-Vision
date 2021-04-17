@@ -90,12 +90,13 @@ public:
 
     STM32Data stm32Data;    // 这里默认为stm32传来的数据
 
-    // camera
+    // camerainitParams
     Mat cameraMatrix;
     Mat distCoeffs;
 
     double buff_width;     // 能量机关装甲板宽度
     double buff_height;      // 能量机关装甲板高度
+    double arm_length;          //悬臂臂长
 
     // 二值化阈值
     int DETECT_RED_GRAY_BINARY;    // 我方为红色时的阈值

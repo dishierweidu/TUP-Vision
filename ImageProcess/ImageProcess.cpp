@@ -19,7 +19,9 @@
 // const string source_location = "/home/rangeronmars/Desktop/video/RH.avi";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample.avi";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_red.mp4";
-const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red.mp4";
+// const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red.mp4";
+// const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red_800*800.mp4";
+const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red_800*800_conter_clockwise.mp4";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_blue.mp4";
 
 VideoCapture cap(source_location);

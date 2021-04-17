@@ -9,6 +9,7 @@
 //              1. void drawRotatedRect(Mat frame, RotatedRect rRect, Scalar color, int thickness = 1)
 //              2. double pointsDistance(Point2f p1, Point2f p2)
 //              3. bool circleLeastFit(vector<Point2f> &points, Point2f &RCenter)
+//              4. inline Point2f XYTransform2D(Point2f X,Point2f O1,Point2f O2)
 //
 //              1. void Energy::run(Mat &oriFrame)
 //              2. void Energy::clearVectors()
@@ -77,9 +78,21 @@ void drawRotatedRect(Mat frame, RotatedRect rRect, Scalar color, int thickness =
 // @param p1 first point
 // @param p2 second point
 // @return distance between two points
-double pointsDistance(Point2f p1, Point2f p2)
+inline double pointsDistance(Point2f p1, Point2f p2)
 {
     return pow(pow((p1.x - p2.x), 2) + pow((p1.y - p2.y), 2), 0.5);
+}
+
+//@brief    2维坐标变换
+//@param X  所需变换的坐标点
+//@param O1 原坐标下原点
+//@param O2 所需坐标系下原点
+//@return 返回变换之后的坐标点
+inline Point2f XYTransform2D(Point2f X,Point2f O1,Point2f O2)
+{
+    Point2f direction_vector = O2 - O1; //坐标系变化方向向量    
+    X = X - direction_vector ;          //新坐标等于原坐标减去方向向量
+    return X;
 }
 
 // @brief 对装甲板的旋转做拟合,寻找R字母的中心点
@@ -429,11 +442,15 @@ bool Energy::predictTargetPoint(Mat &frame)
     // 如果为大能量机关模式,需要进行拟合
     if (energyParams.stm32Data.energy_mode == ENERGY_BIG)
     {
+        #ifdef ABSOLUTE_TIME_INTERGRATION 
+
         // 大符旋转绝对时间
         float absolute_time = ((double)getTickCount() - absolute_run_time) / getTickFrequency();
         // cout<<absolute_time<<endl;
 
         energyParams.big_mode_predict_angle = theta_func(absolute_time + energyParams.bullet_fly_time) - theta_func(absolute_time);
+
+        #endif//ABSOLUTE_TIME_INTERGRATION
 
         if (!predictRCenter(frame))
         {
@@ -444,6 +461,59 @@ bool Energy::predictTargetPoint(Mat &frame)
         {
             return false;
         }
+
+        #ifdef USING_KALMAN_FILTER
+
+        //如果队列元素不足
+        if(armor_center_in_centerR_cord.size() <= 1)//FIXME::可以增加一种情况以进行优化
+        {
+            Point2f armor_center_transform_tmp = XYTransform2D(target_armor.center,Point2f(0,0),RCenter);//将坐标点变换到圆心坐标系下
+            armor_center_in_centerR_cord.push(armor_center_transform_tmp);
+            armor_center_queue_time.push(clock());
+            return false ; 
+        }
+        else if(armor_center_in_centerR_cord.size() == 2)
+        {
+            Point2f armor_center_transform_tmp = XYTransform2D(target_armor.center,Point2f(0,0),RCenter);//将坐标点变换到圆心坐标系下
+            armor_center_in_centerR_cord.pop();//弹出首元素
+            armor_center_in_centerR_cord.push(armor_center_transform_tmp);//压入最新装甲板坐标
+
+
+            armor_center_queue_time.pop();//弹出首元素
+            armor_center_queue_time.push(clock());//压入最新装甲板坐标
+
+
+
+            //计算平均悬臂长度
+            double average_R_length = (sqrt(pow((armor_center_in_centerR_cord.back()).x,2) + pow((armor_center_in_centerR_cord.back()).y,2)) + 
+                                        sqrt(pow((armor_center_in_centerR_cord.front()).x,2) + pow((armor_center_in_centerR_cord.front()).y,2)) ) / 2 ; 
+
+            //利用反三角函数与余弦公式计算角度增量 delta_theta = acos(1 - c^2/(2*R^2))
+            double delta_theta = acos(1 - ( pow( pointsDistance(armor_center_in_centerR_cord.back(),armor_center_in_centerR_cord.front()) , 2) / 
+                                                                                                            (2 * pow(average_R_length,2))));
+            // cout<<"average_R_length = "<<average_R_length<<endl;
+            // cout<<"delta_theta = "<< delta_theta <<" rad "<<endl;
+
+
+
+            //计算帧间时间增量
+            double delta_time = (double)(armor_center_queue_time.back() - armor_center_queue_time.front()) / CLOCKS_PER_SEC;
+
+            // cout<<"delta time = "<<delta_time<<" s"<<endl;
+
+
+            if(delta_theta > 2e-1)         //若delta_theta过大则认为是装甲板发生切换,不进行预测
+                return false;
+            Mat prediction = kalmanfilter.KF.predict();                     //获取卡尔曼滤波预测值
+            Mat measurement = Mat::zeros(1,1,CV_32F);                       //设置测量矩阵
+            energyParams.big_mode_predict_angle = prediction.at<float>(0) / delta_time * energyParams.bullet_fly_time;   //设置偏移角度(对角度增量积分)
+            measurement.at<float>(0) = delta_theta;
+            kalmanfilter.KF.correct(measurement);                           //更新测量矩阵
+
+        }
+
+        #endif//USING_KALMAN_FILTER
+
 
         if (rotation == CLOCKWISE)
         {
@@ -542,6 +612,7 @@ bool Energy::findArmors(Mat &src)
         cout << "can not find the target armor!" << endl;
         return false;
     }
+    
 
     return true;
 }

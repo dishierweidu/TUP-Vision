@@ -30,12 +30,23 @@
 
 
 //----------------------中心R识别模式选择--------------------------//
-// #define CIRCLE_FIT                  //使用装甲板中心拟合圆心
+// #define CIRCLE_FIT                  //使用装甲板中心拟合圆心(不稳定)
 
 #ifndef CIRCLE_FIT
 #define FIND_R_STRUCT_IN_ROI          //寻找ROI中R结构
 #endif
 //----------------------中心R识别模式选择--------------------------//
+
+
+//--------------------------大符预测方案选择------------------------------//
+// #define ABSOLUTE_TIME_INTERGRATION      //绝对时间积分得到预测角度(不准确)
+
+#ifndef ABSOLUTE_TIME_INTERGRATION 
+#define USING_KALMAN_FILTER                       //使用卡尔曼滤波预测大符
+#endif
+
+
+//--------------------------大符预测方案选择------------------------------//
 
 
 

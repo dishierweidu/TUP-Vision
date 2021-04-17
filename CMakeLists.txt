@@ -35,6 +35,8 @@ ADD_EXECUTABLE(SAUVisionBuff ./main.cpp
 					#角度解算
 					./AngelSolver/AngleSolver.cpp
 					./AngelSolver/AngleSolver.hpp
+					./AngelSolver/Kalman.cpp
+					./AngelSolver/Kalman.h
 					#串口通信
 					./Serial/CRC_Check.cpp
 					./Serial/CRC_Check.h

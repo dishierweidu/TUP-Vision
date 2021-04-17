@@ -26,11 +26,6 @@
 #include "./EnergyDebug.h"
 #include "../Debug.h"
 
-#include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/calib3d.hpp>
-#include <opencv2/objdetect.hpp>
 
 #include <iostream>
 #include <string>   // 字符串
@@ -39,6 +34,14 @@
 // #include <thread>   // 线程库
 #include <mutex>    // 互斥量
 #include <time.h>
+
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/calib3d.hpp>
+#include <opencv2/objdetect.hpp>
+
+#include "../AngelSolver/Kalman.h"
 
 
 using namespace std;
@@ -64,19 +67,28 @@ public:
 private:
     Params energyParams;                                        // 实例化参数对象
 
-    queue<double> armor_angle_queue;                            // 存储装甲板的角度,先存储3帧
+    Kalman kalmanfilter;                                        //卡尔曼滤波器
 
-    vector<RotatedRect> armors_rrect;                           // 初步筛选到的各种装甲板
+    queue<double> armor_angle_queue;                            // 存储装甲板的角度,先存储3帧
+    queue<Point2f> armor_center_in_centerR_cord;                //以中心R为左边原点的坐标系下装甲板中心点的集合,用于求deltatheta
+    queue<clock_t> armor_center_queue_time;                           //记录上面集合的保存时间
+
+
     vector<Point2f> armor_center_points;                        // 装甲板中心点的集合,用于做拟合
+    vector<RotatedRect> armors_rrect;                           // 初步筛选到的各种装甲板
     vector<RotatedRect> flow_strip_fan_rrect;                   // 筛选出来的有流动条的扇叶
+    
 
     clock_t debug_cnt;                                          // DEBUG时间戳
+
+
 
     RotatedRect center_ROI;                                     // 中心ROI
     Point2f RCenter;                                            // 中心点坐标
     Point2f predict_point;                                      // 打击预测点
     
     RotatedRect target_armor;                                   // 最终得到的装甲板
+    RotatedRect prior_target_armor;                             // 上一次得到的最终装甲板
     RotatedRect target_flow_strip_fan;                          // 最终得到的含有流动条的扇叶
     RotatedRect centerR;                                        // 最终找到的R
 

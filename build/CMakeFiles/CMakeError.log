@@ -170,3 +170,119 @@ Makefile:126: recipe for target 'cmTC_daaf0/fast' failed
 make: *** [cmTC_daaf0/fast] Error 2
 
 
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/rangeronmars/Desktop/Test_Files/TUP-Vision/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_621b9/fast && /usr/bin/make -f CMakeFiles/cmTC_621b9.dir/build.make CMakeFiles/cmTC_621b9.dir/build
+make[1]: Entering directory '/home/rangeronmars/Desktop/Test_Files/TUP-Vision/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_621b9.dir/src.c.o
+/bin/x86_64-linux-gnu-gcc-9   -fPIC -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_621b9.dir/src.c.o   -c /home/rangeronmars/Desktop/Test_Files/TUP-Vision/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_621b9
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_621b9.dir/link.txt --verbose=1
+/bin/x86_64-linux-gnu-gcc-9 -fPIC -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_621b9.dir/src.c.o  -o cmTC_621b9 
+/usr/bin/ld: CMakeFiles/cmTC_621b9.dir/src.c.o: in function `main':
+src.c:(.text+0x46): undefined reference to `pthread_create'
+/usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
+/usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_621b9.dir/build.make:87: cmTC_621b9] Error 1
+make[1]: Leaving directory '/home/rangeronmars/Desktop/Test_Files/TUP-Vision/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_621b9/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/rangeronmars/Desktop/Test_Files/TUP-Vision/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_445a0/fast && /usr/bin/make -f CMakeFiles/cmTC_445a0.dir/build.make CMakeFiles/cmTC_445a0.dir/build
+make[1]: Entering directory '/home/rangeronmars/Desktop/Test_Files/TUP-Vision/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_445a0.dir/CheckFunctionExists.c.o
+/bin/x86_64-linux-gnu-gcc-9   -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_445a0.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_445a0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_445a0.dir/link.txt --verbose=1
+/bin/x86_64-linux-gnu-gcc-9 -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_445a0.dir/CheckFunctionExists.c.o  -o cmTC_445a0  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_445a0.dir/build.make:87: cmTC_445a0] Error 1
+make[1]: Leaving directory '/home/rangeronmars/Desktop/Test_Files/TUP-Vision/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_445a0/fast] Error 2
+
+
+
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/rangeronmars/Desktop/Test_Files/TUP-Vision/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_688ff/fast && /usr/bin/make -f CMakeFiles/cmTC_688ff.dir/build.make CMakeFiles/cmTC_688ff.dir/build
+make[1]: Entering directory '/home/rangeronmars/Desktop/Test_Files/TUP-Vision/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_688ff.dir/src.c.o
+/bin/x86_64-linux-gnu-gcc-9   -fPIC -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_688ff.dir/src.c.o   -c /home/rangeronmars/Desktop/Test_Files/TUP-Vision/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_688ff
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_688ff.dir/link.txt --verbose=1
+/bin/x86_64-linux-gnu-gcc-9 -fPIC -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_688ff.dir/src.c.o  -o cmTC_688ff 
+/usr/bin/ld: CMakeFiles/cmTC_688ff.dir/src.c.o: in function `main':
+src.c:(.text+0x46): undefined reference to `pthread_create'
+/usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
+/usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_688ff.dir/build.make:87: cmTC_688ff] Error 1
+make[1]: Leaving directory '/home/rangeronmars/Desktop/Test_Files/TUP-Vision/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_688ff/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/rangeronmars/Desktop/Test_Files/TUP-Vision/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_36b9a/fast && /usr/bin/make -f CMakeFiles/cmTC_36b9a.dir/build.make CMakeFiles/cmTC_36b9a.dir/build
+make[1]: Entering directory '/home/rangeronmars/Desktop/Test_Files/TUP-Vision/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_36b9a.dir/CheckFunctionExists.c.o
+/bin/x86_64-linux-gnu-gcc-9   -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_36b9a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_36b9a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_36b9a.dir/link.txt --verbose=1
+/bin/x86_64-linux-gnu-gcc-9 -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_36b9a.dir/CheckFunctionExists.c.o  -o cmTC_36b9a  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_36b9a.dir/build.make:87: cmTC_36b9a] Error 1
+make[1]: Leaving directory '/home/rangeronmars/Desktop/Test_Files/TUP-Vision/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_36b9a/fast] Error 2
+
+
+

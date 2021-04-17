@@ -15,7 +15,8 @@
         "limits": "cpp",
         "sstream": "cpp",
         "streambuf": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "complex": "cpp"
     },
     "C_Cpp.default.configurationProvider": "vector-of-bool.cmake-tools"
 }
