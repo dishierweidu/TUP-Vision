@@ -393,7 +393,7 @@ void ImageProcess::ImageConsumer()
 // @brief 能量机关识别线程
 void ImageProcess::EnergyThread()
 {
-    cuda::setDevice(0);
+    //cuda::setDevice(0);
     while(true)
     {
         // TODO: 角度偏移,串口通讯
