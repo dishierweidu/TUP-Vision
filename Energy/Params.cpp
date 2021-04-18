@@ -41,7 +41,7 @@ void Params::initParams()
 
     // 二值化阈值
     
-    DETECT_RED_GRAY_BINARY = 100;                                  //北理珠视频DEBUG红色阈值                   
+    //DETECT_RED_GRAY_BINARY = 100;                                  //北理珠视频DEBUG红色阈值                   
     // DETECT_RED_GRAY_BINARY = 10;                                   // 识别红色时的阈值
     // DETECT_RED_GRAY_BINARY = 4;                                   // 识别红色时的阈值(北理珠视频)
     DETECT_BLUE_GRAY_BINARY = 100;                                  // 识别蓝色时的阈值
