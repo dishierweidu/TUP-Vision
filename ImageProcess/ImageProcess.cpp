@@ -11,9 +11,7 @@
 //----------------------------------------------------------
 
 #include "./ImageProcess.h"
-#include "../AngelSolver/AngleSolver.hpp"
-#include "../Armor/ArmorDetector.hpp"
-#include "../Armor/Settings.hpp"
+
 
 #ifdef USE_LOCAL_VIDEO
 // const string source_location = "/home/rangeronmars/Desktop/video/RH.avi";
@@ -126,6 +124,11 @@ void ImageProcess::ImageProductor()
 
     while (true)
     {
+        #ifdef CALC_PROCESS_TIME
+        clock_t timer_productor;         //消费者处理计时变量
+        timer_productor = clock();       //记录该ID任务开始时间
+        #endif
+
         // 经典的生产-消费者模型
         // 资源太多时就阻塞生产者
         while (proIdx - consIdx >= IMG_BUFFER)
@@ -167,6 +170,13 @@ void ImageProcess::ImageProductor()
 
         proIdx++;
         waitKey(1);
+        #ifdef CALC_PROCESS_TIME
+        timer_productor = (clock() - timer_productor) / (CLOCKS_PER_SEC / 1000) ;    //原地计算本次任务所用时间(单位:ms) 
+        cout<<endl;
+        cout<<"Productor ID : "<<proIdx<<endl;                                         //输出生产者ID 
+        cout<<"Process Time : "<<(int)timer_productor<<"ms"<<endl;                      //输出处理时间
+        cout<<endl;
+        #endif//CALC_PROCESS_TIME
     }
 }
 
@@ -213,29 +223,52 @@ void ImageProcess::ImageConsumer()
     VisionData enegy_data;                   //串口发送大神符数据结构体
     /*===========================函数中所使用的参数===========================*/
 
-    /*===========================创建大神符识别类对象===========================*/
-    Energy energy_detector;
-    /*===========================创建大神符识别类对象===========================*/
-
-    /*===========================函数中所使用的参数===========================*/
     #ifdef A_RED
     int mode = 1;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
     #endif
     #ifdef A_BLUE
     int mode = 2;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
     #endif
-    #ifdef E_RED
-    int e_mode = 3;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
-    #endif
-    #ifdef E_BLUE
-    int e_mode = 4;                              //模式选择:1(辅瞄红色),2(辅瞄蓝色),3(大符红色),4(大符蓝色)
-    #endif
+
     // _port.get_Mode(mode,_sentrymode,_basemode);//从串口读取模式数据
     /*===========================函数中所使用的参数===========================*/
+     #ifdef COMPILE_WITH_GPU 
+
+    int is_cuda_available;
+
+    is_cuda_available = cuda::getCudaEnabledDeviceCount();      //检测CUDA是否可用  返回值为0说明OPENCV未编译CUDA  返回值为-1说明CUDA未成功安装或设备不支持CUDA
+    //检测到OPENCV未编译CUDA
+    if(is_cuda_available == 0)
+    {
+        cout<<"OPENCV未编译CUDA!"<<endl;
+    }
+    //未检测到CUDA或设备不支持CUDA
+    else if(is_cuda_available == -1)
+    {
+        cout<<"CUDA未成功安装或设备不支持CUDA!"<<endl;
+    }
+    //检测到可用CUDA编译
+    else if(is_cuda_available == 1)
+    {
+        cout<<"检测到可使用的CUDA设备!"<<endl;
+        //设置所使用的CUDA设备
+        cuda::setDevice(0);
+    }
+
+    #endif//COMPILE_WITH_GPU
+
+    #ifdef CALC_PROCESS_TIME
+    clock_t timer_consumer_sum = 0;         //存放消费者总处理时间(单位:ms)
+    #endif//CALC_PROCESS_TIME
+
 
     // ============================== 大循环 ===============================//
     while (true)
-    {
+    {        
+        #ifdef CALC_PROCESS_TIME
+        clock_t timer_consumer;         //消费者处理计时变量
+        timer_consumer = clock();       //记录该ID任务开始时间
+        #endif//CALC_PROCESS_TIME
         // 消费太多的时候就什么都不要做
         while (consIdx >= proIdx)
             ;
@@ -342,26 +375,18 @@ void ImageProcess::ImageConsumer()
             }
             // cout << "yaw_angle :     " << angle_x << endl;
             // cout << "pitch_angle :   " << angle_y << endl;
-        }
-        #ifdef USE_USB_ATTACT_E 
-        if (mode == 3 || mode == 4)
-        {
+        }        
+        #ifdef CALC_PROCESS_TIME
+        timer_consumer = (clock() - timer_consumer)/ (CLOCKS_PER_SEC / 1000);    //原地计算本次任务所用时间(单位:ms) 
+        timer_consumer_sum += timer_consumer;                                   //将处理时间存入总时间
 
-            //等待produce
-            while (proIdx - consIdx == 0)
-                ;
-            Image[consIdx % IMG_BUFFER].img.copyTo(src);
-            ++consIdx;
+        cout<<endl;
+        cout<<"Consumer ID : "<<consIdx<<endl;                                      //输出消费者ID
+        cout<<"Process Time : "<<(int)timer_consumer<<"ms"<<endl;                   //输出处理时间
+        cout<<"Average Process Time : "<<timer_consumer_sum / consIdx<<"ms"<<endl;  //输出平均处理时间 
+        cout<<endl;
+        #endif//CALC_PROCESS_TIME
 
-            //图片数据正常
-            if (src.empty())
-                continue;
-            if (src.channels() != 3)
-                continue;
-
-            energy_detector.run(src);
-        }
-        #endif // USE_USB_ATTACT_E
     }
 }
 

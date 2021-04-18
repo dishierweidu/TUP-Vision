@@ -10,14 +10,23 @@
 //
 //----------------------------------------------------------
 
+
+#include "../Debug.h"
+#include "../Armor/Settings.hpp"
+
+
 #include <iostream>
+
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
+#include <opencv2/opencv.hpp>
 
+#include "../AngelSolver/AngleSolver.hpp"
+#include "../Armor/ArmorDetector.hpp"
 #include "../Camera/DaHengCamera.h"
 #include "../Energy/Energy.h"
-#include "../Debug.h"
 #include "../Serial/serialport.h"
+
 
 using namespace std;
 using namespace cv;

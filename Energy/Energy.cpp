@@ -73,6 +73,22 @@ void drawRotatedRect(Mat frame, RotatedRect rRect, Scalar color, int thickness =
     for (int j = 0; j < 4; ++j)
         line(frame, vertices[j], vertices[(j + 1) % 4], color, thickness);
 }
+//@brief 检测矩形是否安全
+bool makeRectSafe(cv::Rect &rect, cv::Size size)
+{
+    if (rect.x < 0)
+        rect.x = 0;
+    if (rect.x + rect.width > size.width)
+        rect.width = size.width - rect.x;
+    if (rect.y < 0)
+        rect.y = 0;
+    if (rect.y + rect.height > size.height)
+        rect.height = size.height - rect.y;
+    if (rect.width <= 0 || rect.height <= 0)
+        // 如果发现矩形是空的，则返回false
+        return false;
+    return true;
+}
 
 // @brief return distance between two points
 // @param p1 first point
@@ -159,6 +175,21 @@ bool circleLeastFit(vector<Point2f> &points, Point2f &RCenter)
 //                                                          //
 //----------------------------------------------------------//
 
+
+void Energy::CutImageByROI(Mat &frame)
+{
+    if(!makeRectSafe(image_ROI,frame.size()))
+        return;
+    frame(image_ROI).copyTo(frame);
+}
+
+void Energy::init()
+{   
+    miss_cnt = 0;
+} 
+
+
+
 // @brief 识别总入口函数
 // @param oriFrame 原始图像
 void Energy::run(Mat &oriFrame)
@@ -193,9 +224,8 @@ void Energy::run(Mat &oriFrame)
     {
         #ifdef SHOW_RECT_INFO
         imshow("SHOW_CANDIDATE",src_rect_info);//未检测到流动条,return前显示图像
-        #endif // SHOW_RECT_INFO       
-        
-
+        #endif // SHOW_RECT_INFO
+        miss_cnt++;
         return; // 如果没找到
     }
 
@@ -207,7 +237,7 @@ void Energy::run(Mat &oriFrame)
         #ifdef SHOW_RECT_INFO
         imshow("SHOW_CANDIDATE",src_rect_info);////未检测到装甲板,return前显示图像
         #endif // SHOW_RECT_INFO       
-
+        miss_cnt++;
         return; // 如果没找到
     }
 
@@ -240,6 +270,9 @@ void Energy::run(Mat &oriFrame)
     line(PREDICT_POINT, predict_point, target_armor.center, Scalar(0, 0, 255), 2);
     circle(PREDICT_POINT, RCenter, pointsDistance(RCenter, target_armor.center), Scalar(0, 255, 0), 1);
     #endif
+
+    CutImageByROI(frame);
+    imshow("frame",frame);
 
     imshow("SHOW_PREDICT_POINT", PREDICT_POINT);
     // #ifdef DEBUG_PREDICT_INFORMATION_BUFF
@@ -499,7 +532,8 @@ bool Energy::predictTargetPoint(Mat &frame)
             //计算帧间时间增量
             double delta_time = (double)(armor_center_queue_time.back() - armor_center_queue_time.front()) / CLOCKS_PER_SEC;
 
-            // cout<<"delta time = "<<delta_time<<" s"<<endl;
+            cout<<"delta time = "<<delta_time<<" s"<<endl;
+
 
 
             if(delta_theta > 2e-1)         //若delta_theta过大则认为是装甲板发生切换,不进行预测
@@ -509,6 +543,8 @@ bool Energy::predictTargetPoint(Mat &frame)
             energyParams.big_mode_predict_angle = prediction.at<float>(0) / delta_time * energyParams.bullet_fly_time;   //设置偏移角度(对角度增量积分)
             measurement.at<float>(0) = delta_theta;
             kalmanfilter.KF.correct(measurement);                           //更新测量矩阵
+
+            // cout<<"RPM = "<<prediction.at<float>(0) / delta_theta<<
 
         }
 
@@ -700,8 +736,8 @@ bool Energy::isValidArmor(vector<Point> &armor_contour)
     return true;
 }
 
-//@brief 寻找中心ROI
-bool Energy::findCenterROI() 
+//@brief find all of rois
+bool Energy::findROI() 
 {
     float length = target_armor.size.height > target_armor.size.width ?
                    target_armor.size.height : target_armor.size.width;
@@ -710,7 +746,11 @@ bool Energy::findCenterROI()
                 target_flow_strip_fan.center.y - target_armor.center.y);
     p2p = p2p / pointsDistance(target_flow_strip_fan.center, target_armor.center);//单位化
     center_ROI = cv::RotatedRect(cv::Point2f(target_flow_strip_fan.center + p2p * length * 2.3),
-                                 Size2f(length * 1.85, length * 1.85), -90);
+                                 Size2f(length * 1.9, length * 1.9), -90);
+    image_ROI =  cv::Rect(Point2f(target_flow_strip_fan.center + p2p * length * 2.3),
+                                Size2f(length * 10, length * 10));
+
+
     return true;
 }
 //@brief 寻找中心R图案
@@ -787,7 +827,7 @@ bool Energy::isValidCenterRContour(const vector<cv::Point> &center_R_contour) {
     } 
     else if (contourArea(intersection) < energyParams.CENTER_R_CONTOUR_INTERSETION_AREA_MIN) 
     {
-        // cout << "R intersection: " << contourArea(intersection) << '\t' << cur_rect.center << endl;
+        cout << "R intersection: " << contourArea(intersection) << '\t' << cur_rect.center << endl;
         return false;
     }
     // cout<<"Center R right!"<<endl;
@@ -842,7 +882,7 @@ bool Energy::predictRCenter(Mat &frame)
     #endif//CIRCLE_FIT
 
     #ifdef FIND_R_STRUCT_IN_ROI
-    findCenterROI();               //寻找中心ROI区域
+    findROI();               //寻找中心ROI区域
     if(!findCenterR(frame))              //如果未找到中心R区域
     {
         return false;
@@ -856,8 +896,8 @@ bool Energy::predictRCenter(Mat &frame)
     #ifdef SHOW_R_CENTER
     Mat R_CENTER = frame.clone();
     cv::cvtColor(R_CENTER, R_CENTER, CV_GRAY2BGR);
-    drawRotatedRect(R_CENTER,centerR,Scalar(100,100,250),2);//绘制ROI
-    drawRotatedRect(R_CENTER,center_ROI,Scalar(100,100,200),2);//绘制ROI
+    drawRotatedRect(R_CENTER,centerR,Scalar(100,100,250),2);//绘制R
+    drawRotatedRect(R_CENTER,center_ROI,Scalar(100,100,200),2);//绘制ROI--CenterR
     circle(R_CENTER, RCenter, 5, Scalar(0, 255, 0), 1);
 
     imshow("SHOW_R_CENTER", R_CENTER);

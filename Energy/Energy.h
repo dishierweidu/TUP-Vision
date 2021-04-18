@@ -56,7 +56,7 @@ using namespace cv;
 class Energy
 {
 public:
-    Energy() {};    
+    Energy() {init();};    
     ~Energy() {};
     #ifdef SHOW_RECT_INFO 
     Mat src_rect_info;      //显示矩形信息
@@ -82,7 +82,7 @@ private:
     clock_t debug_cnt;                                          // DEBUG时间戳
 
 
-
+    Rect  image_ROI;                                     //全图ROI
     RotatedRect center_ROI;                                     // 中心ROI
     Point2f RCenter;                                            // 中心点坐标
     Point2f predict_point;                                      // 打击预测点
@@ -93,6 +93,7 @@ private:
     RotatedRect centerR;                                        // 最终找到的R
 
     int rotation;                                               // 当前旋转方向
+    int miss_cnt;                                               //miss count
 
 
     double angle_confidence;                                    // 角度置信度
@@ -106,6 +107,8 @@ private:
 
     void clearVectors();                                        // 清空各vector
     void initFrame(Mat &frame);                                 // 图像预处理
+    void CutImageByROI(Mat &frame);                             //Cut Image by ROI
+    void init();                                                ;//initilize some factors;
 
     bool getDirectionOfRotation();                              // 获得当前旋转方向
     bool predictTargetPoint(Mat &frame);                        // 对打击点进行预测
@@ -115,7 +118,7 @@ private:
     bool isValidArmor(vector<Point>&armor_contour);             // 检查装甲板是否符合要求
 
     bool predictRCenter(Mat &frame);                            // 预测字母R的中心点
-    bool findCenterROI() ;                                      // 寻找中心R的ROI
+    bool findROI() ;                                      // 寻找ROI
     bool findCenterR(Mat &src_bin)  ;                           // 寻找中心R结构
     bool isValidCenterRContour(const vector<cv::Point> &center_R_contour);  //检查中心R是否符合要求
 

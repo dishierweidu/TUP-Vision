@@ -1,20 +1,11 @@
-/*******************************************************************************************************************
-Copyright 2017 Dajiang Innovations Technology Co., Ltd (DJI)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-documentation files(the "Software"), to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense, and / or sell copies of the Software, and
-to permit persons to whom the Software is furnished to do so, subject to the following conditions :
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of
-the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
-THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-IN THE SOFTWARE.
-*******************************************************************************************************************/
-
+//----------------------------------------------------------
+//
+// FileName: ImageProcess.cpp
+// Author: 周俊平;刘上;赵梓合;顾昊
+// Version: 1.0.0
+// Date: 2021.04.10
+//
+//----------------------------------------------------------
 #pragma once
 
 #include "opencv2/highgui/highgui.hpp"
@@ -57,7 +48,7 @@ struct ArmorParam
         max_light_delta_v = 45;
         max_light_delta_angle = 30;
         near_face_v = 600;
-        max_lr_rate = 2;
+        max_lr_rate = 2.0;
         max_wh_ratio = 6;
         min_wh_ratio = 1.25;
         small_armor_wh_threshold = 3.6;

@@ -12,12 +12,14 @@
 
 // #define DEBUG_PREDICT_INFORMATION_BUFF       //是否在终端打印大符预测相关DEBUG信息(时间戳与预测所用装甲板位置样本数量)
 
-#define SHOW_ORIGINAL               // 是否显示原始图像
+// #define SHOW_ORIGINAL               // 是否显示原始图像
 
 #define SHOW_BINARY                   // 是否显示二值化图像
 
 // #define SHOW_FLOW_STRIP_FAN_TWO_ROI  // 是否显示含流动条的扇叶两侧roi矩形区域
 // #define SHOW_FLOW_STRIP_FAN          // 是否显示含流动条的扇叶
+
+#define SHOW_ROI                        //Show ROI
 
 // #define SHOW_ALL_ARMORS               // 是否显示初步筛选出的装甲板
 // #define SHOW_TARGET_ARMOR             // 是否能显示最终得到的装甲板

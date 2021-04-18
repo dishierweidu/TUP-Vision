@@ -10,6 +10,7 @@ CMakeFiles/SAUVisionBuff.dir/AngelSolver/Kalman.cpp.o: ../AngelSolver/Kalman.h
 CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o: ../AngelSolver/AngleSolver.hpp
 CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o: ../Armor/ArmorDetector.cpp
 CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o: ../Armor/ArmorDetector.hpp
+CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o: ../Armor/Debug.h
 CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o: ../Debug.h
 
 CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.o: ../Camera/DaHengCamera.cpp
@@ -52,7 +53,10 @@ CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o: ../Serial/CRC_Check.h
 CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o: ../Serial/serialport.cpp
 CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o: ../Serial/serialport.h
 
+CMakeFiles/SAUVisionBuff.dir/main.cpp.o: ../AngelSolver/AngleSolver.hpp
 CMakeFiles/SAUVisionBuff.dir/main.cpp.o: ../AngelSolver/Kalman.h
+CMakeFiles/SAUVisionBuff.dir/main.cpp.o: ../Armor/ArmorDetector.hpp
+CMakeFiles/SAUVisionBuff.dir/main.cpp.o: ../Armor/Settings.hpp
 CMakeFiles/SAUVisionBuff.dir/main.cpp.o: ../Camera/DaHengCamera.h
 CMakeFiles/SAUVisionBuff.dir/main.cpp.o: ../Camera/DxImageProc.h
 CMakeFiles/SAUVisionBuff.dir/main.cpp.o: ../Camera/GxIAPI.h

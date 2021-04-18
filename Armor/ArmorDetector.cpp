@@ -1,19 +1,11 @@
-/*******************************************************************************************************************
-Copyright 2017 Dajiang Innovations Technology Co., Ltd (DJI)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-documentation files(the "Software"), to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense, and / or sell copies of the Software, and
-to permit persons to whom the Software is furnished to do so, subject to the following conditions :
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of
-the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
-THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-IN THE SOFTWARE.
-*******************************************************************************************************************/
+//----------------------------------------------------------
+//
+// FileName: ImageProcess.cpp
+// Author: 周俊平;刘上;赵梓合;顾昊
+// Version: 1.0.0
+// Date: 2021.04.10
+//
+//----------------------------------------------------------
 
 #include "ArmorDetector.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
@@ -21,14 +13,15 @@ IN THE SOFTWARE.
 #include <queue>
 #include "opencv2/dnn/dnn.hpp"
 #include "../Debug.h"
+#include "Debug.h"
 
-// #define COUT_LOG//FIX ME
+
 #define CLASSIFICATION
 
 using namespace cv;
 using namespace std;
 
-string filename = "/home/sau/samples/pos_sam/";
+// string filename = "/home/sau/samples/pos_sam/";
 string filename_x;
 
 void ArmorDetector::setImage(const cv::Mat &src)
@@ -98,13 +91,13 @@ void ArmorDetector::setImage(const cv::Mat &src)
     int total_pixel = _src.cols * _src.rows;
     const uchar *ptr_src = _src.data;
     const uchar *ptr_src_end = _src.data + total_pixel * 3;
-    int thres_max_color_red = 40;
+    int thres_max_color_red = 30;
     int thres_max_color_blue = 36;
 
     _max_color = cv::Mat(_src.size(), CV_8UC1, cv::Scalar(0));
 
-    Mat element1 = getStructuringElement(MORPH_ELLIPSE, Size(7, 7));
-    Mat element2 = getStructuringElement(MORPH_ELLIPSE, Size(5, 5));
+    Mat element2 = getStructuringElement(MORPH_ELLIPSE, Size(7, 7));
+    Mat element1 = getStructuringElement(MORPH_ELLIPSE, Size(5, 5));
     Mat element = getStructuringElement(MORPH_ELLIPSE, Size(3, 3));
     // 敌方颜色为红色时
     if (enemy_color == RED)
@@ -118,18 +111,18 @@ void ArmorDetector::setImage(const cv::Mat &src)
         else
             threshold(thres_whole, thres_whole, 40, 255, THRESH_BINARY);
 
-#ifdef SHOW_THRESH_WHOLE
+        #ifdef SHOW_THRESH_WHOLE
         imshow("thresh_whole", thres_whole);
-#endif
+        #endif  //SHOW_THRESH_WHOLE
 
         Mat color;
         subtract(splited[2], splited[0], color);
         threshold(color, color, thres_max_color_red, 255, THRESH_BINARY); // red
         dilate(color, color, element);
 
-#ifdef SHOW_COLOR
-        imshow("SHOW_COLOR", color);
-#endif
+// #ifdef SHOW_COLOR
+//         imshow("SHOW_COLOR", color);
+// #endif
 
         _max_color = color & thres_whole; // _max_color获得了清晰的二值图
         // _max_color = color;
@@ -149,26 +142,26 @@ void ArmorDetector::setImage(const cv::Mat &src)
         else
             threshold(thres_whole, thres_whole, 50, 255, THRESH_BINARY);
 
-#ifdef SHOW_THRESH_WHOLE
+        #ifdef SHOW_THRESH_WHOLE
         imshow("thres_whole", thres_whole);
-#endif
+        #endif  //SHOW_THRESH_WHOLE
 
         subtract(splited[0], splited[2], _max_color);
         threshold(_max_color, _max_color, thres_max_color_blue, 255, THRESH_BINARY); // blue
         dilate(_max_color, _max_color, element);
 
-#ifdef SHOW_COLOR
-        imshow("SHOW_COLOR", _max_color);
-#endif
+        #ifdef SHOW_MAX_COLOR
+        imshow("SHOW_MAX_COLOR", _max_color);
+        #endif  //SHOW_MAX_COLOR
 
         _max_color = _max_color & thres_whole; // _max_color获得了清晰的二值图
         dilate(_max_color, _max_color, element2);
     }
 
 ////////////////////////////// end /////////////////////////////////////////
-#ifdef SHOW_DEBUG_IMG
-    cv::imshow("SHOW_DEBUG_IMG", _max_color);
-#endif
+    #ifdef SHOW_MAX_COLOR2
+    cv::imshow("SHOW_MAX_COLOR2", _max_color);
+    #endif  //SHOW_MAX_COLOR2
 }
 
 void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
@@ -206,13 +199,13 @@ void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
         if ((if1 || if2) && if3 && if4)
         {
             RectFirstResult.push_back(rrect);
-#ifdef SHOW_TARGET_SHOT_ARMOR
+            #ifdef SHOW_TARGET_SHOT_ARMOR
             Point2f vertice[4];
             rrect.points(vertice);
             for (int i = 0; i < 4; i++) // 绿色
                 line(FirstResult, vertice[i], vertice[(i + 1) % 4], Scalar(0, 255, 0), 3);
             imshow("SHOW_TARGET_SHOT_ARMOR", FirstResult);
-#endif
+            #endif  //SHOW_TARGET_SHOT_ARMOR
         }
     }
 
@@ -240,6 +233,7 @@ void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
         float xi = center_i.x;
         float yi = center_i.y;
         float leni = MAX(rect_i.size.width, rect_i.size.height);
+        // cout<<"len1"<<i<<"  "<<leni<<endl;
         float anglei = fabs(rect_i.angle);
         rect_i.points(_pt);
         /*pt
@@ -267,6 +261,7 @@ void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
             float xj = center_j.x;
             float yj = center_j.y;
             float lenj = MAX(rect_j.size.width, rect_j.size.height);
+            // cout<<"len"<<j<<"  "<<lenj<<endl;
             float anglej = fabs(rect_j.angle);
 
             float delta_h = xj - xi;
@@ -306,6 +301,7 @@ void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
             // lr_rate1.3有点小了，调大点可以对付破掉的3号车
             bool condition1 = delta_h > _para.min_light_delta_h && delta_h < _para.max_light_delta_h;
             bool condition2 = MAX(leni, lenj) >= 113 ? abs(yi - yj) < 166 && abs(yi - yj) < 1.66 * MAX(leni, lenj) : abs(yi - yj) < _para.max_light_delta_v && abs(yi - yj) < 1.2 * MAX(leni, lenj); // && abs(yi - yj) < MIN(leni, lenj)
+            // cout<<"y-yj"<<abs(yi - yj)<<endl;
             bool condition3 = lr_rate < _para.max_lr_rate;
             //                bool condition4 = angleabs < 15 ; // 给大点防止运动时掉帧
             bool condition4;
@@ -332,7 +328,7 @@ void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
             cout << "lr rate:  " << lr_rate << endl;
             cout << "length:   " << MAX(leni, lenj) << endl;
             cout << condition1 << " " << condition2 << " " << condition3 << " " << condition4 << endl;
-#endif
+#endif  //COUT_LOG
 
 // #ifdef SHOW_DEBUG_IMG
 //             // putText(FirstResult,angle_left,orign0,CV_FONT_NORMAL, 1, Scalar(0, 255, 0), 2);
@@ -351,13 +347,18 @@ void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
                 // 长宽比不符
 #ifdef COUT_LOG
                 cout << "wh_ratio:  " << wh_ratio << endl;
-#endif
+#endif  //COUT_LOG
                 // 基地模式不受长宽比的限制
                 if (!base_mode)
                 {
                     if (wh_ratio > _para.max_wh_ratio || wh_ratio < _para.min_wh_ratio)
+                    {
+
+                        // cout<<"aromor detect failed!"<<"\n"<<"w_h ratio:"<<wh_ratio<<endl;
                         continue;
+                    }
                 }
+
 
                 // 将初步匹配到的结构体信息push进入vector向量
                 match_rects.push_back(matched_rect{obj_rect, lr_rate, angleabs});
@@ -368,13 +369,13 @@ void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
                 for (int i = 0; i < 4; i++)
                     line(FirstResult, vertice[i], vertice[(i + 1) % 4], Scalar(255, 0, 0), 2);
                 imshow("SHOW_TARGET_SHOT_ARMOR", FirstResult);
-#endif
+#endif  //SHOW_TARGET_SHOT_ARMOR
             }
         }
     }
-// #ifdef SHOW_DEBUG_IMG
-//     imshow("showFirstResult", FirstResult);
-// #endif
+#ifdef SHOW_FIRST_RESULT
+    imshow("showFirstResult", FirstResult);
+#endif  //SHOW_FIRST_RESULT
 }
 
 cv::RotatedRect ArmorDetector::chooseTarget(const std::vector<matched_rect> &match_rects, const cv::Mat &src)
@@ -447,13 +448,13 @@ cv::RotatedRect ArmorDetector::chooseTarget(const std::vector<matched_rect> &mat
             meanStdDev(roi, mean, stdDev);
             avg = mean.ptr<double>(0)[0];
             stddev = stdDev.ptr<double>(0)[0];
-#ifdef SHOW_DEBUG_IMG
+#ifdef SHOW_ROI
             cout << "                                            " << avg << endl;
             cout << "                                            " << stddev << endl
                  << endl;
             //            putText(roi, to_string(int(avg)), rects[i].center, CV_FONT_NORMAL, 1, Scalar(0, 255, 255), 2);
-            imshow("SHOW_DEBUG_IMG", roi);
-#endif
+            imshow("SHOW_ROI", roi);
+#endif  //SHOW_ROI
             // 阈值可通过实际测量修改
             if (avg > 100.66)
                 continue;
@@ -489,9 +490,9 @@ cv::RotatedRect ArmorDetector::chooseTarget(const std::vector<matched_rect> &mat
                 {
                     input_sample = src(roi_rect).clone();
 
-#ifdef SHOW_DEBUG_IMG
-                    imshow("SHOW_DEBUG_IMG", input_sample);
-#endif
+#ifdef SHOW_INPUT_SAMPLE
+                    imshow("SHOW_INPUT_SAMPLE", input_sample);
+#endif  //SHOW_INPUT_SAMPLE
                 }
 
                 resize(input_sample, input_sample, Size(28, 28));

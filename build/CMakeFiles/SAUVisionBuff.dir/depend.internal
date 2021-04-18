@@ -11,6 +11,7 @@ CMakeFiles/SAUVisionBuff.dir/Armor/ArmorDetector.cpp.o
  /home/rangeronmars/Desktop/Test_Files/TUP-Vision/AngelSolver/AngleSolver.hpp
  /home/rangeronmars/Desktop/Test_Files/TUP-Vision/Armor/ArmorDetector.cpp
  /home/rangeronmars/Desktop/Test_Files/TUP-Vision/Armor/ArmorDetector.hpp
+ /home/rangeronmars/Desktop/Test_Files/TUP-Vision/Armor/Debug.h
  /home/rangeronmars/Desktop/Test_Files/TUP-Vision/Debug.h
 CMakeFiles/SAUVisionBuff.dir/Camera/DaHengCamera.cpp.o
  /home/rangeronmars/Desktop/Test_Files/TUP-Vision/Camera/DaHengCamera.cpp
@@ -53,7 +54,10 @@ CMakeFiles/SAUVisionBuff.dir/Serial/serialport.cpp.o
  /home/rangeronmars/Desktop/Test_Files/TUP-Vision/Serial/serialport.cpp
  /home/rangeronmars/Desktop/Test_Files/TUP-Vision/Serial/serialport.h
 CMakeFiles/SAUVisionBuff.dir/main.cpp.o
+ /home/rangeronmars/Desktop/Test_Files/TUP-Vision/AngelSolver/AngleSolver.hpp
  /home/rangeronmars/Desktop/Test_Files/TUP-Vision/AngelSolver/Kalman.h
+ /home/rangeronmars/Desktop/Test_Files/TUP-Vision/Armor/ArmorDetector.hpp
+ /home/rangeronmars/Desktop/Test_Files/TUP-Vision/Armor/Settings.hpp
  /home/rangeronmars/Desktop/Test_Files/TUP-Vision/Camera/DaHengCamera.h
  /home/rangeronmars/Desktop/Test_Files/TUP-Vision/Camera/DxImageProc.h
  /home/rangeronmars/Desktop/Test_Files/TUP-Vision/Camera/GxIAPI.h
