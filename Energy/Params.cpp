@@ -35,26 +35,6 @@ void Params::initParams()
     distCoeffs = (cv::Mat_<double>(1, 5 ) << 0.25412988,  -1.8356142, 0, 0, 0);
     #endif // USE_USB_CAMERA
 
-
-    #ifdef USE_DAHENG_CAMERA    // FIXME: MATLAB测量矩阵
-    // 大恒139的内参矩阵
-    // cameraMatrix = (cv::Mat_<double>(3, 3) << 
-    //                         1.3774427e+03, 0,             3.3584502e+02,
-    //                         0,             1.3863849e+03, 2.6509033e+02,
-    //                         0,             0,             1);
-    // // 大恒139的畸变矩阵
-    // distCoeffs = (cv::Mat_<double>(1, 5 ) << 0.25412988,  -1.8356142, 0, 0, 0);
-    //     // 大恒139的内参矩阵
-    cameraMatrix = (cv::Mat_<double>(3, 3) << 
-                            1, 1, 1,
-                            1, 1, 1,
-                            1, 1, 1);
-    // 大恒139的畸变矩阵
-    distCoeffs = (cv::Mat_<double>(1, 5 ) << 1,1, 1, 1, 1);
-    // // static cv::Mat cameraMatrix;
-    // // static cv::Mat distCoeffs;
-    #endif // USE_DAHENG_CAMERA
-
     buff_width = 23;                                            // 能量机关实际的装甲板宽度(单位:cm)
     buff_height = 12.7;
     arm_length = 56.5;                                          // 能量机关旋臂长度(单位:cm)
