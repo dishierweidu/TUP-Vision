@@ -74,6 +74,7 @@ void drawRotatedRect(Mat frame, RotatedRect rRect, Scalar color, int thickness =
         line(frame, vertices[j], vertices[(j + 1) % 4], color, thickness);
 }
 //@brief 检测矩形是否安全
+//@return 返回检测结果
 bool makeRectSafe(cv::Rect &rect, cv::Size size)
 {
     if (rect.x < 0)
@@ -175,14 +176,33 @@ bool circleLeastFit(vector<Point2f> &points, Point2f &RCenter)
 //                                                          //
 //----------------------------------------------------------//
 
-
-void Energy::CutImageByROI(Mat &frame)
+//@brief 根据ROI来剪切图像
+inline void Energy::CutImageByROI(Mat &frame)
 {
-    if(!makeRectSafe(image_ROI,frame.size()))
+    if(!makeRectSafe(image_ROI,frame.size()))//检测矩形是否安全或大小为0
         return;
     frame(image_ROI).copyTo(frame);
 }
 
+//@brief 根据丢失目标帧数调整ROI
+inline void Energy::ROIEnlargeByMissCnt(Mat &frame)
+{
+    if(miss_cnt <= 1)
+    {
+        return ;
+    }
+    else if(miss_cnt > 1 && miss_cnt <= 5)
+    {
+        Point2i point_offset = Point2i(0.05 * miss_cnt * image_ROI.width ,0.05 * image_ROI.height);
+        image_ROI = cv::Rect(image_ROI.tl() - point_offset , image_ROI.br() + point_offset);
+    }
+    else//丢失超过5帧则设置为原图大小
+    {
+        image_ROI = cv::Rect(Point2i(0,0),frame.size());
+    }
+}
+
+//@brief 初始化一些参数
 void Energy::init()
 {   
     miss_cnt = 0;
@@ -198,6 +218,8 @@ void Energy::run(Mat &oriFrame)
     // debug_cnt = clock();
     // cout << "Time:" << (int)debug_cnt << endl;
     // #endif
+
+    // cout<<"miss_cnt = "<<miss_cnt<<endl;
 
     if (oriFrame.empty())
     {
@@ -218,7 +240,19 @@ void Energy::run(Mat &oriFrame)
     #endif // SHOW_RECT_INFO
 
     clearVectors();
-    initFrame(frame);
+
+    #ifdef SHOW_ROI//是否显示ROI
+    Mat show_roi = frame.clone();
+    rectangle(show_roi,image_ROI,Scalar(200,100,0),1);
+    imshow("ROI",show_roi);
+    #endif//SHOW_ROI
+
+    ROIEnlargeByMissCnt(frame);     //根据丢失目标帧数来调整ROI大小
+    #ifdef ENABLE_ROI_CUT //是否根据ROI裁剪图像  
+    CutImageByROI(frame);           //根据ROI剪切图像
+    #endif//ENABLE_ROI_CUT
+
+    initFrame(frame);               //对图像进行预处理
 
     if (!findFlowStripFan(frame)) // 寻找含流动条的装甲板
     {
@@ -237,7 +271,7 @@ void Energy::run(Mat &oriFrame)
         #ifdef SHOW_RECT_INFO
         imshow("SHOW_CANDIDATE",src_rect_info);////未检测到装甲板,return前显示图像
         #endif // SHOW_RECT_INFO       
-        miss_cnt++;
+        miss_cnt++;//目标丢失帧数加1
         return; // 如果没找到
     }
 
@@ -271,8 +305,7 @@ void Energy::run(Mat &oriFrame)
     circle(PREDICT_POINT, RCenter, pointsDistance(RCenter, target_armor.center), Scalar(0, 255, 0), 1);
     #endif
 
-    CutImageByROI(frame);
-    imshow("frame",frame);
+
 
     imshow("SHOW_PREDICT_POINT", PREDICT_POINT);
     // #ifdef DEBUG_PREDICT_INFORMATION_BUFF
@@ -532,11 +565,10 @@ bool Energy::predictTargetPoint(Mat &frame)
             //计算帧间时间增量
             double delta_time = (double)(armor_center_queue_time.back() - armor_center_queue_time.front()) / CLOCKS_PER_SEC;
 
-            cout<<"delta time = "<<delta_time<<" s"<<endl;
 
 
 
-            if(delta_theta > 2e-1)         //若delta_theta过大则认为是装甲板发生切换,不进行预测
+            if(delta_theta > 0.2 ||delta_time > 0.5)         //若delta_theta过大或delta_time过大则认为是装甲板发生切换,不进行预测
                 return false;
             Mat prediction = kalmanfilter.KF.predict();                     //获取卡尔曼滤波预测值
             Mat measurement = Mat::zeros(1,1,CV_32F);                       //设置测量矩阵
@@ -544,7 +576,11 @@ bool Energy::predictTargetPoint(Mat &frame)
             measurement.at<float>(0) = delta_theta;
             kalmanfilter.KF.correct(measurement);                           //更新测量矩阵
 
-            // cout<<"RPM = "<<prediction.at<float>(0) / delta_theta<<
+
+            // cout<<"predict:"<<prediction.at<float>(0)<<"\t"<<"measure :" <<delta_theta / delta_time<<endl;
+
+            cout<<"delta time = "<<delta_time<<" s"<<endl;
+            // cout<<"RPM = "<<prediction.at<float>(0) / ( delta_theta * 2 * CV_PI) * 60<<" RPM"<<endl;
 
         }
 
@@ -736,8 +772,8 @@ bool Energy::isValidArmor(vector<Point> &armor_contour)
     return true;
 }
 
-//@brief find all of rois
-bool Energy::findROI() 
+//@brief 寻找中心R的ROI
+bool Energy::findCenterRROI() 
 {
     float length = target_armor.size.height > target_armor.size.width ?
                    target_armor.size.height : target_armor.size.width;
@@ -745,10 +781,12 @@ bool Energy::findROI()
     Point2f p2p(target_flow_strip_fan.center.x - target_armor.center.x,
                 target_flow_strip_fan.center.y - target_armor.center.y);
     p2p = p2p / pointsDistance(target_flow_strip_fan.center, target_armor.center);//单位化
+
+    //设置圆心的ROI
     center_ROI = cv::RotatedRect(cv::Point2f(target_flow_strip_fan.center + p2p * length * 2.3),
                                  Size2f(length * 1.9, length * 1.9), -90);
-    image_ROI =  cv::Rect(Point2f(target_flow_strip_fan.center + p2p * length * 2.3),
-                                Size2f(length * 10, length * 10));
+
+
 
 
     return true;
@@ -882,7 +920,7 @@ bool Energy::predictRCenter(Mat &frame)
     #endif//CIRCLE_FIT
 
     #ifdef FIND_R_STRUCT_IN_ROI
-    findROI();               //寻找中心ROI区域
+    findCenterRROI();               //寻找中心ROI区域
     if(!findCenterR(frame))              //如果未找到中心R区域
     {
         return false;
@@ -891,14 +929,23 @@ bool Energy::predictRCenter(Mat &frame)
     float target_length =
             target_armor.size.height > target_armor.size.width ? target_armor.size.height : target_armor.size.width;
     RCenter = centerR.center;
-    RCenter.y += target_length / 7.5;//实际最小二乘得到的中心在R的下方
+    // RCenter.y += target_length / 7.5;//实际最小二乘得到的中心在R的下方(暂未发现此问题)
+
+    //设置全图的ROI
+    image_ROI =  cv::Rect(RCenter-Point2f(target_length* 4,target_length * 4),
+                                Size2f(target_length * 8, target_length * 8));
+
+    //设置丢帧为0
+    miss_cnt = 0;
     
     #ifdef SHOW_R_CENTER
     Mat R_CENTER = frame.clone();
     cv::cvtColor(R_CENTER, R_CENTER, CV_GRAY2BGR);
     drawRotatedRect(R_CENTER,centerR,Scalar(100,100,250),2);//绘制R
     drawRotatedRect(R_CENTER,center_ROI,Scalar(100,100,200),2);//绘制ROI--CenterR
-    circle(R_CENTER, RCenter, 5, Scalar(0, 255, 0), 1);
+    circle(R_CENTER, RCenter, 5, Scalar(0, 255, 0), 1);//绘制实际圆心
+
+
 
     imshow("SHOW_R_CENTER", R_CENTER);
 
