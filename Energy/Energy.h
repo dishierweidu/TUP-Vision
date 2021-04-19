@@ -84,6 +84,7 @@ private:
 
     Rect  image_ROI;                                            //全图ROI
     RotatedRect center_ROI;                                     // 中心ROI
+    Point2i ROI_Offset;                                         //ROI Offset
     Point2f RCenter;                                            // 中心点坐标
     Point2f predict_point;                                      // 打击预测点
     

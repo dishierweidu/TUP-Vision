@@ -19,7 +19,8 @@
 // const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_red.mp4";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red.mp4";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red_800*800.mp4";
-const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red_800*800_conter_clockwise.mp4";
+// const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red_800*800_conter_clockwise.mp4";
+const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red_roi_test.mp4";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_blue.mp4";
 
 VideoCapture cap(source_location);
@@ -393,7 +394,6 @@ void ImageProcess::ImageConsumer()
 // @brief 能量机关识别线程
 void ImageProcess::EnergyThread()
 {
-    cuda::setDevice(0);
     while(true)
     {
         // TODO: 角度偏移,串口通讯

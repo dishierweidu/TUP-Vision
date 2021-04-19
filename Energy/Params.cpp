@@ -75,7 +75,7 @@ void Params::initParams()
     big_mode_predict_angle = 0;                       // 大能量机关模式打击偏移
 
     
-    // // // ARMOR
+    // // // // ARMOR
     // ARMOR_CONTOUR_AREA_MAX = 800;        // 装甲板轮廓面积最大值
     // ARMOR_CONTOUR_AREA_MIN = 200;        // 装甲板轮廓面积最小值
     // ARMOR_CONTOUR_LENGTH_MAX = 40;        // 装甲板轮廓长边最大值

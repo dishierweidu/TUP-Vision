@@ -17,10 +17,10 @@
 #define SHOW_BINARY                   // 是否显示二值化图像
 
 // #define SHOW_FLOW_STRIP_FAN_TWO_ROI  // 是否显示含流动条的扇叶两侧roi矩形区域
-// #define SHOW_FLOW_STRIP_FAN          // 是否显示含流动条的扇叶
+#define SHOW_FLOW_STRIP_FAN          // 是否显示含流动条的扇叶
 
 #define ENABLE_ROI_CUT                   //是否通过ROI来裁剪图像以加速处理
-// #define SHOW_ROI                        //Show ROI
+#define SHOW_ROI                        //Show ROI
 
 // #define SHOW_ALL_ARMORS               // 是否显示初步筛选出的装甲板
 // #define SHOW_TARGET_ARMOR             // 是否能显示最终得到的装甲板

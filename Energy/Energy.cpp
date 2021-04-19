@@ -177,16 +177,22 @@ bool circleLeastFit(vector<Point2f> &points, Point2f &RCenter)
 //----------------------------------------------------------//
 
 //@brief 根据ROI来剪切图像
-inline void Energy::CutImageByROI(Mat &frame)
+inline void Energy::CutImageByROI(Mat &frame)//检测矩形是否安全或大小为0
 {
-    if(!makeRectSafe(image_ROI,frame.size()))//检测矩形是否安全或大小为0
+    if(!makeRectSafe(image_ROI,frame.size()))
+    {
+        cout<<"not safe"<<endl;
+        ROI_Offset = Point2i(0,0);
         return;
+    }
     frame(image_ROI).copyTo(frame);
 }
 
 //@brief 根据丢失目标帧数调整ROI
 inline void Energy::ROIEnlargeByMissCnt(Mat &frame)
 {
+    ROI_Offset = image_ROI.tl();//记录裁剪后图像坐标系偏移量
+
     if(miss_cnt <= 1)
     {
         return ;
@@ -244,6 +250,7 @@ void Energy::run(Mat &oriFrame)
     #ifdef SHOW_ROI//是否显示ROI
     Mat show_roi = frame.clone();
     rectangle(show_roi,image_ROI,Scalar(200,100,0),1);
+    circle(show_roi, RCenter + (Point2f)ROI_Offset, 5, Scalar(0, 255, 0), 2);
     imshow("ROI",show_roi);
     #endif//SHOW_ROI
 
@@ -251,7 +258,6 @@ void Energy::run(Mat &oriFrame)
     #ifdef ENABLE_ROI_CUT //是否根据ROI裁剪图像  
     CutImageByROI(frame);           //根据ROI剪切图像
     #endif//ENABLE_ROI_CUT
-
     initFrame(frame);               //对图像进行预处理
 
     if (!findFlowStripFan(frame)) // 寻找含流动条的装甲板
@@ -262,7 +268,6 @@ void Energy::run(Mat &oriFrame)
         miss_cnt++;
         return; // 如果没找到
     }
-
 
 
 
@@ -278,7 +283,6 @@ void Energy::run(Mat &oriFrame)
     #ifdef SHOW_RECT_INFO
     imshow("SHOW_CANDIDATE",src_rect_info);//显示图像
     #endif // SHOW_RECT_INFO
-
     
 
     getPoints2D();
@@ -564,11 +568,12 @@ bool Energy::predictTargetPoint(Mat &frame)
 
             //计算帧间时间增量
             double delta_time = (double)(armor_center_queue_time.back() - armor_center_queue_time.front()) / CLOCKS_PER_SEC;
+            cout<<"delta_time :"<<delta_time<<endl;
 
 
 
 
-            if(delta_theta > 0.2 ||delta_time > 0.5)         //若delta_theta过大或delta_time过大则认为是装甲板发生切换,不进行预测
+            if(delta_theta > 0.2 || delta_time > 0.5)         //若delta_theta过大或delta_time过大则认为是装甲板发生切换,不进行预测
                 return false;
             Mat prediction = kalmanfilter.KF.predict();                     //获取卡尔曼滤波预测值
             Mat measurement = Mat::zeros(1,1,CV_32F);                       //设置测量矩阵
@@ -576,11 +581,10 @@ bool Energy::predictTargetPoint(Mat &frame)
             measurement.at<float>(0) = delta_theta;
             kalmanfilter.KF.correct(measurement);                           //更新测量矩阵
 
+            // cout<<"predict speed:"<<prediction.at<float>(0) / delta_time <<"rad / s"<<endl;
+            // cout<<"measure speed:" << delta_theta / delta_time <<"rad / s"<<endl;
+            cout<<endl;
 
-            // cout<<"predict:"<<prediction.at<float>(0)<<"\t"<<"measure :" <<delta_theta / delta_time<<endl;
-
-            cout<<"delta time = "<<delta_time<<" s"<<endl;
-            // cout<<"RPM = "<<prediction.at<float>(0) / ( delta_theta * 2 * CV_PI) * 60<<" RPM"<<endl;
 
         }
 
@@ -929,10 +933,11 @@ bool Energy::predictRCenter(Mat &frame)
     float target_length =
             target_armor.size.height > target_armor.size.width ? target_armor.size.height : target_armor.size.width;
     RCenter = centerR.center;
-    // RCenter.y += target_length / 7.5;//实际最小二乘得到的中心在R的下方(暂未发现此问题)
+    // RCenter.y += target_length / 7.5;
 
     //设置全图的ROI
-    image_ROI =  cv::Rect(RCenter-Point2f(target_length* 4,target_length * 4),
+    // cout<<target_length<<endl;
+    image_ROI =  cv::Rect(RCenter - Point2f(target_length* 4,target_length * 4) + (Point2f)ROI_Offset,
                                 Size2f(target_length * 8, target_length * 8));
 
     //设置丢帧为0
@@ -1003,7 +1008,6 @@ bool Energy::findFlowStripFan(Mat &src)
         }
         flow_strip_fan_rrect.emplace_back(minAreaRect(flow_strip_fan));
     }
-
     // 判断是否为空
     if (flow_strip_fan_rrect.empty())
     {
@@ -1015,7 +1019,6 @@ bool Energy::findFlowStripFan(Mat &src)
     {
         target_flow_strip_fan = flow_strip_fan_rrect.at(0);
     }
-
     #ifdef SHOW_FLOW_STRIP_FAN
     Mat FLOW_STRIP_FAN = src_bin.clone();
     cv::cvtColor(FLOW_STRIP_FAN, FLOW_STRIP_FAN, CV_GRAY2BGR);
@@ -1027,7 +1030,6 @@ bool Energy::findFlowStripFan(Mat &src)
     }
     imshow("SHOW_FLOW_STRIP_FAN", FLOW_STRIP_FAN);
     #endif // SHOW_FLOW_STRIP_FAN
-
     return true;
 }
 
@@ -1088,7 +1090,6 @@ bool Energy::isValidFlowStripFan(Mat &src_bin, vector<Point> &flow_strip_fan_con
     Rect roi_right_rect, roi_left_rect;          // 两侧的矩形区域
     Size roi_size(12, 12);                       // 矩形的大小
     int roi_right_intensity, roi_left_intensity; // 两侧的强度值
-
     if (fabs(width - pointsDistance(rrect_points[0], rrect_points[1])) <= 1) // 这里的意思是0,1的距离和短边长度差不多
     {
         roi_right_center = (rrect_points[0] + rrect_points[3]) / 2;
@@ -1105,10 +1106,10 @@ bool Energy::isValidFlowStripFan(Mat &src_bin, vector<Point> &flow_strip_fan_con
         roi_right_rect = Rect(roi_right_center, roi_size);
         roi_left_rect = Rect(roi_left_center, roi_size);
     }
-
+    if( !makeRectSafe(roi_right_rect,src_bin.size()) || !makeRectSafe(roi_left_rect,src_bin.size()) )
+        return false;
     roi_right_intensity = getRectIntensity(src_bin, roi_right_rect);
     roi_left_intensity = getRectIntensity(src_bin, roi_left_rect);
-
     // 是否显示两侧roi矩形区域
     #ifdef SHOW_FLOW_STRIP_FAN_TWO_ROI
     Mat FLOW_STRIP_FAN_TWO_ROI = src_bin.clone();

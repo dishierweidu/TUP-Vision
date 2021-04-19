@@ -44,7 +44,7 @@
 
 #define ENERGY_THREAD               // 能量机关独立线程
 
-#define COMPILE_WITH_GPU         // FIX ME:辅瞄是否使用GPU(不适用于妙算)
+// #define COMPILE_WITH_GPU         // FIX ME:辅瞄是否使用GPU(不适用于妙算)
 
 
 //----------------------------------------------------------//
