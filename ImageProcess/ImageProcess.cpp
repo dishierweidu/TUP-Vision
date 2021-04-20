@@ -17,10 +17,12 @@
 // const string source_location = "/home/rangeronmars/Desktop/video/RH.avi";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample.avi";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_red.mp4";
-// const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red.mp4";
+const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red.mp4";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red_800*800.mp4";
-const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red_800*800_conter_clockwise.mp4";
+// const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red_800*800_conter_clockwise.mp4";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_blue.mp4";
+
+// mutex src_lock ;//资源锁
 
 VideoCapture cap(source_location);
 #endif // USE_LOCAL_VIDEO
@@ -220,7 +222,7 @@ void ImageProcess::ImageConsumer()
     RotatedRect rect;                        //getArea的函数输出,为最后筛选出来的装甲板
     Point2f center = cv::Point2f();          //基地模式的串口发送参数
     VisionData vdata;                        //串口发送的数据结构体
-    VisionData enegy_data;                   //串口发送大神符数据结构体
+    VisionData energy_data;                   //串口发送大神符数据结构体
     /*===========================函数中所使用的参数===========================*/
 
     #ifdef A_RED
@@ -393,7 +395,41 @@ void ImageProcess::ImageConsumer()
 // @brief 能量机关识别线程
 void ImageProcess::EnergyThread()
 {
-    cuda::setDevice(0);
+  /*===========================相机畸变矩阵传入===========================*/
+    FileStorage file(file_path, FileStorage::READ);
+    Mat camera_Matrix, dis_Coeffs;
+    file["Camera_Matrix"]>>camera_Matrix;
+    file["Distortion_Coefficients"]>>dis_Coeffs;
+    // camera_Matrix = (cv::Mat_<double>(3, 3) << 1.5042e+03, 0.000000000000, 6.5358e+02, 0.000000000000, 1.5025e+03, 5.7713e+02, 0.000000000000, 0.000000000000, 1.000000000000);
+    // dis_Coeffs = (cv::Mat_<double>(1, 5) << -0.2302, 0.2882, 0, 0, 0);
+    /*===========================相机畸变矩阵传入===========================*/
+
+    /*===========================角度解算参数传入===========================*/
+    // 最后不是根据这个的
+    AngleSolver solver_720(camera_Matrix, dis_Coeffs, 22.5, 5.5);
+    // 大小装甲板的角度解法
+    AngleSolverFactory angle_slover;
+    angle_slover.setTargetSize(22.5, 5.5 , AngleSolverFactory::TARGET_ARMOR);
+    angle_slover.setTargetSize(13, 5.5, AngleSolverFactory::TARGET_SAMLL_ATMOR);
+    /*===========================角度解算参数传入===========================*/
+
+    /*===========================创建装甲板识别类===========================*/
+    ArmorParam armor;
+    ArmorDetector armor_detector(armor);
+    ArmorParam armor_para_720 = armor;
+    armor_detector.setPnPSlover(&solver_720);
+    armor_detector.setPara(armor_para_720);
+    angle_slover.setSolver(&solver_720);
+
+    /*===========================函数中所使用的参数===========================*/
+    VisionData energy_data;                   //串口发送大神符数据结构体
+    /*===========================函数中所使用的参数===========================*/
+    int near_face = 0;                       //是否贴脸
+
+    double angle_x;//raw
+    double angle_y;//pitch
+    double dist = 0;
+
     while(true)
     {
         // TODO: 角度偏移,串口通讯
@@ -422,7 +458,15 @@ void ImageProcess::EnergyThread()
 
         // 能量机关识别入口
         energy.run(oriFrame);
+        if (angle_slover.getAngle(energy.predict_hit_armor, AngleSolverFactory::TARGET_ARMOR, angle_x, angle_y, dist) == false)
+            continue;
+        energy_data = {(float)angle_x, (float)angle_y, (float)dist, 1, 1, 0, near_face};
+        _port.TransformData(energy_data);
+        _port.send();
 
+        cout << "yaw_angle :     " << angle_x << endl;
+        cout << "pitch_angle :   " << angle_y << endl;
+        
 
         #ifdef SHOW_ENERGY_RUN_TIME
         run_time = ((double)getTickCount() - run_time) / getTickFrequency();

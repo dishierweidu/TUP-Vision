@@ -289,6 +289,7 @@ void Energy::run(Mat &oriFrame)
     getPoints3D();
     solveXYZ();
     predictTargetPoint(frame);
+    Final_Hit_Calc();
 
     #ifdef SHOW_PREDICT_POINT
     Mat PREDICT_POINT = frame.clone();
@@ -307,6 +308,7 @@ void Energy::run(Mat &oriFrame)
     circle(PREDICT_POINT, predict_point, 5, Scalar(0, 255, 0), 2);
     line(PREDICT_POINT, predict_point, target_armor.center, Scalar(0, 0, 255), 2);
     circle(PREDICT_POINT, RCenter, pointsDistance(RCenter, target_armor.center), Scalar(0, 255, 0), 1);
+    drawRotatedRect(PREDICT_POINT,predict_hit_armor,Scalar(255,0,0));
     #endif
 
 
@@ -581,8 +583,8 @@ bool Energy::predictTargetPoint(Mat &frame)
             measurement.at<float>(0) = delta_theta / delta_time ;
             kalmanfilter.KF.correct(measurement);                           //更新测量矩阵
 
-            cout<<"predict speed:"<<(float)(prediction.at<float>(0) ) <<"rad / s"<<endl;
-            cout<<"measure speed:" << (float)(delta_theta / delta_time) <<"rad / s"<<endl;
+            // cout<<"predict speed:"<<(float)(prediction.at<float>(0) ) <<"rad / s"<<endl;
+            // cout<<"measure speed:" << (float)(delta_theta / delta_time) <<"rad / s"<<endl;
             cout<<endl;
 
 
@@ -1134,4 +1136,22 @@ int Energy::getRectIntensity(Mat &src, Rect &roi_rect)
 {
     Mat roi = src(roi_rect);
     return static_cast<int>(mean(roi).val[0]);
+}
+
+void Energy::Final_Hit_Calc()
+{
+    double preAngleTemp;        //DEGREE
+
+
+        if (rotation == CLOCKWISE)
+        {
+            preAngleTemp  = -energyParams.big_mode_predict_angle * 180 / CV_PI;
+        }
+        else if (rotation == COUNTER_CLOCKWISE)
+        {
+            preAngleTemp  =  energyParams.big_mode_predict_angle * 180 / CV_PI;
+        }
+    predict_hit_point = predict_point;
+    predict_hit_armor = cv::RotatedRect(predict_hit_point,target_armor.size,target_armor.angle - preAngleTemp);
+    // cout<<"angle:"<<preAngleTemp<<endl;
 }
