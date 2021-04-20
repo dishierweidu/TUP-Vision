@@ -1,13 +1,12 @@
+
 //----------------------------------------------------------
-//                                                          
+//
 // FileName: main.cpp
-// Author: Liu Shang fyrwls@163.com 
-// Version: 1.0.20200924                                  
-// Date: 2020.09.24
-// Description: 图像读取,创建,输出帧处理时间
-// Function List:
-//              1. int main()
-// 
+// Author: 周俊平;刘上;赵梓合;顾昊
+// Version: 1.0.0
+// Date: 2021.04.10
+// Description: 
+//
 //----------------------------------------------------------
 
 
@@ -21,7 +20,11 @@ int main()
     XInitThreads();
     char ttyUSB_path[] = "/dev/ttyUSB0";//设置串口名称
     SerialPort port(ttyUSB_path);//'创建串口类对象
-    port.initSerialPort();//串口初P[+始化
+    
+    int _mode,_sentry,_base;
+    
+    port.initSerialPort();//串口初始化
+    port.get_Mode(_mode,_sentry,_base);
 
 
     #ifdef MULTI_THREAD
