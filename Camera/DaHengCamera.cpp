@@ -1,19 +1,19 @@
-﻿/*********************************************************************************
-  *Copyright(C),2018-2020,华北理工大学Horizon战队All Rights Reserved
-  *FileName:  DaHengCamera.cpp
-  *Author:  解佳朋
-  *Version: 1.3.1.200513_RC
-  *Date:  2020.05.13
-  *Description: 大恒相机MER_139_210U3C SDK
-  *Function List:
-     1.DaHengCamera 初始化相机库
-     2.StartDevice    打开设备
-     3.SetStreamOn 开始采集
-     4.SetResolution  设置分辨率
-     5.SetExposureTime   设置曝光值
-     6.SetGAIN   设置增益
-     7.Set_BALANCE_AUTO  设置白平衡模式
-     8.GetMat   得到Mat图像
+
+/*********************************************************************************
+    FileName: 
+    Author: 周俊平;刘上;赵梓合;顾昊
+    Version: 1.0.0
+    Date: 2021.04.10
+    *Description: 大恒相机MER_139_210U3C SDK
+    *Function List:
+        1.DaHengCamera 初始化相机库
+        2.StartDevice    打开设备
+        3.SetStreamOn 开始采集
+        4.SetResolution  设置分辨率
+        5.SetExposureTime   设置曝光值
+        6.SetGAIN   设置增益
+        7.Set_BALANCE_AUTO  设置白平衡模式
+        8.GetMat   得到Mat图像
 **********************************************************************************/
 #include "./DaHengCamera.h"
 #include "../Debug.h"
