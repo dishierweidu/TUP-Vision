@@ -539,7 +539,7 @@ bool Energy::predictTargetPoint(Mat &frame)
         {
             Point2f armor_center_transform_tmp = XYTransform2D(target_armor.center,Point2f(0,0),RCenter);//将坐标点变换到圆心坐标系下
             armor_center_in_centerR_cord.push(armor_center_transform_tmp);
-            armor_center_queue_time.push(clock());
+            armor_center_queue_time.push(getTickCount());
             return false ; 
         }
         else if(armor_center_in_centerR_cord.size() == 2)
@@ -550,7 +550,7 @@ bool Energy::predictTargetPoint(Mat &frame)
 
 
             armor_center_queue_time.pop();//弹出首元素
-            armor_center_queue_time.push(clock());//压入最新装甲板坐标
+            armor_center_queue_time.push( getTickCount());//压入最新装甲板坐标时间
 
 
 
@@ -567,8 +567,8 @@ bool Energy::predictTargetPoint(Mat &frame)
 
 
             //计算帧间时间增量
-            double delta_time = (double)(armor_center_queue_time.back() - armor_center_queue_time.front()) / CLOCKS_PER_SEC;
-            cout<<"delta_time :"<<delta_time<<endl;
+            double delta_time = (double)(armor_center_queue_time.back() - armor_center_queue_time.front()) / getTickFrequency() ;
+            // cout<<"delta_time :"<<delta_time<<"s"<<endl;
 
 
 
@@ -577,12 +577,12 @@ bool Energy::predictTargetPoint(Mat &frame)
                 return false;
             Mat prediction = kalmanfilter.KF.predict();                     //获取卡尔曼滤波预测值
             Mat measurement = Mat::zeros(1,1,CV_32F);                       //设置测量矩阵
-            energyParams.big_mode_predict_angle = prediction.at<float>(0) / delta_time * energyParams.bullet_fly_time;   //设置偏移角度(对角度增量积分)
-            measurement.at<float>(0) = delta_theta;
+            energyParams.big_mode_predict_angle = prediction.at<float>(0) *  energyParams.bullet_fly_time;   //设置偏移角度
+            measurement.at<float>(0) = delta_theta / delta_time ;
             kalmanfilter.KF.correct(measurement);                           //更新测量矩阵
 
-            // cout<<"predict speed:"<<prediction.at<float>(0) / delta_time <<"rad / s"<<endl;
-            // cout<<"measure speed:" << delta_theta / delta_time <<"rad / s"<<endl;
+            cout<<"predict speed:"<<(float)(prediction.at<float>(0) ) <<"rad / s"<<endl;
+            cout<<"measure speed:" << (float)(delta_theta / delta_time) <<"rad / s"<<endl;
             cout<<endl;
 
 
@@ -937,7 +937,7 @@ bool Energy::predictRCenter(Mat &frame)
 
     //设置全图的ROI
     // cout<<target_length<<endl;
-    image_ROI =  cv::Rect(RCenter - Point2f(target_length* 4,target_length * 4) + (Point2f)ROI_Offset,
+    image_ROI =  cv::Rect(RCenter - Point2f(target_length * 4,target_length * 4) + (Point2f)ROI_Offset,
                                 Size2f(target_length * 8, target_length * 8));
 
     //设置丢帧为0
