@@ -59,8 +59,9 @@ bool SerialPort::get_Mode(int &mode, int &sentry_mode, int &base_mode)
     if (rdata[0] == 0xA5 && Verify_CRC8_Check_Sum(rdata, 3))
     {
         //判断针头和CRC校验是否正确
-        mode  = (int)rdata[1];
+        mode  = (int)rdata[1]; //通过此数据控制线程的开启	0关闭自瞄1开启自瞄2小能量机关3大能量机关
         printf("接收到的指令:%d\r\n", mode);
+	//----------No use---------//    
         sentry_mode  = (int)rdata[15];
         printf("Is in sentry mode ? :%d\r\n", sentry_mode);
         base_mode  = (int)rdata[16];
@@ -293,7 +294,7 @@ void SerialPort::TransformDataFirst(int Xpos, int Ypos, int dis)
 		dis = (dis - dis % 10) / 10;
     }
 
-	Tdata[15] = 0;
+	Tdata[15] = 0;//通过此端口向下位机发送是否识别到敌方装甲板或能量机关
     Tdata[16] = 0;
     Tdata[17] = 0;
     Tdata[18] = 0;
