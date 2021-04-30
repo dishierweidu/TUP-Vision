@@ -63,6 +63,15 @@ typedef struct
     int nearFace;
 } VisionData;
 
+//地图识别地方机器人信息
+typedef struct
+{
+int16uchar data_length;
+int16uchar target_robot_ID;
+float2uchar target_position_x;
+float2uchar target_position_y;
+} Mapdata;
+
 
 class SerialPort
 {

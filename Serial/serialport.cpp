@@ -339,14 +339,52 @@ void SerialPort::TransformData(const VisionData &data)
     Tdata[18] = 0x00;
     Tdata[19] = data.nearFace;
 
-	Append_CRC16_Check_Sum(Tdata, 22);
+	Append_CRC16_Check_Sum(Tdata, 19);
 
 }
+void SerialPort::TransformData(const Mapdata &data)
+{
 
+    Tdata[0] = 0xA5;
+    Tdata[1] = data.data_length.c[0];
+    Tdata[2] = data.data_length.c[1];
+    Tdata[3] = 0;
+	Append_CRC8_Check_Sum(Tdata, 4);
+
+    Tdata[5] = 0x0303;
+
+    Tdata[3] = data.target_position_x.c[0];
+    Tdata[4] = data.target_position_x.c[1];
+    Tdata[5] = data.target_position_x.c[2];
+    Tdata[6] = data.target_position_x.c[3];
+
+    Tdata[7] = data.target_position_y.c[0];
+    Tdata[8] = data.target_position_y.c[1];
+    Tdata[9] = data.target_position_y.c[2];
+    Tdata[10] = data.target_position_y.c[3];
+
+    Tdata[11] = 0;
+    Tdata[12] = 0;
+    Tdata[13] = 0;
+    Tdata[14] = 0;
+
+    Tdata[15] = 0;
+
+	Tdata[16] = 0;
+    Tdata[17] = 0;
+
+	Append_CRC16_Check_Sum(Tdata, 24);
+
+}
 //发送数据函数
 void SerialPort::send()
 {
 	write(fd, Tdata, 22);
+}
+
+void SerialPort::send1()
+{
+	write(fd, Tdata, 24);
 }
 
 //关闭通讯协议接口
