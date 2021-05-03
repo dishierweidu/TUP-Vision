@@ -2,11 +2,11 @@
   
 ## Author:  周俊平;刘上;赵梓合;顾昊
   
-## Version: 3.3.1
+## Version: 4.0.1
 
 ### 更新内容：
-Add Kalman Filter For Energy and COM Communication.
- *Date:  2021.05.02
+
+更新了卡尔曼滤波相关代码；完善了和下位机的通讯机制 *Date:  2021.05.03
 
 更新了ArmorDetector中的阈值参数；扩大了对装甲板判定的条件范围；将能量机关识别任务独立给长焦镜头；更改编译路径为相对路径  *Date:  2021.04.10
 
