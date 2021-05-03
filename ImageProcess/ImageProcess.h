@@ -10,6 +10,8 @@
 //
 //----------------------------------------------------------
 
+#pragma once
+
 
 #include "../Debug.h"
 #include "../Armor/Settings.hpp"
@@ -26,10 +28,13 @@
 #include "../Camera/DaHengCamera.h"
 #include "../Energy/Energy.h"
 #include "../Serial/serialport.h"
+#include <atomic>
 
 
 using namespace std;
 using namespace cv;
+
+
 
 class ImageProcess
 {
@@ -44,7 +49,7 @@ public:
     // void ImageProductor_Single(Mat &oriFrame);                    // 线程生产者(单线程)
     // void ImageConsumer_Single(Mat &src, Energy &energy_detector); //线程消费者(单线程)
     
-    void EnergyThread();    // 能量机关识别独立线程
+    // void EnergyThread();    // 能量机关识别独立线程
 
     void ShootingAngleCompensate(double &distance,double &angle_x,double &angle_y);//Angle Compensate based on pnp distance
 private:

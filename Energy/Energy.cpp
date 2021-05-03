@@ -30,6 +30,7 @@
 
 static double absolute_run_time = static_cast<double>(getTickCount());
 
+
 //----------------------------------------------------------//
 //                                                          //
 //                      一些公共函数                          //
@@ -208,33 +209,46 @@ inline void Energy::ROIEnlargeByMissCnt(Mat &frame)
     }
 }
 
+Energy::Energy(SerialPort &port)  : _port(port), _sentrymode(0), _basemode(0)
+{
+
+    init();
+}
+
+Energy::Energy()
+{
+    init();
+}
+
+
 //@brief 初始化一些参数
 void Energy::init()
 {   
     miss_cnt = 0;
+    bool is_first_predict = false;
 } 
 
 
 
 // @brief 识别总入口函数
 // @param oriFrame 原始图像
-void Energy::run(Mat &oriFrame)
+bool Energy::run(Mat &oriFrame)
 {
     // #ifdef DEBUG_PREDICT_INFORMATION_BUFF
-    // debug_cnt = clock();
+    // debug_cnt = clock();    // if(i>100)
+    // cout<<"T1 :"<< (double)(getTickCount() - armor_center_queue_time.back()) / getTickFrequency()<<"S\n"<<endl;
     // cout << "Time:" << (int)debug_cnt << endl;
     // #endif
 
     // cout<<"miss_cnt = "<<miss_cnt<<endl;
-
+    // i++;
     if (oriFrame.empty())
     {
         cout << "oriFrame is empty!" << endl;
-        return;
+        return false;
     }
 
     Mat frame = oriFrame.clone();
-
 
     #ifdef SHOW_ORIGINAL
     imshow("SHOW_ORIGINAL", frame);
@@ -245,6 +259,11 @@ void Energy::run(Mat &oriFrame)
     frame.copyTo(src_rect_info);//负责源图以供绘制相关信息
     #endif // SHOW_RECT_INFO
 
+    #ifdef SHOW_PREDICT_ARMOR
+    Mat predict_armor;
+    frame.copyTo(predict_armor);//负责源图以供绘制相关信息
+    #endif // SHOW_PREDICT_ARMOR
+
     clearVectors();
 
     #ifdef SHOW_ROI//是否显示ROI
@@ -253,43 +272,51 @@ void Energy::run(Mat &oriFrame)
     circle(show_roi, RCenter + (Point2f)ROI_Offset, 5, Scalar(0, 255, 0), 2);
     imshow("ROI",show_roi);
     #endif//SHOW_ROI
-
     ROIEnlargeByMissCnt(frame);     //根据丢失目标帧数来调整ROI大小
     #ifdef ENABLE_ROI_CUT //是否根据ROI裁剪图像  
     CutImageByROI(frame);           //根据ROI剪切图像
     #endif//ENABLE_ROI_CUT
     initFrame(frame);               //对图像进行预处理
-
+    // if(i>100)
+    // cout<<"T2 :"<< (double)(getTickCount() - armor_center_queue_time.back()) / getTickFrequency()<<"S\n"<<endl;
     if (!findFlowStripFan(frame)) // 寻找含流动条的装甲板
     {
         #ifdef SHOW_RECT_INFO
         imshow("SHOW_CANDIDATE",src_rect_info);//未检测到流动条,return前显示图像
         #endif // SHOW_RECT_INFO
         miss_cnt++;
-        return; // 如果没找到
+        waitKey(1);
+        return false; // 如果没找到
     }
 
 
 
-    if (!findArmors(frame)) // 寻找装甲板
-    {
+    if (!findArmors(frame)) {// 寻找装甲板
         #ifdef SHOW_RECT_INFO
         imshow("SHOW_CANDIDATE",src_rect_info);////未检测到装甲板,return前显示图像
         #endif // SHOW_RECT_INFO       
         miss_cnt++;//目标丢失帧数加1
-        return; // 如果没找到
+        waitKey(1);
+        return false; // 如果没找到
     }
 
-    #ifdef SHOW_RECT_INFO
-    imshow("SHOW_CANDIDATE",src_rect_info);//显示图像
-    #endif // SHOW_RECT_INFO
+    // #ifdef SHOW_RECT_INFO
+    // imshow("SHOW_CANDIDATE",src_rect_info);//显示图像
+    // #endif // SHOW_RECT_INFO
     
 
-    getPoints2D();
-    getPoints3D();
-    solveXYZ();
+    // getPoints2D();
+    // getPoints3D();
+    // solveXYZ();
     predictTargetPoint(frame);
+
+    if(pointsDistance(RCenter, target_armor.center) > energyParams.max_arm_length){
+        waitKey(1);
+        return false;
+    }
+
     Final_Hit_Calc();
+
 
     #ifdef SHOW_PREDICT_POINT
     Mat PREDICT_POINT = frame.clone();
@@ -308,10 +335,13 @@ void Energy::run(Mat &oriFrame)
     circle(PREDICT_POINT, predict_point, 5, Scalar(0, 255, 0), 2);
     line(PREDICT_POINT, predict_point, target_armor.center, Scalar(0, 0, 255), 2);
     circle(PREDICT_POINT, RCenter, pointsDistance(RCenter, target_armor.center), Scalar(0, 255, 0), 1);
-    drawRotatedRect(PREDICT_POINT,predict_hit_armor,Scalar(255,0,0));
+    // drawRotatedRect(PREDICT_POINT,predict_hit_armor,Scalar(255,0,0));
     #endif
 
-
+    #ifdef SHOW_PREDICT_ARMOR
+    drawRotatedRect(predict_armor,predict_hit_armor,Scalar(0,255,0),2);
+    imshow("predict_armor",predict_armor);
+    #endif // SHOW_PREDICT_ARMOR
 
     imshow("SHOW_PREDICT_POINT", PREDICT_POINT);
     // #ifdef DEBUG_PREDICT_INFORMATION_BUFF
@@ -319,6 +349,9 @@ void Energy::run(Mat &oriFrame)
     //      << endl;
     // #endif // DEBUG_PREDICT_INFORMATION_BUFF
     #endif // SHOW_PREDICT_POINT
+
+    waitKey(1);
+    return true;
 }
 
 // @brief 获得pnp平面二维坐标
@@ -485,7 +518,7 @@ bool Energy::predictTargetPoint(Mat &frame)
 
         if (!getDirectionOfRotation())
         {
-            cout << "Predict Rotation failed" << endl;
+            //cout << "Predict Rotation failed" << endl;
             return false;
         }
 
@@ -547,14 +580,11 @@ bool Energy::predictTargetPoint(Mat &frame)
         else if(armor_center_in_centerR_cord.size() == 2)
         {
             Point2f armor_center_transform_tmp = XYTransform2D(target_armor.center,Point2f(0,0),RCenter);//将坐标点变换到圆心坐标系下
-            armor_center_in_centerR_cord.pop();//弹出首元素
-            armor_center_in_centerR_cord.push(armor_center_transform_tmp);//压入最新装甲板坐标
+            armor_center_in_centerR_cord.pop();                             //弹出首元素
+            armor_center_in_centerR_cord.push(armor_center_transform_tmp);  //压入最新装甲板坐标
 
-
-            armor_center_queue_time.pop();//弹出首元素
-            armor_center_queue_time.push( getTickCount());//压入最新装甲板坐标时间
-
-
+            armor_center_queue_time.pop();                                  //弹出首元素
+            armor_center_queue_time.push( getTickCount());                  //压入最新装甲板坐标时间
 
             //计算平均悬臂长度
             double average_R_length = (sqrt(pow((armor_center_in_centerR_cord.back()).x,2) + pow((armor_center_in_centerR_cord.back()).y,2)) + 
@@ -566,26 +596,74 @@ bool Energy::predictTargetPoint(Mat &frame)
             // cout<<"average_R_length = "<<average_R_length<<endl;
             // cout<<"delta_theta = "<< delta_theta <<" rad "<<endl;
 
-
-
             //计算帧间时间增量
             double delta_time = (double)(armor_center_queue_time.back() - armor_center_queue_time.front()) / getTickFrequency() ;
+            // double delta_time = 1 / 30.0;
+
+
+            if(delta_theta > 0.2 || delta_time > 0.1){//若delta_theta过大或delta_time过大则认为是装甲板发生切换,不进行预测
+                cout<<"delta_theta or time too big!!"<<endl;
+                return false;
+            }
+            
+            //计算角速度
+            double measure_omega =  delta_theta / delta_time ;
+
+
+
+            Mat prediction = kalmanfilter.KF.predict();                     //获取卡尔曼滤波预测值
+            Mat status = Mat::zeros(2,1,CV_32F);                            //设置状态矩阵
+
+
+            //计算角速度增量
+            if(armor_center_queue_omega.size() <= 1)        //若角速度队列不足,不进行角速度计算
+            {
+                armor_center_queue_omega.push(prediction.at<float>(0));
+                // armor_center_queue_omega.push(measure_omega);
+                return false;
+            }
+
+            else if(armor_center_in_centerR_cord.size() == 2)
+            {
+                armor_center_queue_omega.pop();                 //弹出首元素
+                armor_center_queue_omega.push(prediction.at<float>(0));   //压入最新角速度
+                // armor_center_queue_omega.push(measure_omega);
+            }
+
+            //计算角速度增量
+
+            double delta_omega = armor_center_queue_omega.back() - armor_center_queue_omega.front(); 
+            double measure_a_rad =(float)(delta_omega / delta_time) ;
+            // cout<<"measured radian accelration : "<<measure_a_rad<<"rad / (s^2)"<<endl;
+            if(fabs(measure_a_rad) > 3){         //若加速度过大则认为是数据出错
+                cout<<"acceleration too big : "<<measure_a_rad<<endl;
+                measure_a_rad = (fabs(measure_a_rad) / measure_a_rad) * 2;
+                // return false;
+            }
+
+            status.at<float>(0,0) = measure_omega;
+            status.at<float>(0,1) = measure_a_rad;
+            // cout<<measurement<<endl;
+            kalmanfilter.KF.correct(status);                           //更新测量矩阵
+
+
+
+            energyParams.big_mode_predict_angle = prediction.at<float>(0,0) ;    //设置偏移角度
+            // cout<<armor_center_in_centerR_cord.back()<<endl;
             // cout<<"delta_time :"<<delta_time<<"s"<<endl;
 
+            // cout<<"Vp - Vm : "<<(float)(prediction.at<float>(0,1) ) - (float)(measure_omega ) <<endl;
+            // cout<<"predict degree:"<<(float)(prediction.at<float>(0,0) ) <<"degree"<<endl;
+            // cout<<"measure speed:"<<(float)(measure_omega ) <<"rad / s"<<endl;
+            // cout<<"predict speed:"<<(float)(prediction.at<float>(0,1) ) <<"rad / s"<<endl;
+            // cout<<"measure radian accelration:"<< measure_a_rad <<"rad / (s^2)"<<endl;
+            // cout<<"predict radian accelration:"<<(float)(prediction.at<float>(0,2) ) <<"rad / (s^2)"<<endl;
+            // cout<<"predict speed:"<<(float)(prediction.at<float>(0,1) ) * 60 / (2 * CV_PI) <<"RPM"<<endl;
+            // cout<<"measure speed:" << (int)(delta_theta / delta_time) <<"rad / s"<<endl;
+            // cout<<endl;
 
 
 
-            if(delta_theta > 0.2 || delta_time > 0.5)         //若delta_theta过大或delta_time过大则认为是装甲板发生切换,不进行预测
-                return false;
-            Mat prediction = kalmanfilter.KF.predict();                     //获取卡尔曼滤波预测值
-            Mat measurement = Mat::zeros(1,1,CV_32F);                       //设置测量矩阵
-            energyParams.big_mode_predict_angle = prediction.at<float>(0) *  energyParams.bullet_fly_time;   //设置偏移角度
-            measurement.at<float>(0) = delta_theta / delta_time ;
-            kalmanfilter.KF.correct(measurement);                           //更新测量矩阵
-
-            // cout<<"predict speed:"<<(float)(prediction.at<float>(0) ) <<"rad / s"<<endl;
-            // cout<<"measure speed:" << (float)(delta_theta / delta_time) <<"rad / s"<<endl;
-            cout<<endl;
 
 
         }
@@ -687,7 +765,7 @@ bool Energy::findArmors(Mat &src)
 
     if (!findTargetArmor(src_bin))
     {
-        cout << "can not find the target armor!" << endl;
+        //cout << "can not find the target armor!" << endl;
         return false;
     }
     
@@ -748,7 +826,6 @@ bool Energy::isValidArmor(vector<Point> &armor_contour)
     }
 
 
-
     RotatedRect cur_rrect = minAreaRect(armor_contour);
 
     #ifdef SHOW_RECT_INFO_ARMOR
@@ -773,8 +850,6 @@ bool Energy::isValidArmor(vector<Point> &armor_contour)
     {
         return false;
     }
-
-
     return true;
 }
 
@@ -839,8 +914,7 @@ bool Energy::isValidCenterRContour(const vector<cv::Point> &center_R_contour) {
     float length = cur_size.height > cur_size.width ? cur_size.height : cur_size.width;//将矩形的长边设置为长
     float width = cur_size.height < cur_size.width ? cur_size.height : cur_size.width;//将矩形的短边设置为宽
     if (length < energyParams.CENTER_R_CONTOUR_LENGTH_MIN || width < energyParams.CENTER_R_CONTOUR_WIDTH_MIN
-        || length > energyParams.CENTER_R_CONTOUR_LENGTH_MAX ||width > energyParams.CENTER_R_CONTOUR_WIDTH_MAX) 
-    {
+        || length > energyParams.CENTER_R_CONTOUR_LENGTH_MAX ||width > energyParams.CENTER_R_CONTOUR_WIDTH_MAX) {
     // cout<<"length or width fail."<<endl;
     // cout << "length: " << length << '\t' << "width: " << width << '\t' << cur_rect.center << endl;
     return false;
@@ -850,31 +924,28 @@ bool Energy::isValidCenterRContour(const vector<cv::Point> &center_R_contour) {
     //计算矩形长宽比
     float length_width_ratio = length / width;
     if (length_width_ratio > energyParams.CENTER_R_CONTOUR_HW_RATIO_MAX ||
-        length_width_ratio < energyParams.CENTER_R_CONTOUR_HW_RATIO_MIN)
-    {
+        length_width_ratio < energyParams.CENTER_R_CONTOUR_HW_RATIO_MIN){
     // cout<<"length width ratio fail."<<endl;
     // cout << "HW: " << length_width_ratio << '\t' << cur_rect.center << endl;
     return false;
     //长宽比不合适
     }
 
-    if (cur_contour_area / cur_size.area() < energyParams.CENTER_R_CONTOUR_AREA_RATIO_MIN) 
-    {
+    if (cur_contour_area / cur_size.area() < energyParams.CENTER_R_CONTOUR_AREA_RATIO_MIN) {
 
-    // cout << "area ratio fail: " << cur_contour_area / cur_size.area()  << endl;
+    //cout << "area ratio fail: " << cur_contour_area / cur_size.area()  << endl;
     return false;//轮廓对矩形的面积占有率不合适
     }
 
-    if (rotatedRectangleIntersection(cur_rect, center_ROI, intersection) == 0) 
-    {
+    if (rotatedRectangleIntersection(cur_rect, center_ROI, intersection) == 0) {
         return false;
     } 
-    else if (contourArea(intersection) < energyParams.CENTER_R_CONTOUR_INTERSETION_AREA_MIN) 
-    {
-        cout << "R intersection: " << contourArea(intersection) << '\t' << cur_rect.center << endl;
+    else if (contourArea(intersection) < energyParams.CENTER_R_CONTOUR_INTERSETION_AREA_MIN) {
+        // cout << "R intersection: " << contourArea(intersection) << '\t' << cur_rect.center << endl;
         return false;
     }
     // cout<<"Center R right!"<<endl;
+    // cout << "R intersection: " << contourArea(intersection) << '\t' << cur_rect.center << endl;
     return true;
 }
 
@@ -939,8 +1010,8 @@ bool Energy::predictRCenter(Mat &frame)
 
     //设置全图的ROI
     // cout<<target_length<<endl;
-    image_ROI =  cv::Rect(RCenter - Point2f(target_length * 4,target_length * 4) + (Point2f)ROI_Offset,
-                                Size2f(target_length * 8, target_length * 8));
+    image_ROI =  cv::Rect(RCenter - Point2f(target_length * 5,target_length * 5) + (Point2f)ROI_Offset,
+                                Size2f(target_length * 10, target_length * 10));
 
     //设置丢帧为0
     miss_cnt = 0;
@@ -989,7 +1060,6 @@ bool Energy::findFlowStripFan(Mat &src)
         cout << "Flow_strip_fan src empty!" << endl;
         return false;
     }
-
     Mat src_bin = src.clone();
 
     if (src.type() == CV_8UC3)
@@ -1142,16 +1212,28 @@ void Energy::Final_Hit_Calc()
 {
     double preAngleTemp;        //DEGREE
 
+    if (energyParams.stm32Data.energy_mode == ENERGY_BIG){
 
-        if (rotation == CLOCKWISE)
-        {
+
+        if (rotation == CLOCKWISE){
             preAngleTemp  = -energyParams.big_mode_predict_angle * 180 / CV_PI;
         }
-        else if (rotation == COUNTER_CLOCKWISE)
-        {
+        else if (rotation == COUNTER_CLOCKWISE){
             preAngleTemp  =  energyParams.big_mode_predict_angle * 180 / CV_PI;
         }
+    }
+
+    if (energyParams.stm32Data.energy_mode == ENERGY_SMALL){
+
+
+        if (rotation == CLOCKWISE){
+            preAngleTemp  = -energyParams.small_mode_predict_angle * 180 / CV_PI;
+        }
+        else if (rotation == COUNTER_CLOCKWISE){
+            preAngleTemp  =  energyParams.small_mode_predict_angle * 180 / CV_PI;
+        }
+    }
     predict_hit_point = predict_point;
-    predict_hit_armor = cv::RotatedRect(predict_hit_point,target_armor.size,target_armor.angle - preAngleTemp);
+    predict_hit_armor = cv::RotatedRect(predict_hit_point + (Point2f)ROI_Offset,target_armor.size,target_armor.angle - preAngleTemp);
     // cout<<"angle:"<<preAngleTemp<<endl;
 }

@@ -33,6 +33,7 @@ using namespace std;
 //串口的相关参数
 #define BAUDRATE 115200//波特率
 #define UART_DEVICE "/dev/ttyUSB0"//默认的串口名称
+// #define UART_DEVICE "/dev/ttyUSB1"//默认的串口名称
 
 //C_lflag
 #define ECHOFLAGS (ECHO | ECHOE | ECHOK | ECHONL)

@@ -27,12 +27,15 @@
 #include "../Debug.h"
 
 
+
+
 #include <iostream>
 #include <string>   // 字符串
 #include <vector>   // 向量容器
 #include <queue>    // 队列
 // #include <thread>   // 线程库
 #include <mutex>    // 互斥量
+#include <atomic>
 #include <time.h>
 
 #include <opencv2/core.hpp>
@@ -41,7 +44,11 @@
 #include <opencv2/calib3d.hpp>
 #include <opencv2/objdetect.hpp>
 
+#include "../AngelSolver/AngleSolver.hpp"
 #include "../AngelSolver/Kalman.h"
+#include "../Armor/ArmorDetector.hpp"
+#include "../Serial/serialport.h"
+
 
 
 using namespace std;
@@ -56,13 +63,21 @@ using namespace cv;
 class Energy
 {
 public:
-    Energy() {init();};    
+    Energy(SerialPort &port);                                   //能量机关构造函数
+    Energy();                                                   //能量机关构造函数     
     ~Energy() {};
+
+    bool EnergyThread();                                       //能量机关线程
+
     #ifdef SHOW_RECT_INFO 
-    Mat src_rect_info;      //显示矩形信息
+    Mat src_rect_info;                                       //显示矩形信息
+
     #endif//SHOW_RECT_INFO
+
+    RotatedRect predict_hit_armor;                              //预测击打装甲
+    Point2f predict_hit_point;                                  //预测击打点
     
-    void run(Mat &oriFrame);                                    // 识别总函数
+    bool run(Mat &oriFrame);                                    // 识别总函数
 
 private:
     Params energyParams;                                        // 实例化参数对象
@@ -71,7 +86,8 @@ private:
 
     queue<double> armor_angle_queue;                            // 存储装甲板的角度,先存储3帧
     queue<Point2f> armor_center_in_centerR_cord;                //以中心R为左边原点的坐标系下装甲板中心点的集合,用于求deltatheta
-    queue<clock_t> armor_center_queue_time;                           //记录上面集合的保存时间
+    queue<clock_t> armor_center_queue_time;                      //记录上面集合的保存时间
+    queue<double> armor_center_queue_omega;                     //记录角速度增量
 
 
     vector<Point2f> armor_center_points;                        // 装甲板中心点的集合,用于做拟合
@@ -96,6 +112,7 @@ private:
     int rotation;                                               // 当前旋转方向
     int miss_cnt;                                               //miss count
 
+    bool is_first_predict;                                      //是否为第一次预测
 
     double angle_confidence;                                    // 角度置信度
 
@@ -124,6 +141,8 @@ private:
     bool findCenterR(Mat &src_bin)  ;                           // 寻找中心R结构
     bool isValidCenterRContour(const vector<cv::Point> &center_R_contour);  //检查中心R是否符合要求
 
+    void Final_Hit_Calc();                                      //击打数据计算
+
     inline float spd_func(float time);        // spd函数  
     inline float theta_func(float time);      // 对spd的积分函数
 
@@ -131,4 +150,9 @@ private:
     bool isValidFlowStripFan(Mat &src_bin, vector<Point> &flow_strip_fan_contour);// 检查含流动条的扇叶是否合格
 
     int getRectIntensity(Mat &src, Rect &roi_rect);         // 获取roi区域的强度
+
+private:
+    SerialPort _port;
+    int _sentrymode;
+    int _basemode;
 };
