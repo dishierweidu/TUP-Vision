@@ -1,0 +1,3 @@
+/home/rangeronmars/Desktop/TUP-Vision  4.1.1/build/CMakeFiles/rebuild_cache.dir
+/home/rangeronmars/Desktop/TUP-Vision  4.1.1/build/CMakeFiles/edit_cache.dir
+/home/rangeronmars/Desktop/TUP-Vision  4.1.1/build/CMakeFiles/TUP-Vision.dir

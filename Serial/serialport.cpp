@@ -42,15 +42,15 @@ bool SerialPort::get_Mode(int &mode, int &sentry_mode, int &base_mode)
 {
     int bytes;
     char *name = ttyname(fd);
-    if (name != NULL)printf("device:%s\n",name);
-    else printf("tty is null\n");
+    if (name = NULL)printf("tty is null\n");
+    //if (name != NULL)printf("device:%s\n",name);
     int result = ioctl(fd, FIONREAD, &bytes);
     if (result == -1)return false;
 
 
     if (bytes == 0)
     {
-//        cout << "缓冲区为空" << endl;
+    //    cout << "缓冲区为空" << endl;
         return true;
     }
 
@@ -60,12 +60,12 @@ bool SerialPort::get_Mode(int &mode, int &sentry_mode, int &base_mode)
     {
         //判断针头和CRC校验是否正确
         mode  = (int)rdata[1]; //通过此数据控制线程的开启	0关闭自瞄1开启自瞄2小能量机关3大能量机关
-        printf("接收到的指令:%d\r\n", mode);
+        // printf("接收到的指令:%d\r\n", mode);
 	//----------No use---------//    
         sentry_mode  = (int)rdata[15];
-        printf("Is in sentry mode ? :%d\r\n", sentry_mode);
+        // printf("Is in sentry mode ? :%d\r\n", sentry_mode);
         base_mode  = (int)rdata[16];
-        printf("Is in base mode ? :%d\r\n", base_mode);
+        // printf("Is in base mode ? :%d\r\n", base_mode);
 
     }
     return true;

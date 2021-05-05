@@ -37,26 +37,33 @@
 //                                                          //
 //----------------------------------------------------------//
 
-// #define MULTI_THREAD                // 是否使用多线程
+#define MULTI_THREAD               // 是否使用多线程
 
 #define ENERGY_THREAD               // 能量机关独立线程
 
 // #define COMPILE_WITH_GPU         // FIX ME:辅瞄是否使用GPU(不适用于妙算)
 
+#define DEBUG_WITHOUT_COM           //无串口调试
+
+// #define SAVE_VIDEO_DAHENG                  //Save video to local.
+// #define SAVE_VIDEO_USB_CAMERA                  //Save video to local.
 
 //----------------------------------------------------------//
 //                                                          //
 //                        图像调试参数                        //
 //                                                          //
 //----------------------------------------------------------//
-
-// #define USE_DAHENG_CAMERA   // 是否使用大恒139相机
+//-----------------------------(辅瞄)-----------------------------------//
+#define USE_DAHENG_CAMERA   // 是否使用大恒139相机
 // #define USE_USB_CAMERA      // 是否使用USB相机
-#define USE_LOCAL_VIDEO     // 是否使用本地测试视频
+// #define USE_LOCAL_VIDEO     // 是否使用本地测试视频
 
 // #define REOPEN            //是否在丢帧后重启摄像头
 
-// #define SHOW_SRC      // 是否显示原始图像
+#define SHOW_SRC      // 是否显示原始图像
+//-----------------------------(大符)-----------------------------------//
+#define USE_USB_CAMERA_ENERGY      // 是否使用USB相机
+// #define USE_LOCAL_VIDEO_ENERGY     // 是否使用本地测试视频
 
 //----------------------------------------------------------//
 //                                                          //

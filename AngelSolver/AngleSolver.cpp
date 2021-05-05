@@ -79,16 +79,17 @@ void AngleSolver::tranformationCamera2PTZ(const cv::Mat &pos, cv::Mat &transed_p
 }
 
 /**
- * 在这里进行角度偏移修改
+ * 在这里进行角度偏移修改-----该功能现已改为由EnergyMain与Shooting
  */
 void AngleSolver::adjustPTZ2Barrel(const cv::Mat &pos_in_ptz, double &angle_x, double &angle_y)
 {
+    ////////////////////////////////请勿修改////////////////////////////////////////////
     const double *_xyz = (const double *)pos_in_ptz.data;
     double xyz[3] = {_xyz[0], _xyz[1] - 8, _xyz[2] + 10};
     /////////////////////////////////
-    double theta = 0.0, offset_x = 3.0 * 3.1415926 / 180, offset_y = 13.7 * 3.1415926 / 180;
-    double offest_x_a = 1.1;  // smaller is left, bigger is right
-    double offest_y_a = -1.0; // smaller is up, bigger is down
+    double theta = 0.0, offset_x = 0.0 * 3.1415926 / 180, offset_y = 0 * 3.1415926 / 180;//0 13.7
+    double offest_x_a = 0;  // smaller is left, bigger is right -10.4
+    double offest_y_a = 0; // smaller is up, bigger is down 0 -13
     /////////////////////////////////
     theta = atan(xyz[1] / xyz[2]);
     angle_y = (theta + offset_y); // camera coordinate

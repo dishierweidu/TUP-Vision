@@ -10,7 +10,7 @@
             "name": "g++ build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/SAUVisionBuff",
+            "program": "${workspaceFolder}/build/TUP-Vision",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

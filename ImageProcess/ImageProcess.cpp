@@ -12,20 +12,23 @@
 
 #include "./ImageProcess.h"
 
-
-#ifdef USE_LOCAL_VIDEO
 // const string source_location = "/home/rangeronmars/Desktop/video/RH.avi";
-// const string source_location = "/home/rangeronmars/Desktop/video/sample.avi";
+const string source_location = "/home/rangeronmars/Desktop/video/sample.avi";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_red.mp4";
-const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red.mp4";
+// const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red.mp4";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red_800*800.mp4";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red_800*800_conter_clockwise.mp4";
 // const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_blue.mp4";
 
-// mutex src_lock ;//资源锁
-
+#ifdef USE_LOCAL_VIDEO
 VideoCapture cap(source_location);
 #endif // USE_LOCAL_VIDEO
+
+
+extern atomic_int64_t vision_mode;
+
+
+string file_path = "./File/calib_no_4_1280.yml";
 
 #ifdef USE_DAHENG_CAMERA
 DaHengCamera DaHeng;
@@ -36,7 +39,7 @@ bool is_first_loop = true;
 VideoCapture cap(0);
 #endif // USE_USB_CAMERA
 
-string file_path = "./File/calib_no_4_1280.yml";
+
 
 // 存储图像的结构体
 typedef struct
@@ -65,49 +68,41 @@ ImageProcess::ImageProcess()
 }
 
 
-// @brief Angle offset based on distance
-// @param ditsance Distance to target armor plate.
-// @param angle_x Yaw angle using in function.
-// @param angle_y Pitch angle using in function.
+//@brief 射击补偿函数,包括固定补偿及距离补偿,角度单位均为角度制
+//@param distance 目标距离
+//@param angle_x  Yaw轴角引用(角度制)
+//@param angle_y  Pitch轴角引用(角度制)
 void ImageProcess::ShootingAngleCompensate(double &distance,double &angle_x,double &angle_y)
 {
+    double angle_x_compensate_static;//Yaw轴角度固定补偿
+    double angle_y_compensate_static;//Pitch轴角度固定补偿
+    double angle_x_compensate_dynamic;//Yaw轴角度动态补偿
+    double angle_y_compensate_dynamic;//Pitch轴角度动态补偿
+    
+
+    angle_x_compensate_static = -10.4;  // smaller is left, bigger is right 
+    angle_y_compensate_static = 0.7;    // smaller is up, bigger is down
     //Curve Fitted in MATLAB
-    //X--Distance to armor plate(cm)
-    //Y--Pitch Angle Offset
-    //y=15.61 * sin (0.001314*x + 0.5077)
-    //------------------------------------------
-    //X--Distance to armor plate(cm)
-    //Z--Yaw Angle Offset
-    //z = 3.463 *x^0.1959
-    // if(distance >= 450 )return;//exit the function when distance is too big.
-    double angle_x_compensate;//Yaw Angle Offset
-    double angle_y_compensate;//Pitch Angle Offset
-    angle_y_compensate = 15.61 * sin (0.001314 * distance + 0.5077) - ((-0.01238) * distance + 3.044);
-    angle_x_compensate = 3.463 * pow(distance,0.1959);
-    angle_y -= angle_y_compensate;
-    angle_x -=angle_x_compensate;
+    angle_x_compensate_dynamic = 0;
+    angle_y_compensate_dynamic =  0;
+
+
+    angle_y += angle_y_compensate_dynamic + angle_y_compensate_static;
+    angle_x += angle_x_compensate_dynamic + angle_x_compensate_static;
 }
+
 
 // @brief 线程生产者
 void ImageProcess::ImageProductor()
 {
-    #ifdef USE_USB_CAMERA
-    if (!cap.isOpened())
-    {
-        cout << "camera is not open" << endl;
-        return;
-    }
-    #endif // USE_USB_CAMERA
-
-
     #ifdef USE_DAHENG_CAMERA
     DaHeng.StartDevice(1);
     // 设置分辨率
-    DaHeng.SetResolution(2, 2);
+    DaHeng.SetResolution(1,1);
     // 开始采集帧
     DaHeng.SetStreamOn();
     // 设置曝光事件
-    DaHeng.SetExposureTime(200);
+    DaHeng.SetExposureTime(2000);
     // 设置
     DaHeng.SetGAIN(3, 200);
     // 是否启用自动曝光
@@ -123,9 +118,34 @@ void ImageProcess::ImageProductor()
     }
     #endif // USE_LOCAL_VIDEO
 
+    #ifdef SAVE_VIDEO_DAHENG
+    VideoWriter videowriter;
+    time_t time_now;
+    struct tm *time_info;
+    time(&time_now);        //Record time from 1970 Jan 1st 0800AM
+
+    time_info = localtime(&time_now);
+    string save_video_name = "./Video/VIDEO_DAHENG_";//define the name of video
+
+    //Write time into video name
+    save_video_name += to_string((time_info->tm_year) + 1900) + "_";//YY
+    save_video_name += to_string(time_info->tm_mon) + "_";//MM
+    save_video_name += to_string(time_info->tm_mday) + "_";//DD
+    save_video_name += to_string(time_info->tm_hour) + "_";//Hour
+    save_video_name += to_string(time_info->tm_min) + "_";//Minute
+    save_video_name += to_string(time_info->tm_sec);//Second
+
+    save_video_name += ".avi";
+    cout<<"Video name :"<<save_video_name<<endl;
+    videowriter.open(save_video_name,CV_FOURCC('M','J','P','G'),60,Size(1280,1024));//initilize videowriter
+    #endif//SAVE_VIDEO_DAHENG
+
 
     while (true)
     {
+        while(vision_mode != 1)
+        {
+        };
         #ifdef CALC_PROCESS_TIME
         clock_t timer_productor;         //消费者处理计时变量
         timer_productor = clock();       //记录该ID任务开始时间
@@ -165,6 +185,10 @@ void ImageProcess::ImageProductor()
             cout << "the image is empty...";
             return;
         }
+
+        #ifdef SAVE_VIDEO_DAHENG
+        videowriter << Src.img;//Save Frame into video
+        #endif//SAVE_VIDEO_DAHENG
 
         #ifdef SHOW_SRC
         imshow("SHOW_SRC", Src.img);
@@ -234,30 +258,6 @@ void ImageProcess::ImageConsumer()
 
     // _port.get_Mode(mode,_sentrymode,_basemode);//从串口读取模式数据
     /*===========================函数中所使用的参数===========================*/
-     #ifdef COMPILE_WITH_GPU 
-
-    int is_cuda_available;
-
-    is_cuda_available = cuda::getCudaEnabledDeviceCount();      //检测CUDA是否可用  返回值为0说明OPENCV未编译CUDA  返回值为-1说明CUDA未成功安装或设备不支持CUDA
-    //检测到OPENCV未编译CUDA
-    if(is_cuda_available == 0)
-    {
-        cout<<"OPENCV未编译CUDA!"<<endl;
-    }
-    //未检测到CUDA或设备不支持CUDA
-    else if(is_cuda_available == -1)
-    {
-        cout<<"CUDA未成功安装或设备不支持CUDA!"<<endl;
-    }
-    //检测到可用CUDA编译
-    else if(is_cuda_available == 1)
-    {
-        cout<<"检测到可使用的CUDA设备!"<<endl;
-        //设置所使用的CUDA设备
-        cuda::setDevice(0);
-    }
-
-    #endif//COMPILE_WITH_GPU
 
     #ifdef CALC_PROCESS_TIME
     clock_t timer_consumer_sum = 0;         //存放消费者总处理时间(单位:ms)
@@ -266,7 +266,11 @@ void ImageProcess::ImageConsumer()
 
     // ============================== 大循环 ===============================//
     while (true)
-    {        
+    {
+        while(vision_mode != 1)
+        {
+        }
+        ;        
         #ifdef CALC_PROCESS_TIME
         clock_t timer_consumer;         //消费者处理计时变量
         timer_consumer = clock();       //记录该ID任务开始时间
@@ -310,7 +314,7 @@ void ImageProcess::ImageConsumer()
             if (angle_slover.getAngle(rect, type, angle_x, angle_y, dist) == true)
             {
                 #ifdef SHOW_DISTANCE
-                String distance = "diatance:";
+                String distance = "distance:";
                 distance += to_string(int(dist));
                 putText(src, distance, Point(20, 20), CV_FONT_NORMAL, 1, Scalar(0, 255, 0), 2);
                 imshow("SHOW_DISTANCE", src);
@@ -328,6 +332,7 @@ void ImageProcess::ImageConsumer()
                 // // 这是用excel拟合出来的灯条高度与实际距离的函数关系（我用单目pnp解出的距离不行）
                 // distance = 10941 * pow(len, -1.066);
                 ShootingAngleCompensate(dist,angle_x,angle_y);
+                distance = dist;
                 if (_sentrymode)
                     angle_y += 1;
                 // 基地模式发送特殊的识别flag
@@ -341,6 +346,7 @@ void ImageProcess::ImageConsumer()
                 last_x = angle_x;
                 last_y = angle_y;
                 last_dist = distance;
+
                 _port.TransformData(vdata);
                 _port.send();
             }
@@ -388,91 +394,6 @@ void ImageProcess::ImageConsumer()
         cout<<"Average Process Time : "<<timer_consumer_sum / consIdx<<"ms"<<endl;  //输出平均处理时间 
         cout<<endl;
         #endif//CALC_PROCESS_TIME
-
     }
-}
 
-// @brief 能量机关识别线程
-void ImageProcess::EnergyThread()
-{
-  /*===========================相机畸变矩阵传入===========================*/
-    FileStorage file(file_path, FileStorage::READ);
-    Mat camera_Matrix, dis_Coeffs;
-    file["Camera_Matrix"]>>camera_Matrix;
-    file["Distortion_Coefficients"]>>dis_Coeffs;
-    // camera_Matrix = (cv::Mat_<double>(3, 3) << 1.5042e+03, 0.000000000000, 6.5358e+02, 0.000000000000, 1.5025e+03, 5.7713e+02, 0.000000000000, 0.000000000000, 1.000000000000);
-    // dis_Coeffs = (cv::Mat_<double>(1, 5) << -0.2302, 0.2882, 0, 0, 0);
-    /*===========================相机畸变矩阵传入===========================*/
-
-    /*===========================角度解算参数传入===========================*/
-    // 最后不是根据这个的
-    AngleSolver solver_720(camera_Matrix, dis_Coeffs, 22.5, 5.5);
-    // 大小装甲板的角度解法
-    AngleSolverFactory angle_slover;
-    angle_slover.setTargetSize(22.5, 5.5 , AngleSolverFactory::TARGET_ARMOR);
-    angle_slover.setTargetSize(13, 5.5, AngleSolverFactory::TARGET_SAMLL_ATMOR);
-    /*===========================角度解算参数传入===========================*/
-
-    /*===========================创建装甲板识别类===========================*/
-    ArmorParam armor;
-    ArmorDetector armor_detector(armor);
-    ArmorParam armor_para_720 = armor;
-    armor_detector.setPnPSlover(&solver_720);
-    armor_detector.setPara(armor_para_720);
-    angle_slover.setSolver(&solver_720);
-
-    /*===========================函数中所使用的参数===========================*/
-    VisionData energy_data;                   //串口发送大神符数据结构体
-    /*===========================函数中所使用的参数===========================*/
-    int near_face = 0;                       //是否贴脸
-
-    double angle_x;//raw
-    double angle_y;//pitch
-    double dist = 0;
-
-    while(true)
-    {
-        // TODO: 角度偏移,串口通讯
-
-        #ifdef USE_USB_CAMERA
-        cap >> oriFrame;
-        #endif // USE_USB_CAMERA
-
-
-        #ifdef USE_LOCAL_VIDEO
-        cap >> oriFrame;
-        #endif // USE_LOCAL_VIDEO
-
-
-
-        if(oriFrame.empty() || oriFrame.channels() != 3)
-        {
-            cout << "oriFrame empty" << endl;
-            continue;
-        }
-
-        #ifdef SHOW_ENERGY_RUN_TIME
-        double run_time = static_cast<double>(getTickCount());
-        #endif // SHOW_ENERGY_RUN_TIME
-
-
-        // 能量机关识别入口
-        energy.run(oriFrame);
-        if (angle_slover.getAngle(energy.predict_hit_armor, AngleSolverFactory::TARGET_ARMOR, angle_x, angle_y, dist) == false)
-            continue;
-        energy_data = {(float)angle_x, (float)angle_y, (float)dist, 1, 1, 0, near_face};
-        _port.TransformData(energy_data);
-        _port.send();
-
-        cout << "yaw_angle :     " << angle_x << endl;
-        cout << "pitch_angle :   " << angle_y << endl;
-        
-
-        #ifdef SHOW_ENERGY_RUN_TIME
-        run_time = ((double)getTickCount() - run_time) / getTickFrequency();
-        cout << "SHOW_ENERGY_RUN_TIME: " << run_time << endl;
-        #endif // SHOW_ENERGY_RUN_TIME
-
-        waitKey(1);
-    }
 }

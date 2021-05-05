@@ -1,0 +1,57 @@
+[
+{
+  "directory": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/TUP-Vision.dir/main.cpp.o -c \"/home/rangeronmars/Desktop/TUP-Vision  4.1.1/main.cpp\"",
+  "file": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/main.cpp"
+},
+{
+  "directory": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/TUP-Vision.dir/ImageProcess/ImageProcess.cpp.o -c \"/home/rangeronmars/Desktop/TUP-Vision  4.1.1/ImageProcess/ImageProcess.cpp\"",
+  "file": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/ImageProcess/ImageProcess.cpp"
+},
+{
+  "directory": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/TUP-Vision.dir/Energy/Energy.cpp.o -c \"/home/rangeronmars/Desktop/TUP-Vision  4.1.1/Energy/Energy.cpp\"",
+  "file": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/Energy/Energy.cpp"
+},
+{
+  "directory": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/TUP-Vision.dir/Energy/EnergyMain.cpp.o -c \"/home/rangeronmars/Desktop/TUP-Vision  4.1.1/Energy/EnergyMain.cpp\"",
+  "file": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/Energy/EnergyMain.cpp"
+},
+{
+  "directory": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/TUP-Vision.dir/Energy/Params.cpp.o -c \"/home/rangeronmars/Desktop/TUP-Vision  4.1.1/Energy/Params.cpp\"",
+  "file": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/Energy/Params.cpp"
+},
+{
+  "directory": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/TUP-Vision.dir/Camera/DaHengCamera.cpp.o -c \"/home/rangeronmars/Desktop/TUP-Vision  4.1.1/Camera/DaHengCamera.cpp\"",
+  "file": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/Camera/DaHengCamera.cpp"
+},
+{
+  "directory": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/TUP-Vision.dir/Armor/ArmorDetector.cpp.o -c \"/home/rangeronmars/Desktop/TUP-Vision  4.1.1/Armor/ArmorDetector.cpp\"",
+  "file": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/Armor/ArmorDetector.cpp"
+},
+{
+  "directory": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/TUP-Vision.dir/AngelSolver/AngleSolver.cpp.o -c \"/home/rangeronmars/Desktop/TUP-Vision  4.1.1/AngelSolver/AngleSolver.cpp\"",
+  "file": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/AngelSolver/AngleSolver.cpp"
+},
+{
+  "directory": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/TUP-Vision.dir/AngelSolver/Kalman.cpp.o -c \"/home/rangeronmars/Desktop/TUP-Vision  4.1.1/AngelSolver/Kalman.cpp\"",
+  "file": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/AngelSolver/Kalman.cpp"
+},
+{
+  "directory": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/TUP-Vision.dir/Serial/CRC_Check.cpp.o -c \"/home/rangeronmars/Desktop/TUP-Vision  4.1.1/Serial/CRC_Check.cpp\"",
+  "file": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/Serial/CRC_Check.cpp"
+},
+{
+  "directory": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -isystem /usr/local/include/opencv   -std=c++11 -march=native -g   -o CMakeFiles/TUP-Vision.dir/Serial/serialport.cpp.o -c \"/home/rangeronmars/Desktop/TUP-Vision  4.1.1/Serial/serialport.cpp\"",
+  "file": "/home/rangeronmars/Desktop/TUP-Vision  4.1.1/Serial/serialport.cpp"
+}
+]

@@ -98,6 +98,8 @@ public:
     double buff_height;      // 能量机关装甲板高度
     double arm_length;          //悬臂臂长
 
+    int max_arm_length;
+
     // 二值化阈值
     int DETECT_RED_GRAY_BINARY;    // 我方为红色时的阈值
     int DETECT_BLUE_GRAY_BINARY;   // 我方为蓝色时的阈值
@@ -132,8 +134,7 @@ public:
     float FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MIN;     // 含流动条的扇叶长宽比最小值
     float FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MAX;   // 含流动条的扇叶轮廓的面积之比最大值
     float FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MIN;   // 含流动条的扇叶轮廓的面积之比最小值
-    float CENTER_R_CONTOUR_AREA_RATIO_MIN;          //装甲板轮廓占旋转矩形面积比最小值
-    float CENTER_R_CONTOUR_INTERSETION_AREA_MIN;    //中心R占ROI区的面积最小值
+
 
     //CENTER_R
     long CENTER_R_CONTOUR_AREA_MAX;//风车中心R面积最大值
@@ -144,6 +145,8 @@ public:
     long CENTER_R_CONTOUR_WIDTH_MAX;//风车中心R宽边长度最大值
     float CENTER_R_CONTOUR_HW_RATIO_MAX;//风车中心R长宽比最大值
     float CENTER_R_CONTOUR_HW_RATIO_MIN;//风车中心R长宽比最小值
+    float CENTER_R_CONTOUR_AREA_RATIO_MIN;          //装甲板轮廓占旋转矩形面积比最小值
+    float CENTER_R_CONTOUR_INTERSETION_AREA_MIN;    //中心R占ROI区的面积最小值
 
 
 };

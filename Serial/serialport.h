@@ -27,12 +27,13 @@ using namespace std;
 #define CmdID0 0x00; //关闭视觉
 #define CmdID1 0x01; //识别红色
 #define CmdID2 0x02; //识别蓝色
-#define CmdID3 0x03; //小幅
-#define CmdID4 0x04; //大幅
+#define CmdID3 0x03; //小符
+#define CmdID4 0x04; //大符
 
 //串口的相关参数
 #define BAUDRATE 115200//波特率
 #define UART_DEVICE "/dev/ttyUSB0"//默认的串口名称
+// #define UART_DEVICE "/dev/ttyUSB1"//默认的串口名称
 
 //C_lflag
 #define ECHOFLAGS (ECHO | ECHOE | ECHOK | ECHONL)
