@@ -18,6 +18,15 @@ IN THE SOFTWARE.
 #pragma once
 #include "opencv2/core/core.hpp"
 
+class ArmorPlate
+{
+public:
+    cv::RotatedRect boundingRect;
+    cv::Point2f apex[4];
+    cv::Point2f center;
+};
+
+
 /**
  * @brief The RectPnPSolver class
  * solve the pnp problem of rectangle target.
@@ -88,7 +97,7 @@ public:
      * @return
      */
     bool getAngle(const cv::RotatedRect &rect, double &angle_x, double &angle_y, double &dist);
-
+    bool getAngle(const cv::Point2f apex[4], double &angle_x, double &angle_y, double &dist);
     void tranformationCamera2PTZ(const cv::Mat &pos, cv::Mat &transed_pos);
 
     /**
@@ -142,6 +151,9 @@ public:
 
     bool getAngle(const cv::RotatedRect &rect, TargetType type, double &angle_x, double &angle_y, double &dist);
 
+    bool getAngle(const ArmorPlate &target_armor, TargetType type, double &angle_x, double &angle_y, double &dist);
+
+
 private:
     double armor_width;
     double armor_height;
@@ -149,3 +161,4 @@ private:
     double small_armor_height;
     AngleSolver *slover;
 };
+

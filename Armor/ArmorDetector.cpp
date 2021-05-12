@@ -15,6 +15,7 @@
 #include "../Debug.h"
 #include "Debug.h"
 
+// #define COUT_LOG
 
 #define CLASSIFICATION
 
@@ -102,7 +103,6 @@ void ArmorDetector::setImage(const cv::Mat &src)
     // 敌方颜色为红色时
     if (enemy_color == RED)
     {
-        Mat thres_whole;
         vector<Mat> splited;
         split(_src, splited);
         cvtColor(_src, thres_whole, CV_BGR2GRAY);
@@ -132,7 +132,6 @@ void ArmorDetector::setImage(const cv::Mat &src)
     // 敌方颜色是蓝色时
     else
     {
-        Mat thres_whole;
         vector<Mat> splited;
         split(_src, splited);
         cvtColor(_src, thres_whole, CV_BGR2GRAY);
@@ -180,15 +179,17 @@ void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
     vector<RotatedRect> RectFirstResult;
     for (size_t i = 0; i < contours_max.size(); ++i)
     {
+        if (contours_max[i].size() <= 6)//小于6点无法拟合椭圆
+            continue;
         // fit the lamp contour as a eclipse
-        RotatedRect rrect = minAreaRect(contours_max[i]);
+        RotatedRect rrect = fitEllipse(contours_max[i]);
         double max_rrect_len = MAX(rrect.size.width, rrect.size.height);
         double min_rrect_len = MIN(rrect.size.width, rrect.size.height);
 
         /////////////////////////////// 单根灯条的条件 //////////////////////////////////////
         // 角度要根据实际进行略微改动
-        bool if1 = (fabs(rrect.angle) < 45.0 && rrect.size.height > rrect.size.width); // 往左
-        bool if2 = (fabs(rrect.angle) > 60.0 && rrect.size.width > rrect.size.height); // 往右
+        bool if1 = (fabs(rrect.angle) < 45.0 ); // 往左
+        bool if2 = (fabs(rrect.angle) > 135.0 ); // 往右
         bool if3 = max_rrect_len > _para.min_light_height;                             // 灯条的最小长度
         bool if4;
         if (!base_mode)                                                                           // 吊射基地时条件不同
@@ -281,13 +282,13 @@ void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
             }
 
             double maxangle = MAX(ptangle(pt[0], pt[2]), ptangle(pt[1], pt[3]));
-            if (anglei > 45.0 && anglej < 45.0)
+            if (anglei < 45.0 && anglej > 135.0)
             { // 八字 / \   //
-                angleabs = 90.0 - anglei + anglej;
+                angleabs = 180 -anglej + anglei;
             }
-            else if (anglei <= 45.0 && anglej >= 45.0)
+            else if (anglei >= 135.0 && anglej <= 45.0)
             { // 倒八字 \ /
-                angleabs = 90.0 - anglej + anglei;
+                angleabs = 180 - anglei + anglej;
             }
             else
             {
@@ -305,10 +306,10 @@ void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
             bool condition3 = lr_rate < _para.max_lr_rate;
             //                bool condition4 = angleabs < 15 ; // 给大点防止运动时掉帧
             bool condition4;
-            if (!base_mode)
-                condition4 = sentry_mode ? angleabs < 25 : angleabs < 15 - 5;
-            else
-                condition4 = angleabs > 25 && angleabs < 55;
+            // if (!base_mode)
+            //     condition4 = sentry_mode ? abs(angleabs) < 25 : abs(angleabs) < 15 - 5;
+            // else
+            condition4 = abs(angleabs) < _para.max_light_delta_angle;
             //                bool condition5 = sentry_mode ? true : /*maxangle < 20*/true;
 
             //            bool condition4 = delta_angle < _para.max_light_delta_angle;
@@ -340,11 +341,37 @@ void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
 // #endif
             if (condition1 && condition2 && condition3 && condition4)
             {
-                RotatedRect obj_rect = boundingRRect(rect_i, rect_j);
+                RotatedRect obj_rect = boundingRRect(rect_i, rect_j);//灯条拟合旋转矩形
+                Point2f apex_left_LED[4];
+                Point2f apex_right_LED[4];
+                Point2f apex[4];           //存储候选矩形区域点
+                rect_i.points(apex_left_LED);//存储左灯条顶点
+                rect_j.points(apex_right_LED);//存储右灯条顶点
+
+                //根据椭圆拟合角度压入四点
+                if(rect_i.angle < 90){
+                    apex[0] = apex_left_LED[3];     //bottomright
+                    apex[1] = apex_left_LED[2];     //topright
+                }
+                else if(rect_i.angle >= 90){
+                    apex[0] = apex_left_LED[1];     //bottomright
+                    apex[1] = apex_left_LED[0];     //topright
+                }
+
+                if(rect_j.angle < 90){            
+                    apex[2] = apex_right_LED[1];    //topleft
+                    apex[3] = apex_right_LED[0];    //bottomleft
+                }
+                else if(rect_j.angle >= 90){            
+                    apex[2] = apex_right_LED[3];    //topleft
+                    apex[3] = apex_right_LED[2];    //bottomleft
+                }
                 double w = obj_rect.size.width;
                 double h = obj_rect.size.height;
                 double wh_ratio = w / h;
                 // 长宽比不符
+
+                cout<<"angleabs :"<<angleabs<<endl;
 #ifdef COUT_LOG
                 cout << "wh_ratio:  " << wh_ratio << endl;
 #endif  //COUT_LOG
@@ -353,15 +380,16 @@ void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
                 {
                     if (wh_ratio > _para.max_wh_ratio || wh_ratio < _para.min_wh_ratio)
                     {
-
                         // cout<<"aromor detect failed!"<<"\n"<<"w_h ratio:"<<wh_ratio<<endl;
                         continue;
                     }
                 }
+                Point2f ROI_Offset;
+                ROI_Offset = Point2f(_dect_rect.x,_dect_rect.y);
 
 
                 // 将初步匹配到的结构体信息push进入vector向量
-                match_rects.push_back(matched_rect{obj_rect, lr_rate, angleabs});
+                match_rects.push_back(matched_rect{obj_rect, lr_rate, angleabs,apex[0] + ROI_Offset,apex[1] + ROI_Offset,apex[2] + ROI_Offset,apex[3] + ROI_Offset});
                 // for debug use
 #ifdef SHOW_TARGET_SHOT_ARMOR
                 Point2f vertice[4];
@@ -378,13 +406,13 @@ void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
 #endif  //SHOW_FIRST_RESULT
 }
 
-cv::RotatedRect ArmorDetector::chooseTarget(const std::vector<matched_rect> &match_rects, const cv::Mat &src)
+ArmorPlate ArmorDetector::chooseTarget(const std::vector<matched_rect> &match_rects, const cv::Mat &src)
 {
     // 如果没有两条矩形围成一个目标装甲板就返回一个空的旋转矩形
     if (match_rects.size() < 1)
     {
         _is_lost = true;
-        return RotatedRect();
+        return ArmorPlate();
     }
 
     // 初始化参数
@@ -392,6 +420,7 @@ cv::RotatedRect ArmorDetector::chooseTarget(const std::vector<matched_rect> &mat
     bool is_small = false;
     double weight = 0;
     vector<candidate_target> candidate;
+    ArmorPlate final_target;//创建armorplate类
     // 二分类判断真假装甲板初始化
     Mat input_sample;
     vector<Mat> channels;
@@ -438,7 +467,11 @@ cv::RotatedRect ArmorDetector::chooseTarget(const std::vector<matched_rect> &mat
         y = screen_rect.center.y + screen_rect.size.height / 2 + _dect_rect.y;
         p2 = Point(x, y);
         Rect roi_rect = Rect(p1, p2);
+        #ifdef USING_MEAN_VALUE_JUDGE
+        // Rect roi_rect_thresh = Rect(rect.center - Point2f(rect.size.width / 2 , rect.size.height / 2),rect.center + Point2f(rect.size.width / 2 , rect.size.height / 2));
+        #endif
         Mat roi;
+        Mat roi_thresh;
 
         if (makeRectSafe(roi_rect, size))
         {
@@ -448,16 +481,33 @@ cv::RotatedRect ArmorDetector::chooseTarget(const std::vector<matched_rect> &mat
             meanStdDev(roi, mean, stdDev);
             avg = mean.ptr<double>(0)[0];
             stddev = stdDev.ptr<double>(0)[0];
-#ifdef SHOW_ROI
-            cout << "                                            " << avg << endl;
-            cout << "                                            " << stddev << endl
-                 << endl;
+
+            #ifdef SHOW_ROI
+            // cout << "avg " << avg << endl;
+            // cout << "stddev " << stddev << endl;
             //            putText(roi, to_string(int(avg)), rects[i].center, CV_FONT_NORMAL, 1, Scalar(0, 255, 255), 2);
             imshow("SHOW_ROI", roi);
-#endif  //SHOW_ROI
+            #endif  //SHOW_ROI
+
+            #ifdef USING_MEAN_VALUE_JUDGE
+            // roi_thresh = thres_whole(roi_rect_thresh).clone();
+            // Mat mean_thresh, stdDev_thresh;
+            // double avg_thresh, stddev_thresh;
+            // meanStdDev(roi_thresh, mean_thresh, stdDev_thresh);
+            // avg_thresh = mean_thresh.ptr<double>(0)[0];
+            // stddev_thresh = stdDev_thresh.ptr<double>(0)[0];
+            // rectangle(thres_whole,roi_rect_thresh,Scalar(255),1);
+            #endif
             // 阈值可通过实际测量修改
+            // cout<< "avg "<<avg<<endl;
+            // cout<< "stddev "<<stddev<<endl;
             if (avg > 100.66)
                 continue;
+
+            #ifdef USING_STDDEV_VALUE_JUDGE
+            if (stddev < 1)//标准差过小不进行判断
+                continue;
+            #endif
         }
 
         // 只匹配到一个目标的话就不送入二分类直接处理（已弃用）
@@ -572,12 +622,16 @@ cv::RotatedRect ArmorDetector::chooseTarget(const std::vector<matched_rect> &mat
     if (ret_idx == -1)
     {
         _is_lost = true;
-        return RotatedRect();
+        return ArmorPlate();
     }
     // 否则就证明找到了目标
     _is_lost = false;
     _is_small_armor = candidate[final_index].is_small_armor;
     RotatedRect ret_rect = match_rects[candidate[final_index].index].rect;
+    final_target.boundingRect = ret_rect;
+    copy(begin(match_rects[candidate[final_index].index].apex),end(match_rects[candidate[final_index].index].apex),begin(final_target.apex));//拷贝顶点元素至最终装甲板
+    
+
 
     // imshow("_src1124",_src);
 
@@ -593,12 +647,13 @@ cv::RotatedRect ArmorDetector::chooseTarget(const std::vector<matched_rect> &mat
     // imwrite(filename_x,sample_pos);
     //================================svm数据采集================================//
 
-    return ret_rect;
+    return final_target;
 }
 
 // 将之前的各个函数都包含在一个函数中，直接用这一个
-cv::RotatedRect ArmorDetector::getTargetArea(const cv::Mat &src, const int &sb_mode, const int &jd_mode)
+ArmorPlate ArmorDetector::getTargetArea(const cv::Mat &src, const int &sb_mode, const int &jd_mode)
 {
+    ArmorPlate candidate_armor;
     // 传入参数为哨兵模式和吊射基地模式
     sentry_mode = sb_mode;
     base_mode = jd_mode;
@@ -606,14 +661,14 @@ cv::RotatedRect ArmorDetector::getTargetArea(const cv::Mat &src, const int &sb_m
 
     vector<matched_rect> match_rects;
     findTargetInContours(match_rects);                       // function called
-    RotatedRect final_rect = chooseTarget(match_rects, src); // function called
+    ArmorPlate final_rect = chooseTarget(match_rects, src); // function called
 
-    if (final_rect.size.width != 0)
+    if (final_rect.boundingRect.size.width != 0)
     {
         // 最后才加上了偏移量，前面那些的坐标都是不对的，所以不能用前面那些函数解角度
-        final_rect.center.x += _dect_rect.x;
-        final_rect.center.y += _dect_rect.y;
-        _res_last = final_rect;
+        final_rect.boundingRect.center.x += _dect_rect.x;
+        final_rect.boundingRect.center.y += _dect_rect.y;
+        _res_last = final_rect.boundingRect;
         _lost_cnt = 0;
     }
     else

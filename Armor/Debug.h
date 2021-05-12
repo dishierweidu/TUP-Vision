@@ -20,5 +20,4 @@
 // #define SHOW_FIRST_RESULT    //First result
 // #define SHOW_ROI     //show roi
 // #define SHOW_INPUT_SAMPLE    //show input sample
-
 // #define TEST //waiting list rect

@@ -47,7 +47,7 @@ void ModeReceiver(SerialPort &port)
         #endif
 
         #ifdef DEBUG_WITHOUT_COM    
-        vision_mode = 3;                           //1为辅瞄,2为小符,3为大符
+        vision_mode = 1;                           //1为辅瞄,2为小符,3为大符
         // int input;
         // std::cin>>input;
         // vision_mode = input;
@@ -82,7 +82,8 @@ int main()
     // DEBUG: 角度计算
     // DEBUG: 串口通讯
     Energy energy(port);
-    std::thread BuffDetectThread(&Energy::EnergyThread, energy);
+    std::thread BuffDetectThreadProducer(&Energy::EnergyThreadProductor, energy);
+    std::thread BuffDetectThreadConsumer(&Energy::EnergyThreadConsumer, energy);
     #endif // ENERGY_THREAD
 
 
@@ -95,7 +96,8 @@ int main()
     #endif  // MULTI_THREAD
 
     #ifdef ENERGY_THREAD
-    BuffDetectThread.join();
+    BuffDetectThreadProducer.join();
+    BuffDetectThreadConsumer.join();
     #endif // ENERGY_THREAD
 
     goto start;

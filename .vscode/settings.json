@@ -19,7 +19,10 @@
         "complex": "cpp",
         "deque": "cpp",
         "vector": "cpp",
-        "condition_variable": "cpp"
+        "condition_variable": "cpp",
+        "memory": "cpp",
+        "typeinfo": "cpp",
+        "list": "cpp"
     },
     "C_Cpp.default.configurationProvider": "vector-of-bool.cmake-tools"
 }

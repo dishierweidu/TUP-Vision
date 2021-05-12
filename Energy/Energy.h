@@ -67,7 +67,8 @@ public:
     Energy();                                                   //能量机关构造函数     
     ~Energy() {};
 
-    bool EnergyThread();                                       //能量机关线程
+    bool EnergyThreadConsumer();                                       //能量机关消费者线程
+    bool EnergyThreadProductor();                                      //能量机关生产者线程
 
     #ifdef SHOW_RECT_INFO 
     Mat src_rect_info;                                       //显示矩形信息
@@ -82,7 +83,7 @@ public:
 private:
     Params energyParams;                                        // 实例化参数对象
 
-    Kalman kalmanfilter;                                        //卡尔曼滤波器
+    Kalman kalmanfilter{KALMAN_TYPE_ENERGY};                    //卡尔曼滤波器
 
     queue<double> armor_angle_queue;                            // 存储装甲板的角度,先存储3帧
     queue<Point2f> armor_center_in_centerR_cord;                //以中心R为左边原点的坐标系下装甲板中心点的集合,用于求deltatheta

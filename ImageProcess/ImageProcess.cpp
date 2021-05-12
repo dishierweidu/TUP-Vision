@@ -12,13 +12,7 @@
 
 #include "./ImageProcess.h"
 
-// const string source_location = "/home/rangeronmars/Desktop/video/RH.avi";
 const string source_location = "/home/rangeronmars/Desktop/video/sample.avi";
-// const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_red.mp4";
-// const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red.mp4";
-// const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red_800*800.mp4";
-// const string source_location = "/home/rangeronmars/Desktop/video/sample2_sin_red_800*800_conter_clockwise.mp4";
-// const string source_location = "/home/rangeronmars/Desktop/video/sample1_sin_blue.mp4";
 
 #ifdef USE_LOCAL_VIDEO
 VideoCapture cap(source_location);
@@ -54,7 +48,8 @@ static volatile unsigned int proIdx = 0;  // 生产ID
 static volatile unsigned int consIdx = 0; // 消费ID
 
 Mat oriFrame;  // 获取到的原始图像
-Energy energy; // 创立能量机关类
+
+extern void drawRotatedRect(Mat frame, RotatedRect rRect, Scalar color, int thickness = 1);
 
 // @brief ImageProcess构造函数
 ImageProcess::ImageProcess(SerialPort &port) : _port(port), _sentrymode(0), _basemode(0)
@@ -66,6 +61,7 @@ ImageProcess::ImageProcess(SerialPort &port) : _port(port), _sentrymode(0), _bas
 ImageProcess::ImageProcess()
 {
 }
+
 
 
 //@brief 射击补偿函数,包括固定补偿及距离补偿,角度单位均为角度制
@@ -91,6 +87,128 @@ void ImageProcess::ShootingAngleCompensate(double &distance,double &angle_x,doub
     angle_x += angle_x_compensate_dynamic + angle_x_compensate_static;
 }
 
+
+//@brief 装甲板卡尔曼预测
+//@param present_armor  检测到的装甲板
+//@param predict_armor  预测的装甲板
+bool ImageProcess::AdvancedPredictForArmorDetect(RotatedRect &present_armor,RotatedRect &predict_armor)
+{
+    //如果队列元素不足
+    if(armor_queue.size() <= 1)//FIXME::可以增加一种情况以进行优化
+    {
+        armor_queue.push(present_armor);
+        armor_queue_time.push(getTickCount());
+        return false ; 
+    }
+    else if(armor_queue.size() == 2)//FIXME::可以增加一种情况以进行优化
+    {
+        armor_queue.pop();                             //弹出首元素
+        armor_queue.push(present_armor);  //压入最新装甲板坐标
+
+        armor_queue_time.pop();                                         //弹出时间
+        armor_queue_time.push(getTickCount());                          //压入时间
+
+        bool is_height_min = (armor_queue.back().size.height < armor_queue.back().size.width); 
+        // 判断装甲板是否发生切换         
+        bool is_armor_plate_switched = ((fabs(armor_queue.front().angle -armor_queue.back().angle) > 10) ||//角度
+
+                                         fabs((armor_queue.back().size.width / armor_queue.back().size.height) - //H/W
+                                         (armor_queue.front().size.width / armor_queue.front().size.height )) > 1 ||
+
+                                         ((fabs(armor_queue.back().center.x - armor_queue.front().center.x) +
+                                         fabs(armor_queue.back().center.y - armor_queue.front().center.y))) > 200//中心点 
+                                         );
+
+        #ifdef USING_DEBUG_ANTISPIN
+        if(is_armor_plate_switched)
+        {
+            last_switched_armor = present_armor;//存储上次切换装甲板
+            if(spinning_coeffient == 0 ){//若置信度此时为0
+                spinning_coeffient = 2;//设置初值
+                predict_armor = present_armor;
+                return false;
+            }
+            else{
+                spinning_coeffient =  5 + 6 * spinning_coeffient;
+            }
+
+        }
+        if(spinning_coeffient < 1)
+            spinning_coeffient = 0;
+        else if(spinning_coeffient > 4e3)
+            spinning_coeffient = 4e3;
+        else
+            spinning_coeffient /= 2;
+        if(spinning_coeffient > 400){
+            cout<<"Spinning :"<<spinning_coeffient<<endl;
+        } 
+        else
+            cout<<"Steady :"<<spinning_coeffient<<endl;
+        #endif//USING_DEBUG_ANTISPIN
+
+
+        #ifndef USING_DEBUG_ANTISPIN
+        if(is_armor_plate_switched)
+        {
+            predict_armor = present_armor;
+            return false;
+        }
+        #endif//USING_DEBUG_ANTISPIN
+        
+        double delta_time = (double)(armor_queue_time.back() - armor_queue_time.front()) / getTickFrequency();//处理时间
+        double velocity_x = (armor_queue.back().center.x - armor_queue.front().center.x) / delta_time;//Vx
+        double velocity_y = (armor_queue.back().center.y - armor_queue.front().center.y) / delta_time;  //Vy
+        double velocity_height = (MIN(armor_queue.back().size.height, armor_queue.back().size.width) - 
+                                    MIN(armor_queue.front().size.height, armor_queue.front().size.width)) / delta_time;
+        double velocity_width = (MAX(armor_queue.back().size.height, armor_queue.back().size.width) - 
+        MAX(armor_queue.front().size.height, armor_queue.front().size.width)) / delta_time;
+
+        kalmanfilter.EstimatedTimeofArrival = delta_time + 0.05 ;//预测时间为处理时间加响应时间
+        cout<<"ETA :"<<kalmanfilter.EstimatedTimeofArrival<<endl;
+        kalmanfilter.KF.transitionMatrix = (Mat_<float>(8, 8) << 1,0,0,0,kalmanfilter.EstimatedTimeofArrival,0,0,0,//x
+                                                                0,1,0,0,0,kalmanfilter.EstimatedTimeofArrival,0,0,//y
+                                                                0,0,1,0,0,0,kalmanfilter.EstimatedTimeofArrival,0,//width
+                                                                0,0,0,1,0,0,0,kalmanfilter.EstimatedTimeofArrival,//height
+                                                                0,0,0,0,1,0,0,0,//Vx
+                                                                0,0,0,0,0,1,0,0,//Vy
+                                                                0,0,0,0,0,0,1,0,//Vwidth
+                                                                0,0,0,0,0,0,0,1);//Vheight
+
+
+        //设置测量矩阵
+        Mat measure =(Mat_<float>(8, 1) << armor_queue.back().center.x,
+                                           armor_queue.back().center.y,
+                                           MAX(armor_queue.back().size.height, armor_queue.back().size.width),
+                                           MIN(armor_queue.back().size.height, armor_queue.back().size.width),
+                                           velocity_x,
+                                           velocity_y,
+                                           velocity_width,
+                                           velocity_height);
+
+        //设置状态转移矩阵
+            
+        Mat predict = kalmanfilter.KF.predict();
+
+        if(is_height_min)//设置预测装甲
+            predict_armor = RotatedRect(Point2f(predict.at<float>(0,0),predict.at<float>(0,1)),
+            Size2f(MAX(armor_queue.back().size.height, armor_queue.back().size.width),MIN(armor_queue.back().size.height, armor_queue.back().size.width)),
+            present_armor.angle);
+        else //设置预测装甲
+            predict_armor = RotatedRect(Point2f(predict.at<float>(0,0),predict.at<float>(0,1)),
+            Size2f(MIN(armor_queue.back().size.height, armor_queue.back().size.width),MAX(armor_queue.back().size.height, armor_queue.back().size.width)),
+            present_armor.angle);
+            
+        kalmanfilter.KF.correct(measure);
+    if((fabs(predict_armor.center.x - present_armor.center.x) +
+        fabs(predict_armor.center.y - present_armor.center.y)) > 200)//中心点 
+        {
+            predict_armor = present_armor;
+            return false;
+        }
+    }
+    return true;
+
+}
 
 // @brief 线程生产者
 void ImageProcess::ImageProductor()
@@ -172,7 +290,6 @@ void ImageProcess::ImageProductor()
         }
         #endif // USE_DAHENG_CAMERA
 
-
         #ifdef USE_LOCAL_VIDEO
         cap >> Src.img;
         #endif // USE_LOCAL_VIDEO
@@ -243,7 +360,9 @@ void ImageProcess::ImageConsumer()
     int find_cnt = 0;                        //统计追踪到目标的帧数
     float last_x = 0, last_y = 0, last_dist; //上一时刻的云台偏移角度(防止哨兵失去目标云台停顿)
     double distance = 0;                     //装甲板距离
+    ArmorPlate present_armor;                 //现在的装甲板类
     RotatedRect rect;                        //getArea的函数输出,为最后筛选出来的装甲板
+    ArmorPlate predict_armor;                //卡尔曼预测得到的所需击打的装甲板
     Point2f center = cv::Point2f();          //基地模式的串口发送参数
     VisionData vdata;                        //串口发送的数据结构体
     VisionData energy_data;                   //串口发送大神符数据结构体
@@ -304,16 +423,26 @@ void ImageProcess::ImageConsumer()
             // imshow("source img",src);
 
             //直接调用函数找到读进来的图中是否有目标
-            rect = armor_detector.getTargetArea(src, 0, 0);
-            center = rect.center;
-            int len = MIN(rect.size.height, rect.size.width);
+            present_armor = armor_detector.getTargetArea(src, 0, 0);
+            // center = present_armor.boundingRect.center;
+            int len = MIN(present_armor.boundingRect.size.height, present_armor.boundingRect.size.width);
+            #ifdef USING_KALMAN_ARMOR
+            AdvancedPredictForArmorDetect(present_armor.boundingRect,predict_armor.boundingRect);//对装甲板进行卡尔曼预测与反陀螺(实验性)
+            Point2f predict_vector = predict_armor.boundingRect.center - present_armor.boundingRect.center;
+            for(int i = 0; i < 4 ;i++)
+                predict_armor.apex[i] = present_armor.apex[i] + predict_vector; 
+            #endif//USINGKALMAN_ARMOR
 
             // 根据长宽比判断目标是大装甲还是小装甲
             AngleSolverFactory::TargetType type = armor_detector.isSamllArmor() ? AngleSolverFactory::TARGET_SAMLL_ATMOR : AngleSolverFactory::TARGET_ARMOR;
-            // 解算出的角度，为false则说明没有识别到目标
-            if (angle_slover.getAngle(rect, type, angle_x, angle_y, dist) == true)
+            // // 解算出的角度，为false则说明没有识别到目标
+            // if (angle_slover.getAngle(predict_armor.boundingRect, type, angle_x, angle_y, dist) == true)
+            if (angle_slover.getAngle(predict_armor, type, angle_x, angle_y, dist) == true)
             {
                 #ifdef SHOW_DISTANCE
+                for (int i = 0; i < 4; i++)
+                    line(src, predict_armor.apex[i], predict_armor.apex[(i + 1) % 4], Scalar(0, 0, 255),2);
+                drawRotatedRect(src,present_armor.boundingRect,Scalar(255,0,0),2);
                 String distance = "distance:";
                 distance += to_string(int(dist));
                 putText(src, distance, Point(20, 20), CV_FONT_NORMAL, 1, Scalar(0, 255, 0), 2);
@@ -328,7 +457,7 @@ void ImageProcess::ImageConsumer()
             }
             if (angle_x != 0 && angle_y != 0)
             {
-                angle_x = angle_x + 9.0;
+                // angle_x = angle_x + 9.0;
                 // // 这是用excel拟合出来的灯条高度与实际距离的函数关系（我用单目pnp解出的距离不行）
                 // distance = 10941 * pow(len, -1.066);
                 ShootingAngleCompensate(dist,angle_x,angle_y);
@@ -383,7 +512,7 @@ void ImageProcess::ImageConsumer()
             }
             // cout << "yaw_angle :     " << angle_x << endl;
             // cout << "pitch_angle :   " << angle_y << endl;
-        }        
+        }
         #ifdef CALC_PROCESS_TIME
         timer_consumer = (clock() - timer_consumer)/ (CLOCKS_PER_SEC / 1000);    //原地计算本次任务所用时间(单位:ms) 
         timer_consumer_sum += timer_consumer;                                   //将处理时间存入总时间

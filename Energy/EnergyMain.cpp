@@ -29,6 +29,18 @@ const string source_location_energy = "/home/rangeronmars/Desktop/video/sample2_
 VideoCapture cap_energy(source_location_energy);
 #endif // USE_LOCAL_VIDEO
 
+// 存储图像的结构体
+typedef struct
+{
+    cv::Mat img;
+} ImageData;
+
+static volatile unsigned int proIdx_Energy = 0;  // 生产ID
+static volatile unsigned int consIdx_Energy = 0; // 消费ID
+
+#define IMG_BUFFER 5         // 线程间相机采集最高超过处理的帧数
+
+ImageData Image_Energy[IMG_BUFFER]; // 存储图像的缓冲区
 
 #ifdef USE_LOCAL_VIDEO
 
@@ -59,12 +71,89 @@ void Energy::ShootingAngleCompensate(double &distance,double &angle_x,double &an
     angle_x += angle_x_compensate_dynamic + angle_x_compensate_static;
 }
 
+bool Energy::EnergyThreadProductor()
+{  
 
-bool Energy::EnergyThread()
-{
     #ifdef USE_USB_CAMERA_ENERGY
     VideoCapture cap_energy(0);
     #endif // USE_USB_CAMERA
+
+
+
+    #ifdef SAVE_VIDEO_USB_CAMERA
+    VideoWriter videowriter;
+    time_t time_now;
+    struct tm *time_info;
+    time(&time_now);        //Record time from 1970 Jan 1st 0800AM
+
+    time_info = localtime(&time_now);
+    string save_video_name = "./Video/VIDEO_USB_";//define the name of video
+
+    //Write time into video name
+    save_video_name += to_string((time_info->tm_year) + 1900) + "_";//YY
+    save_video_name += to_string(time_info->tm_mon) + "_";//MM
+    save_video_name += to_string(time_info->tm_mday) + "_";//DD
+    save_video_name += to_string(time_info->tm_hour) + "_";//Hour
+    save_video_name += to_string(time_info->tm_min) + "_";//Minute
+    save_video_name += to_string(time_info->tm_sec);//Second
+
+    save_video_name += ".avi";
+    videowriter.open(save_video_name,CV_FOURCC('M','J','P','G'),60,Size(640,480));//initilize videowriter
+    #endif//SAVE_VIDEO_USB_CAMERA
+
+
+    
+
+    while (true)
+    {
+        while(vision_mode != 2 && vision_mode != 3){
+            // cout<<"MODE :"<<vision_mode<<endl;
+        };
+
+        // 经典的生产-消费者模型
+        // 资源太多时就阻塞生产者
+        while (proIdx_Energy - consIdx_Energy >= IMG_BUFFER)
+            ;
+        ImageData Src;
+
+        #ifdef USE_USB_CAMERA_ENERGY
+        cap_energy >> Src.img;
+        #endif // USE_USB_CAMERA
+
+        #ifdef USE_LOCAL_VIDEO_ENERGY
+        cap_energy >> Src.img;
+        #endif // USE_LOCAL_VIDEO
+
+
+        Image_Energy[proIdx_Energy % IMG_BUFFER] = Src;
+
+        if (Src.img.empty())
+        {
+            cout << "the image is empty...";
+            return false;
+        }
+
+
+        #ifdef SAVE_VIDEO_USB_CAMERA 
+        videowriter << Src.img;//Save Frame into video
+        #endif//SAVE_VIDEO_DAHENG
+
+        #ifdef SHOW_SRC
+        imshow("SHOW_SRC", Src.img);
+        #endif // SHOW_SRC
+
+        proIdx_Energy++;
+        waitKey(1);
+    }
+
+
+
+
+}
+
+bool Energy::EnergyThreadConsumer()
+{
+  
   /*===========================相机畸变矩阵传入===========================*/
     FileStorage file(file_path_energy, FileStorage::READ);
     Mat camera_Matrix, dis_Coeffs;
@@ -101,26 +190,6 @@ bool Energy::EnergyThread()
     double dist = 0;
     Mat oriFrame;
 
-    #ifdef SAVE_VIDEO_USB_CAMERA
-    VideoWriter videowriter;
-    time_t time_now;
-    struct tm *time_info;
-    time(&time_now);        //Record time from 1970 Jan 1st 0800AM
-
-    time_info = localtime(&time_now);
-    string save_video_name = "./Video/VIDEO_USB_";//define the name of video
-
-    //Write time into video name
-    save_video_name += to_string((time_info->tm_year) + 1900) + "_";//YY
-    save_video_name += to_string(time_info->tm_mon) + "_";//MM
-    save_video_name += to_string(time_info->tm_mday) + "_";//DD
-    save_video_name += to_string(time_info->tm_hour) + "_";//Hour
-    save_video_name += to_string(time_info->tm_min) + "_";//Minute
-    save_video_name += to_string(time_info->tm_sec);//Second
-
-    save_video_name += ".avi";
-    videowriter.open(save_video_name,CV_FOURCC('M','J','P','G'),60,Size(640,480));//initilize videowriter
-    #endif//SAVE_VIDEO_USB_CAMERA
 
     while(true)
     {
@@ -131,20 +200,20 @@ bool Energy::EnergyThread()
         };
         
 
+
         if(vision_mode == 2)
             energyParams.stm32Data.energy_mode =ENERGY_SMALL;
 
         if(vision_mode == 3)
             energyParams.stm32Data.energy_mode =ENERGY_BIG;
 
-        #ifdef USE_USB_CAMERA_ENERGY
-        cap_energy >> oriFrame;
-        #endif // USE_USB_CAMERA
-
-
-        #ifdef USE_LOCAL_VIDEO_ENERGY
-        cap_energy >> oriFrame;
-        #endif // USE_LOCAL_VIDEO
+        while (consIdx_Energy >= proIdx_Energy)
+            ;
+        //等待produce
+        while (proIdx_Energy - consIdx_Energy == 0)
+            ;
+        Image_Energy[consIdx_Energy % IMG_BUFFER].img.copyTo(oriFrame);
+        ++consIdx_Energy;
 
 
 

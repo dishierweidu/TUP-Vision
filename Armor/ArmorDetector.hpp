@@ -45,11 +45,14 @@ struct ArmorParam
         light_slope_offset = 30;
         max_light_delta_h = 450;
         min_light_delta_h = 12;
-        max_light_delta_v = 45;
-        max_light_delta_angle = 30;
+        // max_light_delta_v = 45;
+        max_light_delta_v = 70;
+        max_light_delta_angle = 10;
+        // max_light_delta_angle = 30;
         near_face_v = 600;
-        max_lr_rate = 2.0;
-        max_wh_ratio = 6;
+        // max_lr_rate = 2.0;
+        max_lr_rate = 1.2;
+        max_wh_ratio = 4;
         min_wh_ratio = 1.25;
         small_armor_wh_threshold = 3.6;
         bin_cls_thres = 166;
@@ -63,6 +66,7 @@ struct matched_rect
     cv::RotatedRect rect;
     float lr_rate;
     float angle_abs;
+    cv::Point2f apex[4];
 };
 
 //候选灯条的结构体
@@ -129,7 +133,7 @@ public:
         return _is_small_armor;
     }
 
-    cv::RotatedRect getTargetArea(const cv::Mat &src, const int &sb_mode, const int &jd_mode);
+    ArmorPlate getTargetArea(const cv::Mat &src, const int &sb_mode, const int &jd_mode);
 
     void setLastResult(const cv::RotatedRect &rect)
     {
@@ -163,7 +167,7 @@ private:
      * @param rects candidate rectangles
      * @return the most likely armor (RotatedRect() returned if no proper one)
      */
-    cv::RotatedRect chooseTarget(const std::vector<matched_rect> &match_rects /*, const std::vector<double> & score*/, const cv::Mat &src);
+    ArmorPlate chooseTarget(const std::vector<matched_rect> &match_rects /*, const std::vector<double> & score*/, const cv::Mat &src);
     /**
      * @brief 将左右的两根灯条用一个旋转矩形拟合并返回
      * @brief boundingRRect Bounding of two ratate rectangle (minumum area that contacts two inputs)
@@ -231,6 +235,7 @@ private:
     cv::Rect _dect_rect;       // detect roi of original image
 
     cv::Mat _src;       // source image
+    cv::Mat thres_whole;    // thres image
     cv::Mat _g;         // green component of source image
     cv::Mat _ec;        // enemy color
     cv::Mat _max_color; // binary image of sub between blue and red component

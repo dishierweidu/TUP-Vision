@@ -73,13 +73,36 @@ bool AngleSolver::getAngle(const cv::RotatedRect &rect, double &angle_x, double 
     return true;
 }
 
+
+bool AngleSolver::getAngle(const cv::Point2f apex[4], double &angle_x, double &angle_y, double &dist)
+{
+    vector<Point2f> apex_tmp;
+    for(int i = 0;i<=3; i++)
+    {
+        apex_tmp.emplace_back(apex[i]);//压入坐标点
+    }
+
+    cv::Mat r;
+    solvePnP4Points(apex_tmp, r, position_in_camera, dist);
+    //position_in_camera.at<double>(2, 0) = 1.4596 * position_in_camera.at<double>(2, 0);  // for camera-2 calibration (unfix center)
+    //position_in_camera.at<double>(2, 0) = 1.5348 * position_in_camera.at<double>(2, 0);  // for camera-MH calibration (unfix center)
+    position_in_camera.at<double>(2, 0) = position_in_camera.at<double>(2, 0);
+
+    // translate camera coordinate to PTZ coordinate
+    tranformationCamera2PTZ(position_in_camera, position_in_ptz);
+
+    adjustPTZ2Barrel(position_in_ptz, angle_x, angle_y);
+
+    return true;
+}
+
 void AngleSolver::tranformationCamera2PTZ(const cv::Mat &pos, cv::Mat &transed_pos)
 {
     transed_pos = rot_camera2ptz * pos - trans_camera2ptz;
 }
 
 /**
- * 在这里进行角度偏移修改-----该功能现已改为由EnergyMain与Shooting
+ * 在这里进行角度偏移修改-----该功能现已改为由EnergyMain与ImageProcess中的ShootingAngleCompensate实现
  */
 void AngleSolver::adjustPTZ2Barrel(const cv::Mat &pos_in_ptz, double &angle_x, double &angle_y)
 {
@@ -145,7 +168,7 @@ void AngleSolverFactory::setTargetSize(double width, double height, TargetType t
         small_armor_height = height;
     }
 }
-
+//@brief 角度解算函数
 bool AngleSolverFactory::getAngle(const cv::RotatedRect &rect, TargetType type, double &angle_x, double &angle_y, double &dist)
 {
     if (slover == NULL)
@@ -170,3 +193,24 @@ bool AngleSolverFactory::getAngle(const cv::RotatedRect &rect, TargetType type, 
     slover->setTargetSize(width, height);
     return slover->getAngle(rect_rectifid, angle_x, angle_y, dist);
 }
+
+//@brief 角度解算函数(使用灯条顶点)
+bool AngleSolverFactory::getAngle(const ArmorPlate &target_armor, TargetType type, double &angle_x, double &angle_y, double &dist)
+{
+
+    double width = 0.0, height = 0.0;
+    if (type == TARGET_ARMOR)
+    {
+        width = armor_width;
+        height = armor_height;
+    }
+    else if (type == TARGET_SAMLL_ATMOR)
+    {
+        width = small_armor_width;
+        height = small_armor_height;
+    }
+    slover->setTargetSize(width, height);
+    return slover->getAngle(target_armor.apex, angle_x, angle_y, dist);
+}
+
+
