@@ -8,14 +8,14 @@
 //
 //----------------------------------------------------------
 
-#define SHOW_THRESH_WHOLE // 是否显示thresh后图像
+// #define SHOW_THRESH_WHOLE // 是否显示thresh后图像
 // #define SHOW_COLOR              //是否显示通道相减后图像
 
 
 // #define SHOW_MAX_COLOR    //显示_max_color图像
 // #define SHOW_MAX_COLOR2  //show dilated image
 
-#define SHOW_TARGET_SHOT_ARMOR   // target armor
+// #define SHOW_TARGET_SHOT_ARMOR   // target armor
 // #define COUT_LOG //FIX ME
 // #define SHOW_FIRST_RESULT    //First result
 // #define SHOW_ROI     //show roi

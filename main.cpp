@@ -42,12 +42,12 @@ void ModeReceiver(SerialPort &port)
             vision_mode = _mode ;   //设置mode
             temp = _mode;
             // cout << 233 <<endl;
-            // cout<<"MODE :"<<_mode<<endl;
+            cout<<"MODE :"<<_mode<<endl;
         };                      
         #endif
 
         #ifdef DEBUG_WITHOUT_COM    
-        vision_mode = 1;                           //1为辅瞄,2为小符,3为大符
+        vision_mode = 3;                           //1为辅瞄,2为小符,3为大符
         // int input;
         // std::cin>>input;
         // vision_mode = input;

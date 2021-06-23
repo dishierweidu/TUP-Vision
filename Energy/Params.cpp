@@ -34,7 +34,8 @@ void Params::initParams()
     // 二值化阈值
     
     // DETECT_RED_GRAY_BINARY = 100;                                  //北理珠视频DEBUG红色阈值                   
-    DETECT_RED_GRAY_BINARY = 6;                                   // 识别红色时的阈值
+    // DETECT_RED_GRAY_BINARY = 10;                                   // 识别红色时的阈值
+    DETECT_RED_GRAY_BINARY = 23;                                   // 识别红色时的阈值
     // DETECT_RED_GRAY_BINARY = 33;                                   // 识别红色时的阈值(day)
     // DETECT_BLUE_GRAY_BINARY = 100;                                  // 识别蓝色时的阈值
 
@@ -50,11 +51,11 @@ void Params::initParams()
     // // // // ARMOR
     ARMOR_CONTOUR_AREA_MAX = 800;        // 装甲板轮廓面积最大值
     ARMOR_CONTOUR_AREA_MIN = 200;        // 装甲板轮廓面积最小值
-    ARMOR_CONTOUR_LENGTH_MAX = 60;        // 装甲板轮廓长边最大值
+    ARMOR_CONTOUR_LENGTH_MAX = 80;        // 装甲板轮廓长边最大值
     ARMOR_CONTOUR_LENGTH_MIN = 20;        // 装甲板轮廓长边最小值
-    ARMOR_CONTOUR_WIDTH_MAX = 30;         // 装甲板轮廓短边最大值
-    ARMOR_CONTOUR_WIDTH_MIN = 10;         // 装甲板轮廓短边最小值
-    ARMOR_CONTOUR_HW_RATIO_MAX = 2.4;     // 装甲板轮廓长宽比最大值
+    ARMOR_CONTOUR_WIDTH_MAX = 40;         // 装甲板轮廓短边最大值
+    ARMOR_CONTOUR_WIDTH_MIN = 8;         // 装甲板轮廓短边最小值
+    ARMOR_CONTOUR_HW_RATIO_MAX = 2.6;     // 装甲板轮廓长宽比最大值
     ARMOR_CONTOUR_HW_RATIO_MIN = 1.2;     // 装甲板轮廓长宽比最小值
     
     // // //ARMOR(北理珠视频Debug)
@@ -71,13 +72,13 @@ void Params::initParams()
     // FLOW_STRIP_FAN
     FLOW_STRIP_FAN_CONTOUR_AREA_MAX = 5000;        // 含流动条的扇叶轮廓面积最大值
     FLOW_STRIP_FAN_CONTOUR_AREA_MIN = 1000;        // 含流动条的扇叶轮廓面积最小值
-    FLOW_STRIP_FAN_CONTOUR_LENGTH_MAX = 130;       // 含流动条的扇叶轮廓长边最大值
+    FLOW_STRIP_FAN_CONTOUR_LENGTH_MAX = 150;       // 含流动条的扇叶轮廓长边最大值
     FLOW_STRIP_FAN_CONTOUR_LENGTH_MIN = 80;       // 含流动条的扇叶轮廓长边最小值
-    FLOW_STRIP_FAN_CONTOUR_WIDTH_MAX = 75;         // 含流动条的扇叶轮廓短边最大值
-    FLOW_STRIP_FAN_CONTOUR_WIDTH_MIN = 40;         // 含流动条的扇叶轮廓短边最小值
+    FLOW_STRIP_FAN_CONTOUR_WIDTH_MAX = 80;         // 含流动条的扇叶轮廓短边最大值
+    FLOW_STRIP_FAN_CONTOUR_WIDTH_MIN = 20;         // 含流动条的扇叶轮廓短边最小值
     FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MAX = 2.5;     // 含流动条的扇叶长宽比最大值
-    FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MIN = 1.8;       // 含流动条的扇叶长宽比最小值
-    FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MAX = 0.6;   // 含流动条的扇叶轮廓的面积之比最大值
+    FLOW_STRIP_FAN_CONTOUR_HW_RATIO_MIN = 1.7;       // 含流动条的扇叶长宽比最小值
+    FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MAX = 0.65;   // 含流动条的扇叶轮廓的面积之比最大值
     FLOW_STRIP_FAN_CONTOUR_AREA_RATIO_MIN = 0.2;  // 含流动条的扇叶轮廓的面积之比最小值
 
     // // // FLOW_STRIP_FAN(北理珠视频Debug)
@@ -102,7 +103,7 @@ void Params::initParams()
     CENTER_R_CONTOUR_HW_RATIO_MAX = 2;       //风车中心R长宽比最大值
     CENTER_R_CONTOUR_HW_RATIO_MIN = 0.5;      //风车中心R长宽比最小值
     CENTER_R_CONTOUR_AREA_RATIO_MIN = 0.7;          //FIXME:装甲板轮廓占旋转矩形面积比最小值
-    CENTER_R_CONTOUR_INTERSETION_AREA_MIN =200;    //中心R占ROI区的面积最小值
+    CENTER_R_CONTOUR_INTERSETION_AREA_MIN = 100;    //中心R占ROI区的面积最小值
 
     //CENTER_R(北理珠视频DEBUG)
     // CENTER_R_CONTOUR_AREA_MAX = 2000;          //风车中心R面积最大值

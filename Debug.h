@@ -45,8 +45,8 @@
 
 #define DEBUG_WITHOUT_COM           //无串口调试
 
-// #define SAVE_VIDEO_DAHENG                  //Save video to local.
-// #define SAVE_VIDEO_USB_CAMERA                  //Save video to local.
+#define SAVE_VIDEO_DAHENG                  //Save video to local.
+#define SAVE_VIDEO_USB_CAMERA                  //Save video to local.
 
 //----------------------------------------------------------//
 //                                                          //
@@ -62,10 +62,10 @@
 
 // #define SHOW_SRC      // 是否显示原始图像
 
-#define SHOW_DISTANCE
+// #define SHOW_DISTANCE
 //-----------------------------(大符)-----------------------------------//
-// #define USE_USB_CAMERA_ENERGY      // 是否使用USB相机
-#define USE_LOCAL_VIDEO_ENERGY     // 是否使用本地测试视频
+#define USE_USB_CAMERA_ENERGY      // 是否使用USB相机
+// #define USE_LOCAL_VIDEO_ENERGY     // 是否使用本地测试视频
 
 //----------------------------------------------------------//
 //                                                          //
@@ -86,5 +86,5 @@
 //                      功能选择参数                          //
 //                                                          //
 //----------------------------------------------------------//
-#define USING_KALMAN_ARMOR                  //是否为辅瞄启用卡尔曼预测
+// #define USING_KALMAN_ARMOR                  //是否为辅瞄启用卡尔曼预测
 // #define USING_DEBUG_ANTISPIN                //反陀螺(未完成)

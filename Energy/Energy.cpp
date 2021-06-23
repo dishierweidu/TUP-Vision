@@ -440,6 +440,10 @@ void Energy::initFrame(Mat &frame)
 {
     // 通道分离 + 二值化 + 膨胀腐蚀
     vector<Mat> channels;
+    // Mat thres;
+    // Mat frame2;
+    // frame.copyTo(thres);
+    // threshold(frame, thres, energyParams.DETECT_RED_GRAY_BINARY, 255, CV_THRESH_BINARY);
     split(frame, channels);
 
     // if (energyParams.stm32Data.enemy_color == OUR_BLUE)
@@ -468,6 +472,7 @@ void Energy::initFrame(Mat &frame)
 
     dilate(frame, frame, energyParams.element, Point(-1, -1), 1);   // 膨胀
     // erode(frame, frame, element, Point(-1, -1), 0);  // 腐蚀
+    // frame2 = frame & thres;
 
     #ifdef SHOW_BINARY
     imshow("SHOW_BINARY", frame);
@@ -662,11 +667,11 @@ bool Energy::predictTargetPoint(Mat &frame)
 
             // cout<<"Vp - Vm : "<<(float)(prediction.at<float>(0,1) ) - (float)(measure_omega ) <<endl;
             // cout<<"predict degree:"<<(float)(prediction.at<float>(0,0) ) <<"degree"<<endl;
-            // cout<<"measure speed:"<<(float)(mea n.at<float>(0,1) ) <<"rad / s"<<endl;
+            // cout<<"preditc speed:"<<(float)(prediction.at<float>(0,1) ) <<"rad / s"<<endl;
             // cout<<"measure radian accelration:"<< measure_a_rad <<"rad / (s^2)"<<endl;
             // cout<<"predict radian accelration:"<<(float)(prediction.at<float>(0,2) ) <<"rad / (s^2)"<<endl;
             // cout<<"predict speed:"<<(float)(prediction.at<float>(0,1) ) * 60 / (2 * CV_PI) <<"RPM"<<endl;
-            // cout<<"measure speed:" << (int)(delta_theta / delta_time) <<"rad / s"<<endl;
+            // cout<<"measure speed:" << (float)(delta_theta / delta_time) <<"rad / s"<<endl;
             // cout<<endl;
 
 
@@ -832,7 +837,6 @@ bool Energy::isValidArmor(vector<Point> &armor_contour)
         return false;
     }
 
-
     RotatedRect cur_rrect = minAreaRect(armor_contour);
 
     #ifdef SHOW_RECT_INFO_ARMOR
@@ -857,6 +861,7 @@ bool Energy::isValidArmor(vector<Point> &armor_contour)
     {
         return false;
     }
+
     return true;
 }
 
@@ -1017,8 +1022,8 @@ bool Energy::predictRCenter(Mat &frame)
  
     //设置全图的ROI
     // cout<<target_length<<endl;
-    image_ROI =  cv::Rect(RCenter - Point2f(target_length * 5,target_length * 5) + (Point2f)ROI_Offset,
-                                Size2f(target_length * 10, target_length * 10));
+    image_ROI =  cv::Rect(RCenter - Point2f(target_length * 6.5,target_length * 6.5) + (Point2f)ROI_Offset,
+                                Size2f(target_length * 13, target_length * 13));
 
     //设置丢帧为0
     miss_cnt = 0;
@@ -1144,6 +1149,7 @@ bool Energy::isValidFlowStripFan(Mat &src_bin, vector<Point> &flow_strip_fan_con
     {
         return false;
     }
+
 
     // 根据长宽比进行筛选
     float ratio = height / width;

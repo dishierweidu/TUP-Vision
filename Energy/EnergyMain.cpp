@@ -60,8 +60,10 @@ void Energy::ShootingAngleCompensate(double &distance,double &angle_x,double &an
     double angle_y_compensate_dynamic;//Pitch轴角度动态补偿
     
 
-    angle_x_compensate_static = -10.4;  // smaller is left, bigger is right 
-    angle_y_compensate_static = 0.7;    // smaller is up, bigger is down
+    angle_x_compensate_static = -8.9;  // smaller is left, bigger is right 
+    angle_y_compensate_static = -1.2;    // smaller is up, bigger is down
+    // angle_x_compensate_static = 0;  // smaller is left, bigger is right 
+    // angle_y_compensate_static = 0;    // smaller is up, bigger is down
     //Curve Fitted in MATLAB
     angle_x_compensate_dynamic = 0;
     angle_y_compensate_dynamic =  0;
@@ -87,7 +89,7 @@ bool Energy::EnergyThreadProductor()
     time(&time_now);        //Record time from 1970 Jan 1st 0800AM
 
     time_info = localtime(&time_now);
-    string save_video_name = "./Video/VIDEO_USB_";//define the name of video
+    string save_video_name = "/home/tup/Desktop/TUP-Vision/Video/VIDEO_USB_";//define the name of video
 
     //Write time into video name
     save_video_name += to_string((time_info->tm_year) + 1900) + "_";//YY
@@ -227,21 +229,28 @@ bool Energy::EnergyThreadConsumer()
         double run_time = static_cast<double>(getTickCount());
         #endif // SHOW_ENERGY_RUN_TIME
 
-        #ifdef SAVE_VIDEO_USB_CAMERA
-        videowriter << oriFrame;//Save Frame into video
-        #endif//SAVE_VIDEO_USB_CAMERA
 
         // 能量机关识别入口
         if(!run(oriFrame)){
-            cout<<"lost"<<endl;
+            energy_data = {(float)0, (float)0, (float)0, 1, 1, 0, near_face};
+            _port.TransformData(energy_data);
+            _port.send();
+            // cout<<"lost"<<endl;
             continue;
         }
-        if (angle_slover.getAngle(predict_hit_armor, AngleSolverFactory::TARGET_ARMOR, angle_x, angle_y, dist) == false)
-            continue;
-        ShootingAngleCompensate(dist,angle_x,angle_y);//进行角度补偿
-        energy_data = {(float)angle_x, (float)angle_y, (float)dist, 1, 1, 0, near_face};
-        _port.TransformData(energy_data);
-        _port.send();
+        if (angle_slover.getAngle(predict_hit_armor, AngleSolverFactory::TARGET_ARMOR, angle_x, angle_y, dist))
+        {
+            ShootingAngleCompensate(dist,angle_x,angle_y);//进行角度补偿
+            energy_data = {(float)angle_x, (float)angle_y, (float)dist, 1, 1, 0, near_face};
+            _port.TransformData(energy_data);
+            _port.send();
+        }
+        else
+        {
+            energy_data = {(float)0, (float)0, (float)0, 1, 1, 0, near_face};
+            // _port.TransformData(energy_data);
+            // _port.send();
+        }
 
         cout << "yaw_angle :     " << angle_x << endl;
         cout << "pitch_angle :   " << angle_y << endl;

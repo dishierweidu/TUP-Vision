@@ -76,11 +76,11 @@ void ImageProcess::ShootingAngleCompensate(double &distance,double &angle_x,doub
     double angle_y_compensate_dynamic;//Pitch轴角度动态补偿
     
 
-    angle_x_compensate_static = -10.4;  // smaller is left, bigger is right 
+    angle_x_compensate_static = -0.6;  // smaller is left, bigger is right 
     angle_y_compensate_static = 0.7;    // smaller is up, bigger is down
     //Curve Fitted in MATLAB
     angle_x_compensate_dynamic = 0;
-    angle_y_compensate_dynamic =  0;
+    angle_y_compensate_dynamic = -((-1.138e4)*pow(distance,-1.934) + 2.425);
 
 
     angle_y += angle_y_compensate_dynamic + angle_y_compensate_static;
@@ -220,9 +220,9 @@ void ImageProcess::ImageProductor()
     // 开始采集帧
     DaHeng.SetStreamOn();
     // 设置曝光事件
-    DaHeng.SetExposureTime(2000);
+    DaHeng.SetExposureTime(100);
     // 设置
-    DaHeng.SetGAIN(3, 200);
+    DaHeng.SetGAIN(3, 16);
     // 是否启用自动曝光
     DaHeng.Set_BALANCE_AUTO(1);
     #endif // USE_DAHENG_CAMERA
@@ -243,7 +243,7 @@ void ImageProcess::ImageProductor()
     time(&time_now);        //Record time from 1970 Jan 1st 0800AM
 
     time_info = localtime(&time_now);
-    string save_video_name = "./Video/VIDEO_DAHENG_";//define the name of video
+    string save_video_name = "/home/tup/Desktop/TUP-Vision/Video/VIDEO_DAHENG_";//define the name of video
 
     //Write time into video name
     save_video_name += to_string((time_info->tm_year) + 1900) + "_";//YY
@@ -329,10 +329,10 @@ void ImageProcess::ImageConsumer()
     /*===========================相机畸变矩阵传入===========================*/
     FileStorage file(file_path, FileStorage::READ);
     Mat camera_Matrix, dis_Coeffs;
-    file["Camera_Matrix"]>>camera_Matrix;
-    file["Distortion_Coefficients"]>>dis_Coeffs;
-    // camera_Matrix = (cv::Mat_<double>(3, 3) << 1.5042e+03, 0.000000000000, 6.5358e+02, 0.000000000000, 1.5025e+03, 5.7713e+02, 0.000000000000, 0.000000000000, 1.000000000000);
-    // dis_Coeffs = (cv::Mat_<double>(1, 5) << -0.2302, 0.2882, 0, 0, 0);
+    // file["Camera_Matrix"]>>camera_Matrix;
+    // file["Distortion_Coefficients"]>>dis_Coeffs;
+    camera_Matrix = (cv::Mat_<double>(3, 3) << 1.451e+03,  0.000000000000,  645.373,  0.000000000000,  1.4563e+03,  491.0741,  0.000000000000,  0.000000000000,  1.000000000000);
+    dis_Coeffs = (cv::Mat_<double>(1, 5) << -0.2146,  0.3219,  0,  0,  0);
     /*===========================相机畸变矩阵传入===========================*/
 
     /*===========================角度解算参数传入===========================*/
@@ -424,6 +424,13 @@ void ImageProcess::ImageConsumer()
 
             //直接调用函数找到读进来的图中是否有目标
             present_armor = armor_detector.getTargetArea(src, 0, 0);
+            if(present_armor.boundingRect.size.area() < 1)
+            {
+                vdata = {(float)0, (float)0, (float)0, 0, 0, 0, near_face};
+                _port.TransformData(vdata);
+                _port.send();
+                continue;
+            }
             // center = present_armor.boundingRect.center;
             int len = MIN(present_armor.boundingRect.size.height, present_armor.boundingRect.size.width);
             #ifdef USING_KALMAN_ARMOR
@@ -437,12 +444,17 @@ void ImageProcess::ImageConsumer()
             AngleSolverFactory::TargetType type = armor_detector.isSamllArmor() ? AngleSolverFactory::TARGET_SAMLL_ATMOR : AngleSolverFactory::TARGET_ARMOR;
             // // 解算出的角度，为false则说明没有识别到目标
             // if (angle_slover.getAngle(predict_armor.boundingRect, type, angle_x, angle_y, dist) == true)
-            if (angle_slover.getAngle(predict_armor, type, angle_x, angle_y, dist) == true)
+            if (angle_slover.getAngle(present_armor, type, angle_x, angle_y, dist) == true)
             {
                 #ifdef SHOW_DISTANCE
                 for (int i = 0; i < 4; i++)
                     line(src, predict_armor.apex[i], predict_armor.apex[(i + 1) % 4], Scalar(0, 0, 255),2);
-                drawRotatedRect(src,present_armor.boundingRect,Scalar(255,0,0),2);
+                for (int i = 0; i < 4; i++)
+                    line(src, present_armor.apex[i], present_armor.apex[(i + 1) % 4], Scalar(0, 100, 200),2);
+                for (int i = 0; i < 4; i++)
+                    cout<<present_armor.apex[i]<<endl;
+
+                drawRotatedRect(src,present_armor.boundingRect,Scalar(255,0,0),1);
                 String distance = "distance:";
                 distance += to_string(int(dist));
                 putText(src, distance, Point(20, 20), CV_FONT_NORMAL, 1, Scalar(0, 255, 0), 2);
@@ -493,25 +505,27 @@ void ImageProcess::ImageConsumer()
              */
                 if (_sentrymode)
                 {
-                    if (miss_detection_cnt > 10)
-                        vdata = {(float)angle_x, (float)angle_y, (float)distance, 0, 0, 0, near_face};
-                    else
-                        vdata = {last_x / 3, last_y / 3, last_dist, 0, 1, 0, near_face};
-                }
-                else
-                {
-                    if (miss_detection_cnt > 5)
-                        vdata = {(float)angle_x, (float)angle_y, (float)distance, 0, 0, 0, near_face};
-                    else
-                        vdata = {last_x / 3, last_y / 3, last_dist, 0, 1, 0, near_face};
+                //     if (miss_detection_cnt > 10)
+                //         vdata = {(float)angle_x, (float)angle_y, (float)distance, 0, 0, 0, near_face};
+                //     else
+                //         vdata = {last_x / 3, last_y / 3, last_dist, 0, 1, 0, near_face};
+                // }
+                // else
+                // {
+                //     if (miss_detection_cnt > 5)
+                //         vdata = {(float)angle_x, (float)angle_y, (float)distance, 0, 0, 0, near_face};
+                //     else
+                //         vdata = {last_x / 3, last_y / 3, last_dist, 0, 1, 0, near_face};
                 }
                 // }
 
                 _port.TransformData(vdata);
                 _port.send();
             }
-            // cout << "yaw_angle :     " << angle_x << endl;
-            // cout << "pitch_angle :   " << angle_y << endl;
+            cout << "yaw_angle :     " << angle_x << endl;
+            cout << "pitch_angle :   " << angle_y << endl;
+            cout<<"dist :"<<distance<<endl;
+            cout<<"----------------------------"<<endl;
         }
         #ifdef CALC_PROCESS_TIME
         timer_consumer = (clock() - timer_consumer)/ (CLOCKS_PER_SEC / 1000);    //原地计算本次任务所用时间(单位:ms) 

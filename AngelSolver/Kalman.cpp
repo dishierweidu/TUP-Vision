@@ -35,7 +35,9 @@ void Kalman::init(int type)
     measureParams = 2;                                   //测量矩阵为2维
     controlParams = 0;                                   //暂未设置控制矩阵
 
-    EstimatedTimeofArrival = 0.45;                        //设置提前时间
+    // EstimatedTimeofArrival = 0.45;                        //设置提前时间
+    EstimatedTimeofArrival = 0.40;                        //设置提前时间
+    // EstimatedTimeofArrival = 0.01;                        //设置提前时间
 
     KF.init(dynamParams,measureParams,controlParams);   //初始化参数
 
@@ -53,7 +55,7 @@ void Kalman::init(int type)
                                                     0,          0               ,            1               );
                                                     
                                                     
-    KF.transitionMatrix = (Mat_<float>(3, 3) << 0 , EstimatedTimeofArrival , 2.7 * pow(EstimatedTimeofArrival,2),
+    KF.transitionMatrix = (Mat_<float>(3, 3) << 0 , EstimatedTimeofArrival , 3 * pow(EstimatedTimeofArrival,2),
                                                 0 ,         1              ,          EstimatedTimeofArrival  ,                      
                                                 0,           0             ,                   1               );//设置状态转移矩阵
 

@@ -25,11 +25,11 @@
 // #define SHOW_ALL_ARMORS               // 是否显示初步筛选出的装甲板
 // #define SHOW_TARGET_ARMOR             // 是否能显示最终得到的装甲板
 // #define SHOW_TARGET_ARMOR_CENTER      // 是否显示最终得到的装甲板中心点
-#define SHOW_PREDICT_ARMOR            //  
+// #define SHOW_PREDICT_ARMOR            //  
 
 //  #define SHOW_R_CENTER                // 是否显示字母R中心点
 
-#define SHOW_PREDICT_POINT           // 是否显示打击预测点
+// #define SHOW_PREDICT_POINT           // 是否显示打击预测点
 
 
 

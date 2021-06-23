@@ -101,13 +101,14 @@ void ArmorDetector::setImage(const cv::Mat &src)
     Mat element1 = getStructuringElement(MORPH_ELLIPSE, Size(5, 5));
     Mat element = getStructuringElement(MORPH_ELLIPSE, Size(3, 3));
     // 敌方颜色为红色时
-    if (enemy_color == RED)
+        if (enemy_color == RED)
     {
         vector<Mat> splited;
         split(_src, splited);
         cvtColor(_src, thres_whole, CV_BGR2GRAY);
         if (sentry_mode)
-            threshold(thres_whole, thres_whole, 33, 255, THRESH_BINARY);
+            threshold(thres_whole, thres_whole, 40, 255, THRESH_BINARY);
+            // threshold(thres_whole, thres_whole, 33, 255, THRESH_BINARY);
         else
             threshold(thres_whole, thres_whole, 40, 255, THRESH_BINARY);
 
@@ -115,17 +116,19 @@ void ArmorDetector::setImage(const cv::Mat &src)
         imshow("thresh_whole", thres_whole);
         #endif  //SHOW_THRESH_WHOLE
 
+
+
         Mat color;
         subtract(splited[2], splited[0], color);
+        #ifdef SHOW_COLOR
+        imshow("SHOW_COLOR", color);
+        #endif  //SHOW_COLOR
+
         threshold(color, color, thres_max_color_red, 255, THRESH_BINARY); // red
-        dilate(color, color, element);
-
-// #ifdef SHOW_COLOR
-//         imshow("SHOW_COLOR", color);
-// #endif
-
+        erode(color, color, element1);
+        dilate(color, color, element1);
+        
         _max_color = color & thres_whole; // _max_color获得了清晰的二值图
-        // _max_color = color;
         dilate(_max_color, _max_color, element2);
         // cout<<"red"<<endl;
     }
@@ -137,7 +140,7 @@ void ArmorDetector::setImage(const cv::Mat &src)
         cvtColor(_src, thres_whole, CV_BGR2GRAY);
         // cout<<"blue"<<endl;
         if (sentry_mode)
-            threshold(thres_whole, thres_whole, 60, 255, THRESH_BINARY);
+            threshold(thres_whole, thres_whole, 50, 255, THRESH_BINARY);
         else
             threshold(thres_whole, thres_whole, 50, 255, THRESH_BINARY);
 
@@ -145,17 +148,22 @@ void ArmorDetector::setImage(const cv::Mat &src)
         imshow("thres_whole", thres_whole);
         #endif  //SHOW_THRESH_WHOLE
 
-        subtract(splited[0], splited[2], _max_color);
-        threshold(_max_color, _max_color, thres_max_color_blue, 255, THRESH_BINARY); // blue
-        dilate(_max_color, _max_color, element);
+        Mat color;
+        subtract(splited[0], splited[2], color);
+        #ifdef SHOW_COLOR
+        imshow("SHOW_COLOR", color);
+        #endif  //SHOW_COLOR
 
-        #ifdef SHOW_MAX_COLOR
-        imshow("SHOW_MAX_COLOR", _max_color);
-        #endif  //SHOW_MAX_COLOR
+        threshold(color, color, thres_max_color_blue, 255, THRESH_BINARY); // blue
+        erode(color, color, element1);
+        dilate(color, color, element1);
 
-        _max_color = _max_color & thres_whole; // _max_color获得了清晰的二值图
+
+
+        _max_color = color & thres_whole; // _max_color获得了清晰的二值图
         dilate(_max_color, _max_color, element2);
     }
+
 
 ////////////////////////////// end /////////////////////////////////////////
     #ifdef SHOW_MAX_COLOR2
@@ -371,7 +379,7 @@ void ArmorDetector::findTargetInContours(vector<matched_rect> &match_rects)
                 double wh_ratio = w / h;
                 // 长宽比不符
 
-                cout<<"angleabs :"<<angleabs<<endl;
+                // cout<<"angleabs :"<<angleabs<<endl;
 #ifdef COUT_LOG
                 cout << "wh_ratio:  " << wh_ratio << endl;
 #endif  //COUT_LOG
