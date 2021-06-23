@@ -1,0 +1,47 @@
+#opencv
+sudo apt-get install libx264-dev cmake-curses-gui
+
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=/media/dji/cbdca4cb-caaf-4096-80ef-b6a1eb07cd23/opencv/opencv_contrib/modules/ -D WITH_TBB=ON -D WITH_V4L=ON -D WITH_QT=ON -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D WITH_CUDA=ON ..
+
+#config
+sudo echo '/usr/local/lib ' >> /etc/ld.so.conf.d/opencv.conf
+sudo ldconfig 
+
+sudo gedit /etc/bash.bashrc
+	PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig 
+	export PKG_CONFIG_PATH
+source /etc/bash.bashrc
+source ~/.bashrc
+
+#source
+deb http://mirrors.aliyun.com/ubuntu-ports/ xenial main
+deb-src http://mirrors.aliyun.com/ubuntu-ports/ xenial main
+
+deb http://mirrors.aliyun.com/ubuntu-ports/ xenial-updates main
+deb-src http://mirrors.aliyun.com/ubuntu-ports/ xenial-updates main
+
+deb http://mirrors.aliyun.com/ubuntu-ports/ xenial universe
+deb-src http://mirrors.aliyun.com/ubuntu-ports/ xenial universe
+deb http://mirrors.aliyun.com/ubuntu-ports/ xenial-updates universe
+deb-src http://mirrors.aliyun.com/ubuntu-ports/ xenial-updates universe
+
+deb http://mirrors.aliyun.com/ubuntu-ports/ xenial-security main
+deb-src http://mirrors.aliyun.com/ubuntu-ports/ xenial-security main
+deb http://mirrors.aliyun.com/ubuntu-ports/ xenial-security universe
+deb-src http://mirrors.aliyun.com/ubuntu-ports/ xenial-security universe
+
+#source_bug
+cd /etc/apt/sources.list.d
+ls
+sudo rm bzindovic-ubuntu-suitesparse-bugfix-1319687-xenial.list
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F42
+
+#net
+sudo gedit /etc/resolv.conf
+nameserver 8.8.8.8
+sudo etc/init.d/networking restart
+
+#QT
+sudo apt-get install qt4-dev-tools #开发包 　　
+sudo apt-get install qtcreator #IDE　　　　
+sudo apt-get install qt4-qtconfig #配置工具 　　
