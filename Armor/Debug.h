@@ -1,23 +1,22 @@
-//----------------------------------------------------------
-//
-// FileName: Debug.cpp(For Armor)
-// Author: 周俊平;刘上;赵梓合;顾昊
-// Version: 1.0.0
-// Date: 2021.04.10
-// Description: 
-//
-//----------------------------------------------------------
 
+//----------------------------------------------------------//
+//                                                          //
+//                        图像处理参数                        //
+//                                                          //
+//----------------------------------------------------------//
 // #define SHOW_THRESH_WHOLE // 是否显示thresh后图像
 // #define SHOW_COLOR              //是否显示通道相减后图像
+// #define SHOW_INITIALIZED_IMAGE       //显示预处理操作之后的图像
+
+// #define SHOW_FIRST_RESULT            //显示灯条识别结果
+#define SHOW_TARGET_SHOT_ARMOR       //显示目标装甲板
+
+// #define SHOW_ROI                     //显示ROI
+
+//----------------------------------------------------------//
+//                                                          //
+//                      Terminal参数                        //
+//                                                          //
+//----------------------------------------------------------//
 
 
-// #define SHOW_MAX_COLOR    //显示_max_color图像
-// #define SHOW_MAX_COLOR2  //show dilated image
-
-// #define SHOW_TARGET_SHOT_ARMOR   // target armor
-// #define COUT_LOG //FIX ME
-// #define SHOW_FIRST_RESULT    //First result
-// #define SHOW_ROI     //show roi
-// #define SHOW_INPUT_SAMPLE    //show input sample
-// #define TEST //waiting list rect

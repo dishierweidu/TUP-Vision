@@ -16,16 +16,21 @@ IN THE SOFTWARE.
 *******************************************************************************************************************/
 
 #pragma once
+
 #include "opencv2/core/core.hpp"
 
 class ArmorPlate
 {
 public:
-    cv::RotatedRect boundingRect;
+    cv::RotatedRect rrect;
     cv::Point2f apex[4];
-    cv::Point2f center;
+    int serial;
+    bool is_small_armor;
+    ArmorPlate()
+    {
+        serial = 0;//初始化编号
+    }
 };
-
 
 /**
  * @brief The RectPnPSolver class
@@ -131,7 +136,7 @@ public:
     {
         TARGET_RUNE,
         TARGET_ARMOR,
-        TARGET_SAMLL_ATMOR
+        TARGET_SMALL_ARMOR
     } TargetType;
 
     void setSolver(AngleSolver *angle_slover)

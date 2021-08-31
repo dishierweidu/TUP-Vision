@@ -23,17 +23,13 @@
 
 
 #include "./Params.h"
-#include "./EnergyDebug.h"
+#include "./Debug.h"
 #include "../Debug.h"
-
-
-
 
 #include <iostream>
 #include <string>   // 字符串
 #include <vector>   // 向量容器
 #include <queue>    // 队列
-// #include <thread>   // 线程库
 #include <mutex>    // 互斥量
 #include <atomic>
 #include <time.h>
@@ -48,8 +44,7 @@
 #include "../AngelSolver/Kalman.h"
 #include "../Armor/ArmorDetector.hpp"
 #include "../Serial/serialport.h"
-
-
+#include "../General/General.h"
 
 using namespace std;
 using namespace cv;
@@ -69,17 +64,12 @@ public:
 
     bool EnergyThreadConsumer();                                       //能量机关消费者线程
     bool EnergyThreadProductor();                                      //能量机关生产者线程
+    bool run(Mat &oriFrame);                                    // 识别总函数
 
-    #ifdef SHOW_RECT_INFO 
-    Mat src_rect_info;                                       //显示矩形信息
-
-    #endif//SHOW_RECT_INFO
 
     RotatedRect predict_hit_armor;                              //预测击打装甲
     Point2f predict_hit_point;                                  //预测击打点
     
-    bool run(Mat &oriFrame);                                    // 识别总函数
-
 private:
     Params energyParams;                                        // 实例化参数对象
 
@@ -90,14 +80,11 @@ private:
     queue<clock_t> armor_center_queue_time;                      //记录上面集合的保存时间
     queue<double> armor_center_queue_omega;                     //记录角速度增量
 
-
     vector<Point2f> armor_center_points;                        // 装甲板中心点的集合,用于做拟合
     vector<RotatedRect> armors_rrect;                           // 初步筛选到的各种装甲板
     vector<RotatedRect> flow_strip_fan_rrect;                   // 筛选出来的有流动条的扇叶
     
-
     clock_t debug_cnt;                                          // DEBUG时间戳
-
 
     Rect  image_ROI;                                            //全图ROI
     RotatedRect center_ROI;                                     // 中心ROI
@@ -111,25 +98,13 @@ private:
     RotatedRect centerR;                                        // 最终找到的R
 
     int rotation;                                               // 当前旋转方向
-    int miss_cnt;                                               //miss count
+    int miss_cnt;                                               //丢失帧数
 
     bool is_first_predict;                                      //是否为第一次预测
 
     double angle_confidence;                                    // 角度置信度
 
-    vector<Point2f> points2D;                                   // 用于pnp的平面二维点
-    vector<Point3f> points3D;                                   // 用于pnp的空间三维点
 
-    void getPoints2D();                                         // 获得pnp的平面二维点
-    void getPoints3D();                                         // 获得pnp的空间三维点
-    void solveXYZ();                                            // 使用pnp解算
-
-    void clearVectors();                                        // 清空各vector
-    void initFrame(Mat &frame);                                 // 图像预处理
-    void CutImageByROI(Mat &frame);                             //Cut Image by ROI
-    void ROIEnlargeByMissCnt(Mat &frame);                                 //由丢失目标帧数进行ROI调整 
-    void init();                                                //initilize some factors;
-    void ShootingAngleCompensate(double &distance,double &angle_x,double &angle_y);//射击补偿
 
     bool getDirectionOfRotation();                              // 获得当前旋转方向
     bool predictTargetPoint(Mat &frame);                        // 对打击点进行预测
@@ -142,8 +117,14 @@ private:
     bool findCenterRROI() ;                                      // 寻找圆心ROI
     bool findCenterR(Mat &src_bin)  ;                           // 寻找中心R结构
     bool isValidCenterRContour(const vector<cv::Point> &center_R_contour);  //检查中心R是否符合要求
-
-    void Final_Hit_Calc();                                      //击打数据计算
+    
+    void clearVectors();                                        // 清空各vector
+    void initFrame(Mat &frame);                                 // 图像预处理
+    void cutImageByROI(Mat &frame);                             //根据ROI进行图像裁剪
+    void ROIEnlargeByMissCnt(Mat &frame);                       //由丢失目标帧数进行ROI调整 
+    void init();                                                //参数初始化;
+    void shootingAngleCompensate(double &distance,double &angle_x,double &angle_y);//射击补偿
+    void finalHitCalc();                                      //击打数据计算
 
     inline float spd_func(float time);        // spd函数  
     inline float theta_func(float time);      // 对spd的积分函数

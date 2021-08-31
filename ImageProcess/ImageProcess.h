@@ -14,8 +14,8 @@
 
 
 #include "../Debug.h"
-#include "../Armor/Settings.hpp"
-
+#include "../Armor/Debug.h"
+#include "../General/General.h"
 
 #include <iostream>
 
@@ -45,14 +45,8 @@ public:
     
     void ImageProductor();                                        // 线程生产者
     void ImageConsumer();                                         // 线程消费者
-
-    // void ImageProductor_Single(Mat &oriFrame);                    // 线程生产者(单线程)
-    // void ImageConsumer_Single(Mat &src, Energy &energy_detector); //线程消费者(单线程)
-    
-    // void EnergyThread();    // 能量机关识别独立线程
-
-    void ShootingAngleCompensate(double &distance,double &angle_x,double &angle_y);//Angle Compensate based on pnp distance
-    bool AdvancedPredictForArmorDetect(RotatedRect &present_armor,RotatedRect &predict_armor);//装甲板卡尔曼
+    void shootingAngleCompensate(double &distance,double &angle_x,double &angle_y);//基于PnP所解算距离的距离补偿
+    bool advancedPredictForArmorDetect(RotatedRect &present_armor,RotatedRect &predict_armor);//装甲板卡尔曼
 private:
     SerialPort _port;
     int _sentrymode;
@@ -67,7 +61,5 @@ private:
     queue<clock_t> armor_queue_time;             //记录上面集合的保存时间
 
     Kalman kalmanfilter{KALMAN_TYPE_ARMOR};             //设置卡尔曼滤波器类型
-
-    
 
 };

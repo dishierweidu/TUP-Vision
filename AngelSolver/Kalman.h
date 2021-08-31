@@ -1,8 +1,8 @@
 //----------------------------------------------------------
 //
-// FileName: Kalman
-// Author: GuHao    GuHao0521@Gmail.com
-// Version: 1.1.0 beta
+// FileName: Kalman.h
+// Author: 顾昊    GuHao0521@Gmail.com
+// Version: 1.1.0 
 // Date: 2021.4.17
 // Description: Kalman类的定义
 // Function List:1.Kalman::Kalman()
@@ -29,21 +29,17 @@ public:
 
     Kalman(int);                       //Kalman类构造函数
     ~Kalman();                      //Kalman类析构函数
+    double predict_time_;         //预测提前时间
 
-    double EstimatedTimeofArrival;         //预测提前
+
 
 private:
-    int measureParams;                 //测量矩阵数据维数
-    int dynamParams;                    //状态矩阵数据维数
-    int controlParams;                  //控制向量矩阵维数
+    int kalman_type_;             //设置卡尔曼滤波模式,0为大符,1为辅瞄
+    int measureparams_;                 //测量矩阵数据维数
+    int dynamparams_;                    //状态矩阵数据维数
+    int controlparams_;                  //控制向量矩阵维数
 
-
-
-    // Mat Jacobian;                       //用于纠正数据的雅可比矩阵(暂未使用EKF)
 
     void init(int type);                    //卡尔曼参数初始化
-
-
-
 };
 

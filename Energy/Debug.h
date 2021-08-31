@@ -27,11 +27,9 @@
 // #define SHOW_TARGET_ARMOR_CENTER      // 是否显示最终得到的装甲板中心点
 // #define SHOW_PREDICT_ARMOR            //  
 
-//  #define SHOW_R_CENTER                // 是否显示字母R中心点
+ #define SHOW_R_CENTER                // 是否显示字母R中心点
 
-// #define SHOW_PREDICT_POINT           // 是否显示打击预测点
-
-
+#define SHOW_PREDICT_POINT           // 是否显示打击预测点
 
 //----------------------中心R识别模式选择--------------------------//
 // #define CIRCLE_FIT                  //使用装甲板中心拟合圆心(不稳定)
@@ -43,7 +41,7 @@
 
 
 //--------------------------大符预测方案选择------------------------------//
-// #define ABSOLUTE_TIME_INTERGRATION      //绝对时间积分得到预测角度(不准确)
+// #define ABSOLUTE_TIME_INTERGRATION      //通过时间积分得到预测角度(不准确)
 
 #ifndef ABSOLUTE_TIME_INTERGRATION 
 #define USING_KALMAN_FILTER                       //使用卡尔曼滤波预测大符

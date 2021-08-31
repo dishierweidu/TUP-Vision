@@ -102,11 +102,11 @@ void AngleSolver::tranformationCamera2PTZ(const cv::Mat &pos, cv::Mat &transed_p
 }
 
 /**
- * 在这里进行角度偏移修改-----该功能现已改为由EnergyMain与ImageProcess中的ShootingAngleCompensate实现
+ * Warning:Read the text below before editing these params!!!
+ * The fuction is used to adjust angle offset caculated by PnP.
  */
 void AngleSolver::adjustPTZ2Barrel(const cv::Mat &pos_in_ptz, double &angle_x, double &angle_y)
 {
-    ////////////////////////////////请勿修改////////////////////////////////////////////
     const double *_xyz = (const double *)pos_in_ptz.data;
     double xyz[3] = {_xyz[0], _xyz[1] - 8, _xyz[2] + 10};
     /////////////////////////////////
@@ -162,7 +162,7 @@ void AngleSolverFactory::setTargetSize(double width, double height, TargetType t
         armor_width = width;
         armor_height = height;
     }
-    else if (type == TARGET_SAMLL_ATMOR)
+    else if (type == TARGET_SMALL_ARMOR)
     {
         small_armor_width = width;
         small_armor_height = height;
@@ -183,7 +183,7 @@ bool AngleSolverFactory::getAngle(const cv::RotatedRect &rect, TargetType type, 
         width = armor_width;
         height = armor_height;
     }
-    else if (type == TARGET_SAMLL_ATMOR)
+    else if (type == TARGET_SMALL_ARMOR)
     {
         width = small_armor_width;
         height = small_armor_height;
@@ -204,7 +204,7 @@ bool AngleSolverFactory::getAngle(const ArmorPlate &target_armor, TargetType typ
         width = armor_width;
         height = armor_height;
     }
-    else if (type == TARGET_SAMLL_ATMOR)
+    else if (type == TARGET_SMALL_ARMOR)
     {
         width = small_armor_width;
         height = small_armor_height;

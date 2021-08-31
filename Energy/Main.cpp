@@ -1,33 +1,26 @@
 //----------------------------------------------------------
 //
-// FileName: EnergyMain.cpp
+// FileName: Main.cpp
 // Author: GuHao    GuHao0521@Gmail.com
-// Version: 1.0.0 beta
-// Date: 2021.4.21
+// Version: 1.1.0
+// Date: 2021.7.14
 // Description: Energy类主函数
 // Function List:
-//                                         
-//               
-//
+//              1.void Energy::ShootingAngleCompensate(double &distance,double &angle_x,double &angle_y)
+//              2.bool Energy::EnergyThreadProductor()
+//              3.bool Energy::EnergyThreadConsumer()
 //----------------------------------------------------------
 
 #include "Energy.h"
 
-
-
 string file_path_energy = "./File/calib_no_4_1280.yml";
 
 #ifdef USE_LOCAL_VIDEO_ENERGY
-// const string source_location_energy = "/home/rangeronmars/Desktop/video/RH.avi";
-// const string source_location_energy = "/home/rangeronmars/Desktop/video/sample.avi";
-// const string source_location_energy = "/home/rangeronmars/Desktop/video/sample1_sin_red.mp4";
-// const string source_location_energy = "/home/rangeronmars/Desktop/video/sample2_sin_red.mp4";
+
 const string source_location_energy = "/home/rangeronmars/Desktop/video/sample2_sin_red_30fps.mp4";
-// const string source_location_energy = "/home/rangeronmars/Desktop/video/sample2_sin_red_800*800.mp4";
-// const string source_location_energy = "/home/rangeronmars/Desktop/video/sample2_sin_red_800*800_conter_clockwise.mp4";
-// const string source_location_energy = "/home/rangeronmars/Desktop/video/sample1_sin_blue.mp4";
+
 VideoCapture cap_energy(source_location_energy);
-#endif // USE_LOCAL_VIDEO
+#endif  // USE_LOCAL_VIDEO
 
 // 存储图像的结构体
 typedef struct
@@ -48,26 +41,23 @@ ImageData Image_Energy[IMG_BUFFER]; // 存储图像的缓冲区
 
 extern atomic_int64_t vision_mode;
 
-//@brief 射击补偿函数,包括固定补偿及距离补偿,角度单位均为角度制
-//@param distance 目标距离
-//@param angle_x  Yaw轴角引用(角度制)
-//@param angle_y  Pitch轴角引用(角度制)
-void Energy::ShootingAngleCompensate(double &distance,double &angle_x,double &angle_y)
+/**
+ * @brief 射击补偿函数,包括固定补偿及距离补偿,角度单位均为角度制
+ * @param distance 目标距离
+ * @param angle_x  Yaw轴角引用(角度制)
+ * @param angle_y  Pitch轴角引用(角度制)
+*/
+void Energy::shootingAngleCompensate(double &distance,double &angle_x,double &angle_y)
 {
     double angle_x_compensate_static;//Yaw轴角度固定补偿
     double angle_y_compensate_static;//Pitch轴角度固定补偿
     double angle_x_compensate_dynamic;//Yaw轴角度动态补偿
     double angle_y_compensate_dynamic;//Pitch轴角度动态补偿
     
-
-    angle_x_compensate_static = -8.9;  // smaller is left, bigger is right 
-    angle_y_compensate_static = -1.2;    // smaller is up, bigger is down
-    // angle_x_compensate_static = 0;  // smaller is left, bigger is right 
-    // angle_y_compensate_static = 0;    // smaller is up, bigger is down
-    //Curve Fitted in MATLAB
+    angle_x_compensate_static = -8.9;  //右侧为正方向 
+    angle_y_compensate_static = -1.2;  //上方为正方向
     angle_x_compensate_dynamic = 0;
     angle_y_compensate_dynamic =  0;
-
 
     angle_y += angle_y_compensate_dynamic + angle_y_compensate_static;
     angle_x += angle_x_compensate_dynamic + angle_x_compensate_static;
@@ -86,12 +76,12 @@ bool Energy::EnergyThreadProductor()
     VideoWriter videowriter;
     time_t time_now;
     struct tm *time_info;
-    time(&time_now);        //Record time from 1970 Jan 1st 0800AM
+    time(&time_now);        //记录自1970.7.1,0800AM以来的时间
 
     time_info = localtime(&time_now);
-    string save_video_name = "/home/tup/Desktop/TUP-Vision/Video/VIDEO_USB_";//define the name of video
+    string save_video_name = "/home/tup/Desktop/TUP-Vision/Video/VIDEO_USB_";//定义文件名
 
-    //Write time into video name
+    //将时间写入文件名
     save_video_name += to_string((time_info->tm_year) + 1900) + "_";//YY
     save_video_name += to_string(time_info->tm_mon) + "_";//MM
     save_video_name += to_string(time_info->tm_mday) + "_";//DD
@@ -100,8 +90,8 @@ bool Energy::EnergyThreadProductor()
     save_video_name += to_string(time_info->tm_sec);//Second
 
     save_video_name += ".avi";
-    videowriter.open(save_video_name,CV_FOURCC('M','J','P','G'),60,Size(640,480));//initilize videowriter
-    #endif//SAVE_VIDEO_USB_CAMERA
+    videowriter.open(save_video_name,CV_FOURCC('M','J','P','G'),60,Size(640,480));//初始化VideoWriter
+    #endif //SAVE_VIDEO_USB_CAMERA
 
 
     
@@ -109,7 +99,6 @@ bool Energy::EnergyThreadProductor()
     while (true)
     {
         while(vision_mode != 2 && vision_mode != 3){
-            // cout<<"MODE :"<<vision_mode<<endl;
         };
 
         // 经典的生产-消费者模型
@@ -147,10 +136,6 @@ bool Energy::EnergyThreadProductor()
         proIdx_Energy++;
         waitKey(1);
     }
-
-
-
-
 }
 
 bool Energy::EnergyThreadConsumer()
@@ -171,15 +156,13 @@ bool Energy::EnergyThreadConsumer()
     // 大小装甲板的角度解法
     AngleSolverFactory angle_slover;
     angle_slover.setTargetSize(22.5, 5.5 , AngleSolverFactory::TARGET_ARMOR);
-    angle_slover.setTargetSize(13, 5.5, AngleSolverFactory::TARGET_SAMLL_ATMOR);
+    angle_slover.setTargetSize(13, 5.5, AngleSolverFactory::TARGET_SMALL_ARMOR);
     /*===========================角度解算参数传入===========================*/
 
     /*===========================创建装甲板识别类===========================*/
     ArmorParam armor;
     ArmorDetector armor_detector(armor);
-    ArmorParam armor_para_720 = armor;
     armor_detector.setPnPSlover(&solver_720);
-    armor_detector.setPara(armor_para_720);
     angle_slover.setSolver(&solver_720);
 
     /*===========================函数中所使用的参数===========================*/
@@ -191,18 +174,11 @@ bool Energy::EnergyThreadConsumer()
     double angle_y;//pitch
     double dist = 0;
     Mat oriFrame;
-
-
     while(true)
     {
-        // int vision_mode_temp = (int)vision_mode;
-        // TODO: 角度偏移,串口通讯
         while(vision_mode != 2 && vision_mode != 3){
-            // cout<<"MODE :"<<vision_mode<<endl;
         };
         
-
-
         if(vision_mode == 2)
             energyParams.stm32Data.energy_mode =ENERGY_SMALL;
 
@@ -235,12 +211,12 @@ bool Energy::EnergyThreadConsumer()
             energy_data = {(float)0, (float)0, (float)0, 1, 1, 0, near_face};
             _port.TransformData(energy_data);
             _port.send();
-            // cout<<"lost"<<endl;
+            cout<<"lost"<<endl;
             continue;
         }
         if (angle_slover.getAngle(predict_hit_armor, AngleSolverFactory::TARGET_ARMOR, angle_x, angle_y, dist))
         {
-            ShootingAngleCompensate(dist,angle_x,angle_y);//进行角度补偿
+            shootingAngleCompensate(dist,angle_x,angle_y);//进行角度补偿
             energy_data = {(float)angle_x, (float)angle_y, (float)dist, 1, 1, 0, near_face};
             _port.TransformData(energy_data);
             _port.send();
@@ -251,10 +227,13 @@ bool Energy::EnergyThreadConsumer()
             // _port.TransformData(energy_data);
             // _port.send();
         }
-
-        cout << "yaw_angle :     " << angle_x << endl;
-        cout << "pitch_angle :   " << angle_y << endl;
-        cout<<endl;
+        #ifdef ECHO_FINAL_INFO
+        cout<<"-------------FINAL_INFO----------------"<< endl;
+        cout<<"MODE : ENERGY"<<endl;
+        cout<<"yaw_angle :     "<<angle_x<< endl;
+        cout<<"pitch_angle :   "<<angle_y<< endl;
+        cout<<"---------------------------------------"<<endl;
+        #endif//ECHO_FINAL_INFO
         
 
         #ifdef SHOW_ENERGY_RUN_TIME

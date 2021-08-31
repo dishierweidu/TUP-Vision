@@ -15,12 +15,14 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 ADD_EXECUTABLE(TUP-Vision ./main.cpp
 					# Debug文件
 					./Debug.h
+					./Energy/Debug.h
+					./Armor/Debug.h
 					# 线程及图像
 					./ImageProcess/ImageProcess.h
 					./ImageProcess/ImageProcess.cpp
 					# 能量机关文件
 					./Energy/Energy.cpp
-					./Energy/EnergyMain.cpp
+					./Energy/Main.cpp
 					./Energy/Energy.h
 					./Energy/Params.cpp
 					./Energy/Params.h
@@ -29,11 +31,9 @@ ADD_EXECUTABLE(TUP-Vision ./main.cpp
 					./Camera/DxImageProc.h
 					./Camera/DaHengCamera.h
 					./Camera/DaHengCamera.cpp
-
 					#装甲板识别文件
 					./Armor/ArmorDetector.cpp
 					./Armor/ArmorDetector.hpp
-					./Armor/Settings.hpp
 					#角度解算
 					./AngelSolver/AngleSolver.cpp
 					./AngelSolver/AngleSolver.hpp
@@ -44,6 +44,12 @@ ADD_EXECUTABLE(TUP-Vision ./main.cpp
 					./Serial/CRC_Check.h
 					./Serial/serialport.cpp
 					./Serial/serialport.h
+					#SVM相关
+					./SVM/Svm.cpp
+					./SVM/Svm.h
+					#常用函数
+					./General/General.cpp
+					./General/General.h
 
 )
 
