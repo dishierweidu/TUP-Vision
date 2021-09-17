@@ -78,8 +78,8 @@ void ShowRotateRectDetail(RotatedRect &RRect, Mat src, Scalar color = Scalar(0, 
     const string H_W = "H/W :" + to_string((float)((RRect.size.width > RRect.size.height ? RRect.size.width : RRect.size.height) / (RRect.size.width < RRect.size.height ? RRect.size.width : RRect.size.height)));
     for (int j = 0; j < 4; ++j)
         line(src, Apex[j], Apex[(j + 1) % 4], color, thickness);
-    putText(src, Width, Apex[0], CV_FONT_HERSHEY_SIMPLEX, 0.5, color, thickness);
-    putText(src, Height, Apex[0] + Point2f(0, 15), CV_FONT_HERSHEY_SIMPLEX, 0.5, color, thickness);
-    putText(src, Area, Apex[0] + Point2f(0, 30), CV_FONT_HERSHEY_SIMPLEX, 0.5, color, thickness);
-    putText(src, H_W, Apex[0] + Point2f(0, 45), CV_FONT_HERSHEY_SIMPLEX, 0.5, color, thickness);
+    putText(src, Width, Apex[0], FONT_HERSHEY_SIMPLEX, 0.5, color, thickness);
+    putText(src, Height, Apex[0] + Point2f(0, 15), FONT_HERSHEY_SIMPLEX, 0.5, color, thickness);
+    putText(src, Area, Apex[0] + Point2f(0, 30), FONT_HERSHEY_SIMPLEX, 0.5, color, thickness);
+    putText(src, H_W, Apex[0] + Point2f(0, 45), FONT_HERSHEY_SIMPLEX, 0.5, color, thickness);
 }

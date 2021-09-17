@@ -211,7 +211,7 @@ bool Energy::EnergyThreadConsumer()
             energy_data = {(float)0, (float)0, (float)0, 1, 1, 0, near_face};
             _port.TransformData(energy_data);
             _port.send();
-            cout<<"lost"<<endl;
+            cout<<"No Buff is Detected"<<endl;
             continue;
         }
         if (angle_slover.getAngle(predict_hit_armor, AngleSolverFactory::TARGET_ARMOR, angle_x, angle_y, dist))
@@ -238,7 +238,7 @@ bool Energy::EnergyThreadConsumer()
 
         #ifdef SHOW_ENERGY_RUN_TIME
         run_time = ((double)getTickCount() - run_time) / getTickFrequency();
-        cout << "SHOW_ENERGY_RUN_TIME: " << run_time << endl;
+        cout << "SHOW_ENERGY_RUN_TIME: " << run_time * 1000<<"ms"<< endl;
         #endif // SHOW_ENERGY_RUN_TIME
 
         waitKey(1);

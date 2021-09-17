@@ -247,7 +247,7 @@ void ImageProcess::ImageProductor()
 
     save_video_name += ".avi";
     cout<<"Video name :"<<save_video_name<<endl;
-    videowriter.open(save_video_name,CV_FOURCC('M','J','P','G'),60,Size(1280,1024));//initialize videowriter
+    videowriter.open(save_video_name,videowriter.fourcc('M','J','P','G'),60,Size(1280,1024));//initialize videowriter
 #endif//SAVE_VIDEO_DAHENG
 
 
@@ -446,7 +446,7 @@ void ImageProcess::ImageConsumer()
             drawRotatedRect(src,present_armor.rrect,Scalar(255,0,0),1);
             String distance = "distance:";
             distance += to_string(int(dist));
-            putText(src, distance, Point(20, 20), CV_FONT_NORMAL, 1, Scalar(0, 255, 0), 2);
+            putText(src, distance, Point(20, 20), FONT_HERSHEY_SIMPLEX , 1, Scalar(0, 255, 0), 2);
             imshow("SHOW_DISTANCE", src);
 #endif // SHOW_DISTANCE
             miss_detection_cnt = 0;

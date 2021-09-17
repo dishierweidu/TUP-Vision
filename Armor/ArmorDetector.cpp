@@ -105,7 +105,7 @@ bool ArmorDetector::setImage(const cv::Mat &src)
     Mat color;
     vector<Mat> splited;
     split(_src, splited);
-    cvtColor(_src, thres_whole, CV_BGR2GRAY);
+    cvtColor(_src, thres_whole, COLOR_BGR2GRAY); 
     // 敌方颜色为红色
     if (enemy_color == RED)
     {
@@ -159,7 +159,7 @@ bool ArmorDetector::findTargetInContours(vector<MatchedRect> &match_rects)
     Mat FirstResult;
     _src.copyTo(FirstResult);
 
-    findContours(_max_color, contours_max, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+    findContours(_max_color, contours_max, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
     vector<RotatedRect> RectFirstResult;
     for (size_t i = 0; i < contours_max.size(); ++i)
     {

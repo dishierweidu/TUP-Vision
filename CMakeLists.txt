@@ -8,7 +8,7 @@
 cmake_minimum_required(VERSION 2.8)
 SET(CMAKE_BUILD_TYPE "Debug") # "Debug" "Release"
 PROJECT(TUP-Vision)
-find_package(OpenCV 3.4.5)
+find_package(OpenCV 4.5.0)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c++11 -march=native")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native")
 include_directories(${OpenCV_INCLUDE_DIRS})

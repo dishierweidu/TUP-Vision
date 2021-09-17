@@ -87,7 +87,7 @@ bool NumClassfier::initImg(const Mat &src,Mat &dst,const ArmorPlate &target_armo
     //进行图像透视变换
     warpPerspective(src, warped_img, warp_matrix, Size(sample_size,sample_size), INTER_NEAREST, BORDER_CONSTANT, Scalar(0));
     //进行图像的灰度化与二值化
-    cvtColor(warped_img,src_gray,CV_BGR2GRAY);
+    cvtColor(warped_img,src_gray,COLOR_BGR2GRAY);
     threshold(src_gray,dst,binary_threshold,255,THRESH_BINARY);
     return true;
 }

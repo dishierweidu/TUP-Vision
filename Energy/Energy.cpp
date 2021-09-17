@@ -263,7 +263,7 @@ bool Energy::run(Mat &oriFrame)
 
 #ifdef SHOW_PREDICT_POINT
     Mat predict_img = frame.clone();
-    cv::cvtColor(predict_img, predict_img, CV_GRAY2BGR);
+    cv::cvtColor(predict_img, predict_img, COLOR_GRAY2BGR);
 
 #ifdef CIRCLE_FIT
     if (armor_center_points.size() == 50)
@@ -310,12 +310,12 @@ void Energy::initFrame(Mat &frame)
 
 #ifdef E_RED // Detect Red Armor Plate
     frame = channels.at(2) - channels.at(0);
-    threshold(frame, frame, energyParams.DETECT_RED_GRAY_BINARY, 255, CV_THRESH_BINARY);
+    threshold(frame, frame, energyParams.DETECT_RED_GRAY_BINARY, 255, THRESH_BINARY);
 #endif // E_BLUE
 
 #ifdef E_BLUE // Detect Blue Armor Plate
     frame = channels.at(0) - channels.at(2);
-    threshold(frame, frame, energyParams.DETECT_BLUE_GRAY_BINARY, 255, CV_THRESH_BINARY);
+    threshold(frame, frame, energyParams.DETECT_BLUE_GRAY_BINARY, 255, THRESH_BINARY);
 #endif // E_RED
 
     // GaussianBlur(frame, frame, Size(3, 3), 0);   // 高斯模糊
@@ -537,14 +537,14 @@ bool Energy::findArmors(Mat &src)
     Mat src_bin = src.clone();
     if (src.type() == CV_8UC3)
     {
-        cv::cvtColor(src_bin, src_bin, CV_BGR2GRAY);
+        cv::cvtColor(src_bin, src_bin, COLOR_BGR2GRAY);
     }
     vector<vector<Point>> armor_contours;
     vector<vector<Point>> armor_contours_extenal;
     // 提取所有轮廓
-    findContours(src_bin, armor_contours, CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
+    findContours(src_bin, armor_contours, RETR_LIST, CHAIN_APPROX_NONE);
     // 只提取外轮廓
-    findContours(src_bin, armor_contours_extenal, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+    findContours(src_bin, armor_contours_extenal, RETR_EXTERNAL, CHAIN_APPROX_NONE);
     // 去除外轮廓
     for (size_t i = 0; i < armor_contours_extenal.size(); i++)
     {
@@ -584,7 +584,7 @@ bool Energy::findArmors(Mat &src)
 
 #ifdef SHOW_ALL_ARMORS
     Mat all_armor = src_bin.clone();
-    cv::cvtColor(all_armor, all_armor, CV_GRAY2BGR);
+    cv::cvtColor(all_armor, all_armor, GRAY2BGR);
     for (auto armor : armors_rrect)
     {
         drawRotatedRect(all_armor, armor, Scalar(0, 255, 20), 2);
@@ -623,14 +623,14 @@ bool Energy::findTargetArmor(Mat &src_bin)
 
 #ifdef SHOW_TARGET_ARMOR
     Mat target_armor_img = src_bin.clone();
-    cv::cvtColor(target_armor_img, target_armor_img, CV_GRAY2BGR);
+    cv::cvtColor(target_armor_img, target_armor_img, GRAY2BGR);
     drawRotatedRect(target_armor_img, target_armor, Scalar(0, 0, 255), 2);
     imshow("SHOW_TARGET_ARMOR", target_armor_img);
 #endif // SHOW_TARGET_ARMOR
 
 #ifdef SHOW_TARGET_ARMOR_CENTER
     Mat target_armor_center_img = src_bin.clone();
-    cv::cvtColor(target_armor_center_img, target_armor_center_img, CV_GRAY2BGR);
+    cv::cvtColor(target_armor_center_img, target_armor_center_img, GRAY2BGR);
     circle(target_armor_center_img, target_armor.center, 3, Scalar(0, 0, 255), 2); // 装甲板中心点
     imshow("SHOW_TARGET_ARMOR_CENTER", target_armor_center_img);
 #endif // SHOW_TARGET_ARMOR_CENTER
@@ -705,7 +705,7 @@ bool Energy::findCenterR(Mat &src_bin) {
         return false;
     }
     std::vector<vector<Point> > center_R_contours;
-    findContours(src_bin, center_R_contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+    findContours(src_bin, center_R_contours, RETR_EXTERNAL, CHAIN_APPROX_NONE);
     for (auto &center_R_contour : center_R_contours) {
         if (!isValidCenterRContour(center_R_contour)) 
         {
@@ -805,7 +805,7 @@ bool Energy::predictRCenter(Mat &frame)
 
 #ifdef SHOW_R_CENTER
         Mat R_center_img = frame.clone();
-        cv::cvtColor(R_center_img, R_center_img, CV_GRAY2BGR);
+        cv::cvtColor(R_center_img, R_center_img, GRAY2BGR);
         circle(R_center_img, RCenter, 5, Scalar(0, 255, 0), 2);
         circle(R_center_img, target_armor.center, 5, Scalar(0, 255, 0), 1);
         for (auto armor_center : armor_center_points)
@@ -840,7 +840,7 @@ bool Energy::predictRCenter(Mat &frame)
 
 #ifdef SHOW_R_CENTER
     Mat R_center_img = frame.clone();
-    cv::cvtColor(R_center_img, R_center_img, CV_GRAY2BGR);
+    cv::cvtColor(R_center_img, R_center_img, COLOR_GRAY2BGR);
     drawRotatedRect(R_center_img,centerR,Scalar(100,100,250),2);//绘制R
     drawRotatedRect(R_center_img,center_ROI,Scalar(100,100,200),2);//绘制ROI--CenterR
     circle(R_center_img, RCenter, 5, Scalar(0, 255, 0), 1);//绘制实际圆心
@@ -892,12 +892,12 @@ bool Energy::findFlowStripFan(Mat &src)
 
     if (src.type() == CV_8UC3)
     {
-        cv::cvtColor(src_bin, src_bin, CV_BGR2GRAY);
+        cv::cvtColor(src_bin, src_bin, COLOR_BGR2GRAY);
     }
 
     vector<vector<Point>> flow_strip_fan_contours;
     // 寻找外轮廓
-    findContours(src_bin, flow_strip_fan_contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+    findContours(src_bin, flow_strip_fan_contours, RETR_EXTERNAL, CHAIN_APPROX_NONE);
 
     vector<RotatedRect> candidate_flow_strip_fans;
     for (auto &flow_strip_fan : flow_strip_fan_contours)
@@ -922,7 +922,7 @@ bool Energy::findFlowStripFan(Mat &src)
 
 #ifdef SHOW_FLOW_STRIP_FAN
     Mat flow_strip_fan_img = src_bin.clone();
-    cv::cvtColor(flow_strip_fan_img, flow_strip_fan_img, CV_GRAY2BGR);
+    cv::cvtColor(flow_strip_fan_img, flow_strip_fan_img, COLOR_GRAY2BGR);
     // 按理说旋转矩形只有一个
     for (int i = 0; i < flow_strip_fan_rrect.size(); i++)
     {

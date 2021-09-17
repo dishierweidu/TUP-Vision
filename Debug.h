@@ -60,7 +60,7 @@
 
 // #define REOPEN            //是否在丢帧后重启摄像头
 
-#define SHOW_SRC      // 是否显示原始图像
+// #define SHOW_SRC      // 是否显示原始图像
 #define SHOW_DISTANCE
 // #define SHOW_DEBUG_IMG
 //-----------------------------(大符)-----------------------------------//
@@ -74,10 +74,10 @@
 //                                                          //
 //----------------------------------------------------------//
 // #define SHOW_SRC_GET_TIME               // 是否在终端打印每帧的采集时间(仅限于大恒)
-// #define SHOW_ENERGY_RUN_TIME            // 是否在终端打印能量机关每帧的处理时间
+#define SHOW_ENERGY_RUN_TIME            // 是否在终端打印能量机关每帧的处理时间
 // #define CALC_PROCESS_TIME    // 显示生产及消费所用时间(辅瞄)
 #define ECHO_FINAL_INFO         //是否输出最终得到的Yaw,Pitch,Dist信息          
-#define COUT_LOG                     //输出日志
+// #define COUT_LOG                     //输出日志
 
 //----------------------------------------------------------//
 //                                                          //
@@ -88,4 +88,4 @@
 // #define USING_ADVANCED_PREDICT                 //是否为辅瞄启用进阶预测(卡尔曼与反陀螺)(未完成)
     // #define USING_DEBUG_ANTISPIN                //反陀螺(未完成)
     
-#define ENABLE_NUM_CLASSFICATION     //启用SVM
+// #define ENABLE_NUM_CLASSFICATION     //启用SVM
