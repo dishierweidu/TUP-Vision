@@ -22,7 +22,7 @@ using namespace std;
 using namespace cv;
 using namespace ml;
 
-const string model_path = "/home/rangeronmars/RM/TUP-Vision/File/svm.xml";
+const string model_path = "../File/svm.xml";
 
 class NumClassfier
 {
